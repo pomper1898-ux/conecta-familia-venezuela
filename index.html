@@ -118,9 +118,17 @@
             Buscar por nombre, ciudad o descripción
             <input id="publicSearch" type="search" placeholder="Ej: María, La Guaira, Catia la Mar" autocomplete="off" />
           </label>
+          <div class="public-filter-group" aria-label="Filtrar casos públicos por estado">
+            <button class="public-filter is-active" type="button" data-public-status="all">Todos</button>
+            <button class="public-filter" type="button" data-public-status="active_search">En búsqueda</button>
+            <button class="public-filter" type="button" data-public-status="found">Encontrados</button>
+          </div>
           <div id="publicStats" class="public-stats" aria-live="polite"></div>
         </div>
         <div id="publicCasesList" class="public-cases-list" aria-live="polite"></div>
+        <div class="public-more-row">
+          <button id="publicShowMore" class="secondary-btn" type="button">Ver más casos</button>
+        </div>
       </section>
 
       <section id="reporte" class="form-section">
