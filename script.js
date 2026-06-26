@@ -25,6 +25,54 @@ const statusLabels = {
   false_report: "Reporte falso",
 };
 
+const externalSourceDirectories = [
+  {
+    name: "Buscar Desaparecidos",
+    type: "Plataforma ciudadana",
+    confidence: "Pendiente de permiso",
+    scope: "Directorio amplio con miles de reportes públicos",
+    url: "https://buscardesaparecidos.com/",
+    action: "Buscar en la fuente original",
+    note: "No copiamos sus registros masivamente porque la fuente puede exponer teléfonos, reportantes, menores y datos sensibles.",
+  },
+  {
+    name: "CICR - Restablecimiento de contacto familiar",
+    type: "Organismo humanitario",
+    confidence: "Oficial",
+    scope: "Búsqueda y reconexión familiar internacional",
+    url: "https://www.icrc.org/en/what-we-do/reconnecting-families",
+    action: "Abrir canal humanitario",
+    note: "Fuente recomendada para familias separadas por desastres, violencia, migración o emergencias.",
+  },
+  {
+    name: "R4V - Plataforma Regional Venezuela",
+    type: "Coordinación humanitaria",
+    confidence: "Alta",
+    scope: "Información regional sobre personas refugiadas y migrantes de Venezuela",
+    url: "https://www.r4v.info/",
+    action: "Abrir plataforma",
+    note: "Útil para ubicar reportes, organizaciones y servicios, sin copiar datos personales.",
+  },
+  {
+    name: "ACNUR Help",
+    type: "Canal oficial de orientación",
+    confidence: "Oficial",
+    scope: "Ayuda para personas refugiadas, migrantes y solicitantes de asilo",
+    url: "https://help.unhcr.org/",
+    action: "Abrir ACNUR Help",
+    note: "Usar para orientación territorial y rutas de ayuda en países de diáspora.",
+  },
+  {
+    name: "ReliefWeb Venezuela",
+    type: "Repositorio humanitario",
+    confidence: "Alta",
+    scope: "Reportes, mapas y actualizaciones humanitarias sobre Venezuela",
+    url: "https://reliefweb.int/country/ven",
+    action: "Abrir ReliefWeb",
+    note: "Fuente útil para contexto humanitario y documentos, no para datos personales de reportantes.",
+  },
+];
+
 const externalPublicCases = [
   {
     "id": "external-bd-guillermo-el-negro-arratia-uhjai6",
@@ -1620,6 +1668,7 @@ const formStatus = document.querySelector("#formStatus");
 const whatsappButton = document.querySelector("#whatsappButton");
 const casesList = document.querySelector("#casesList");
 const publicCasesList = document.querySelector("#publicCasesList");
+const publicSourcesList = document.querySelector("#publicSourcesList");
 const publicSearch = document.querySelector("#publicSearch");
 const publicStats = document.querySelector("#publicStats");
 const publicFilters = document.querySelectorAll("[data-public-status]");
@@ -1853,6 +1902,31 @@ function renderCenters() {
           <span class="pill">Verificar antes de compartir</span>
         </div>
         ${center.url ? `<a class="secondary-btn" href="${escapeHtml(center.url)}" target="_blank" rel="noopener">Abrir fuente</a>` : ""}
+      </article>
+    `)
+    .join("");
+}
+
+function renderPublicSources() {
+  if (!publicSourcesList) return;
+
+  publicSourcesList.innerHTML = externalSourceDirectories
+    .map((source) => `
+      <article class="source-directory-card">
+        <div>
+          <span class="contact-category">${escapeHtml(source.type)}</span>
+          <h4>${escapeHtml(source.name)}</h4>
+          <p>${escapeHtml(source.scope)}</p>
+        </div>
+        <div class="case-meta">
+          <span class="pill">${escapeHtml(source.confidence)}</span>
+          <span class="pill">Fuente original</span>
+        </div>
+        <p class="source-note">${escapeHtml(source.note)}</p>
+        <div class="public-card-actions">
+          <a class="secondary-btn source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(source.action)}</a>
+          <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Reportar información aquí</a>
+        </div>
       </article>
     `)
     .join("");
@@ -2171,7 +2245,7 @@ async function loadPublicCases() {
         public_resumen: report.public_resumen,
         source_type: "Reporte revisado por el equipo",
       }));
-    return [...localCases, ...externalPublicCases];
+    return localCases;
   }
 
   const { data, error } = await supabaseClient
@@ -2190,7 +2264,7 @@ async function loadPublicCases() {
     photo_url: item.public_photo_url,
     source_type: "Reporte revisado por el equipo",
   }));
-  return [...safeCases, ...externalPublicCases];
+  return safeCases;
 }
 
 async function renderPublicCases() {
@@ -2621,5 +2695,6 @@ if (supabaseClient) {
 updateWhatsAppLink();
 renderReports();
 renderPublicCases();
+renderPublicSources();
 renderCenters();
 routeFromCurrentUrl();

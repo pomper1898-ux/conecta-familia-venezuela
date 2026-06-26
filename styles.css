@@ -1118,6 +1118,43 @@ code {
     var(--bg);
 }
 
+.source-directory-panel {
+  margin: 18px 0 22px;
+  padding: 18px;
+  border: 1px solid rgba(11, 35, 70, 0.12);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(23, 32, 27, 0.06);
+}
+
+.public-sources-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.source-directory-card {
+  display: grid;
+  gap: 10px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff, #f8faf8);
+}
+
+.source-directory-card h4 {
+  margin: 8px 0 4px;
+  color: var(--navy);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.source-directory-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .public-directory-head {
   display: flex;
   align-items: end;
