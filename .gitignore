@@ -1,0 +1,6 @@
+.vercel-cli/
+*.zip
+node_modules/
+.vercel/
+.env
+.env.*
