@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conecta Familia Venezuela | Información ciudadana de emergencia</title>
+    <meta
+      name="description"
+      content="Conecta Familia Venezuela organiza reportes ciudadanos privados para emergencias familiares. No reemplaza autoridades ni organismos oficiales de rescate."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#inicio" aria-label="Conecta Familia Venezuela inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <path class="logo-shield" d="M32 5 54 14v15c0 14.6-8.9 24.8-22 30C18.9 53.8 10 43.6 10 29V14L32 5Z" />
+            <path class="logo-home" d="M20 31 32 20l12 11v14H20V31Z" />
+            <path class="logo-heart" d="M32 42s-8-4.5-8-10a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.5-8 10-8 10Z" />
+          </svg>
+        </span>
+        <span>
+          <strong>Conecta Familia Venezuela</strong>
+          <small>Emergencia ciudadana privada</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="Navegación principal">
+        <a href="/personas" data-route-link>Personas</a>
+        <a href="/centros" data-route-link>Centros</a>
+        <a href="#reporte">Reportar</a>
+        <a href="#ayuda-oficial">Ayuda</a>
+        <a href="#privacidad">Privacidad</a>
+        <a class="team-link" href="/admin" data-route-link>Equipo</a>
+      </nav>
+    </header>
+
+    <main id="inicio">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="flag-strip" aria-label="Colores de Venezuela">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="eyebrow">Venezuela · Coordinación responsable</p>
+          <h1>Conecta Familia Venezuela</h1>
+          <p class="hero-text">
+            Una herramienta de emergencia para ordenar reportes ciudadanos,
+            proteger datos sensibles y apoyar la conexión entre familias,
+            voluntarios y canales oficiales.
+          </p>
+          <div class="trust-row" aria-label="Principios operativos">
+            <span>Privado por defecto</span>
+            <span>Sin cédula</span>
+            <span>Sin teléfonos públicos</span>
+          </div>
+          <div class="official-warning">
+            <strong>Primero llama a emergencias.</strong>
+            Si la persona está atrapada, herida o en peligro inmediato, llama
+            primero al 911 / VEN-911 o a los organismos oficiales del lugar.
+            Esta página solo organiza información ciudadana.
+          </div>
+        </div>
+
+        <div class="action-panel" aria-label="Acciones principales">
+          <figure class="hero-photo">
+            <img src="assets/hero-emergencia-venezuela.png" alt="Voluntarios coordinando información durante una emergencia urbana en Venezuela" />
+          </figure>
+          <button class="action-card emergency" data-action="Emergencia inmediata">
+            <span class="action-icon" aria-hidden="true">!</span>
+            <span>
+              <strong>Emergencia inmediata</strong>
+              <small>Prioriza organismos oficiales y comparte datos básicos.</small>
+            </span>
+          </button>
+          <button class="action-card" data-action="Busco a un familiar">
+            <span class="action-icon" aria-hidden="true">?</span>
+            <span>
+              <strong>Busco a un familiar</strong>
+              <small>Registra un caso privado para revisión.</small>
+            </span>
+          </button>
+          <button class="action-card" data-action="Tengo información">
+            <span class="action-icon" aria-hidden="true">i</span>
+            <span>
+              <strong>Tengo información</strong>
+              <small>Envía pistas sin publicar teléfonos ni datos sensibles.</small>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <section class="notice-band" aria-label="Alcance del servicio">
+        <p>
+          Conecta Familia Venezuela no reemplaza a autoridades, protección civil,
+          bomberos, policía, hospitales ni organismos de rescate. Los reportes
+          quedan privados y en revisión antes de cualquier acción.
+        </p>
+      </section>
+
+      <section id="personas" class="public-section" data-route-section="personas">
+        <div class="public-directory-head">
+          <div class="section-heading">
+            <p class="eyebrow">Directorio público seguro</p>
+            <h2>Buscar personas reportadas</h2>
+            <p>
+              Consulta casos aprobados por el equipo y registros de fuentes
+              públicas externas. Los teléfonos, reportantes, direcciones exactas
+              y datos sensibles permanecen privados.
+            </p>
+          </div>
+          <div class="public-directory-actions">
+            <a class="primary-btn" href="#reporte" data-action-link="Busco a un familiar">Reportar persona</a>
+            <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
+          </div>
+        </div>
+        <div class="public-search-panel" role="search">
+          <label>
+            Buscar por nombre, ciudad o descripción
+            <input id="publicSearch" type="search" placeholder="Ej: María, La Guaira, Catia la Mar" autocomplete="off" />
+          </label>
+          <div class="public-filter-group" aria-label="Filtrar casos públicos por estado">
+            <button class="public-filter is-active" type="button" data-public-status="all">Todos</button>
+            <button class="public-filter" type="button" data-public-status="active_search">En búsqueda</button>
+            <button class="public-filter" type="button" data-public-status="found">Encontrados</button>
+          </div>
+          <div id="publicStats" class="public-stats" aria-live="polite"></div>
+        </div>
+        <div id="publicCasesList" class="public-cases-list" aria-live="polite"></div>
+        <div class="public-more-row">
+          <button id="publicShowMore" class="secondary-btn" type="button">Ver más casos</button>
+        </div>
+      </section>
+
+      <section id="reporte" class="form-section">
+        <div class="section-heading">
+          <p class="eyebrow">Formulario mínimo</p>
+          <h2>Crear reporte privado</h2>
+          <p>
+            No se solicita cédula. No publiques teléfonos de terceros, datos
+            médicos detallados, direcciones exactas ni información que pueda
+            poner a alguien en riesgo.
+          </p>
+        </div>
+
+        <form id="reportForm" class="report-form">
+          <input type="hidden" id="tipo_reporte" name="tipo_reporte" value="Busco a un familiar" />
+
+          <label>
+            Nombre de la persona
+            <input id="nombre_persona" name="nombre_persona" autocomplete="off" required />
+          </label>
+
+          <label>
+            Ciudad o sector
+            <input id="ciudad_sector" name="ciudad_sector" autocomplete="address-level2" required />
+          </label>
+
+          <label>
+            Último contacto o lugar visto
+            <input id="ultimo_contacto_o_lugar_visto" name="ultimo_contacto_o_lugar_visto" required />
+          </label>
+
+          <label>
+            Edad aproximada
+            <input id="edad_aproximada" name="edad_aproximada" inputmode="numeric" required />
+          </label>
+
+          <label class="wide">
+            Descripción
+            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+          </label>
+
+          <label>
+            Estado general
+            <select id="estado_general" name="estado_general" required>
+              <option value="">Seleccionar</option>
+              <option>En peligro inmediato</option>
+              <option>Sin contacto</option>
+              <option>Posible avistamiento</option>
+              <option>Herida o requiere ayuda</option>
+              <option>Información por confirmar</option>
+            </select>
+          </label>
+
+          <label>
+            Nombre del reportante
+            <input id="nombre_reportante" name="nombre_reportante" autocomplete="name" required />
+          </label>
+
+          <label>
+            WhatsApp del reportante
+            <input id="whatsapp_reportante" name="whatsapp_reportante" autocomplete="tel" inputmode="tel" required />
+          </label>
+
+          <label>
+            Relación con la persona
+            <input id="relacion_con_persona" name="relacion_con_persona" required />
+          </label>
+
+          <label class="check wide">
+            <input id="consentimiento_datos" name="consentimiento_datos" type="checkbox" required />
+            <span>Autorizo el uso privado de estos datos para revisar y organizar el reporte.</span>
+          </label>
+
+          <label class="check wide">
+            <input id="declaracion_buena_fe" name="declaracion_buena_fe" type="checkbox" required />
+            <span>Declaro que envío esta información de buena fe y sin intención de causar daño.</span>
+          </label>
+
+          <div class="form-actions wide">
+            <button class="primary-btn" type="submit">Guardar reporte privado</button>
+            <a id="whatsappButton" class="secondary-btn" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          </div>
+          <p id="formStatus" class="form-status wide" role="status"></p>
+        </form>
+      </section>
+
+      <section id="privacidad" class="privacy-section">
+        <div>
+          <p class="eyebrow">Privacidad por defecto</p>
+          <h2>Qué se protege</h2>
+          <p>
+            La información se trata como material sensible de emergencia hasta
+            que un responsable la revise.
+          </p>
+        </div>
+        <ul class="privacy-grid">
+          <li>Todo reporte queda privado con estado <code>pending_review</code>.</li>
+          <li>No se publican teléfonos ni datos de contacto.</li>
+          <li>No se solicita cédula ni documentos de identidad.</li>
+          <li>No se muestran datos sensibles en espacios públicos.</li>
+        </ul>
+      </section>
+
+      <section id="centros" class="centers-section" data-route-section="centros">
+        <div class="section-heading">
+          <p class="eyebrow">Centros y puntos de apoyo</p>
+          <h2>Mapa comunitario de ayuda</h2>
+          <p>
+            Directorio informativo de centros, puntos solidarios y canales oficiales. Verifica siempre antes de movilizar ayuda.
+          </p>
+        </div>
+        <div class="map-layout">
+          <div id="centersMap" class="centers-map" aria-label="Mapa de centros de ayuda"></div>
+          <div>
+            <div class="public-search-panel compact-panel" role="search">
+              <label>
+                Buscar centro o ciudad
+                <input id="centerSearch" type="search" placeholder="Ej: Medellín, Cruz Roja, Caracas" autocomplete="off" />
+              </label>
+              <div id="centerStats" class="public-stats" aria-live="polite"></div>
+            </div>
+            <div id="centersList" class="centers-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="correcciones" class="correction-section">
+        <div class="section-heading">
+          <p class="eyebrow">Correcciones y retiro</p>
+          <h2>Solicitar corrección o retiro de información</h2>
+          <p>
+            Si un dato público es incorrecto, sensible o ya no debe mostrarse, envía una solicitud para revisión del equipo.
+          </p>
+        </div>
+        <form id="correctionRequestForm" class="report-form">
+          <label>
+            Nombre de la persona o caso
+            <input id="correctionCaseName" name="case_name" required />
+          </label>
+          <label>
+            Tipo de solicitud
+            <select id="correctionType" name="request_type" required>
+              <option value="">Seleccionar</option>
+              <option value="correction">Corrección</option>
+              <option value="withdrawal">Retiro</option>
+              <option value="duplicate">Posible duplicado</option>
+            </select>
+          </label>
+          <label class="wide">
+            Detalle de la solicitud
+            <textarea id="correctionDetail" name="detail" rows="4" required></textarea>
+          </label>
+          <label>
+            Nombre de quien solicita
+            <input id="correctionRequester" name="requester_name" required />
+          </label>
+          <label>
+            WhatsApp o correo de contacto
+            <input id="correctionContact" name="requester_contact" required />
+          </label>
+          <label class="check wide">
+            <input id="correctionGoodFaith" name="good_faith" type="checkbox" required />
+            <span>Declaro que hago esta solicitud de buena fe.</span>
+          </label>
+          <div class="form-actions wide">
+            <button class="primary-btn" type="submit">Enviar solicitud</button>
+          </div>
+          <p id="correctionStatus" class="form-status wide" role="status"></p>
+        </form>
+      </section>
+
+      <section id="ayuda-oficial" class="official-directory-section">
+        <div class="section-heading">
+          <p class="eyebrow">Canales verificados</p>
+          <h2>Canales oficiales de ayuda y reunificación familiar</h2>
+          <p>
+            Directorio informativo para derivar a instituciones oficiales. Los
+            datos pueden cambiar; usa siempre el botón de página oficial para
+            confirmar antes de compartir.
+          </p>
+        </div>
+
+        <div class="directory-alert">
+          <strong>Esta página no reemplaza a autoridades ni organismos de rescate.</strong>
+          Si hay peligro inmediato, llama primero al 911 / VEN-911 o a las autoridades locales.
+        </div>
+
+        <div class="whatsapp-help-card">
+          <div>
+            <span class="contact-category">Consulta comunitaria</span>
+            <h3>Grupo de WhatsApp para coordinar ayuda</h3>
+            <p>
+              Si necesitas consultar una emergencia, coordinar una donación o
+              hablar con el equipo de Santa Tinta, usa el grupo comunitario.
+              No compartas cédulas, teléfonos de terceros, direcciones exactas
+              ni datos médicos sensibles.
+            </p>
+          </div>
+          <a class="primary-btn" href="https://chat.whatsapp.com/LSWcidnfp6uLwzglQ47euc" target="_blank" rel="noopener">Abrir grupo de WhatsApp</a>
+        </div>
+
+        <div class="verification-stamp">
+          Contactos verificados el 26 de junio de 2026 · Solo fuentes institucionales oficiales
+        </div>
+
+        <div class="directory-guide" aria-label="Cómo usar este directorio">
+          <div>
+            <strong>1. Emergencia real</strong>
+            <span>Primero autoridades y organismos de rescate.</span>
+          </div>
+          <div>
+            <strong>2. Búsqueda familiar</strong>
+            <span>Usa Cruz Roja y redes de reunificación.</span>
+          </div>
+          <div>
+            <strong>3. Apoyo humanitario</strong>
+            <span>Verifica el canal oficial antes de compartir.</span>
+          </div>
+        </div>
+
+        <p class="carousel-hint">Desliza horizontalmente para ver todos los canales verificados.</p>
+
+        <div class="official-directory-grid">
+          <article class="official-contact-card priority-contact">
+            <span class="contact-category">Emergencia inmediata en Venezuela</span>
+            <h3>911 / VEN-911 y organismos oficiales del lugar</h3>
+            <p>
+              Para personas atrapadas, heridas, en peligro inmediato o ante
+              riesgo estructural. Conecta Familia Venezuela solo organiza
+              información ciudadana.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Atención de emergencia, rescate y autoridades locales</dd>
+            </dl>
+            <p class="source-note">Verifica siempre con canales oficiales locales antes de compartir.</p>
+          </article>
+
+          <h3 class="directory-group-title">Venezuela y red internacional</h3>
+
+          <article class="official-contact-card">
+            <span class="contact-category">Cruz Roja Venezolana</span>
+            <h3>Venezuelan Red Cross Society</h3>
+            <p>
+              Sociedad nacional de Cruz Roja en Venezuela, publicada en el
+              directorio oficial de IFRC.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Acción humanitaria, emergencias y red territorial</dd>
+              <dt>Dirección</dt>
+              <dd>Avenida Andrés Bello, 4, 1010 Caracas</dd>
+              <dt>Teléfonos</dt>
+              <dd>(58) (212) 571-4380 / 58212-571-2143</dd>
+              <dt>Correo</dt>
+              <dd><a href="mailto:info@cruzrojavenezolana.org.ve">info@cruzrojavenezolana.org.ve</a></dd>
+            </dl>
+            <a class="secondary-btn contact-link" href="https://www.ifrc.org/national-societies-directory/venezuelan-red-cross" target="_blank" rel="noopener">Abrir página oficial</a>
+            <p class="source-note">Verifica siempre en la página oficial antes de compartir.</p>
+          </article>
+
+          <article class="official-contact-card">
+            <span class="contact-category">Restablecimiento de contacto familiar</span>
+            <h3>CICR · Family Links Network</h3>
+            <p>
+              Red internacional para búsqueda de familiares, personas separadas
+              o desaparecidas en desastres, violencia, conflicto o migración.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Búsqueda, reconexión familiar y orientación humanitaria</dd>
+            </dl>
+            <a class="secondary-btn contact-link" href="https://www.icrc.org/en/what-we-do/reconnecting-families" target="_blank" rel="noopener">Abrir página oficial</a>
+            <p class="source-note">Verifica siempre en la página oficial antes de compartir.</p>
+          </article>
+
+          <article class="official-contact-card">
+            <span class="contact-category">Ayuda humanitaria y niñez</span>
+            <h3>UNICEF Venezuela</h3>
+            <p>
+              Programas de protección, salud, nutrición, educación, agua,
+              saneamiento e higiene para niños, niñas y adolescentes.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Niñez, protección, salud, nutrición y WASH</dd>
+              <dt>Línea de Contacto ONU</dt>
+              <dd>0800 2426200 / 0424 7700048</dd>
+              <dt>Correo</dt>
+              <dd><a href="mailto:lineadecontacto@unicef.org">lineadecontacto@unicef.org</a></dd>
+            </dl>
+            <a class="secondary-btn contact-link" href="https://www.unicef.org/venezuela/" target="_blank" rel="noopener">Abrir página oficial</a>
+            <p class="source-note">Verifica siempre en la página oficial antes de compartir.</p>
+          </article>
+
+          <h3 class="directory-group-title">Diáspora venezolana</h3>
+
+          <article class="official-contact-card">
+            <span class="contact-category">Diáspora · Colombia</span>
+            <h3>Cruz Roja Colombiana</h3>
+            <p>
+              Institución humanitaria nacional con campaña oficial de apoyo a
+              comunidades afectadas en Venezuela y canales institucionales.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Gestión humanitaria, emergencias, orientación y donaciones</dd>
+              <dt>Teléfono</dt>
+              <dd>601 794 6566</dd>
+              <dt>Línea nacional</dt>
+              <dd>018005198534</dd>
+              <dt>Correo</dt>
+              <dd><a href="mailto:cruzrojateescucha@cruzrojacolombiana.org">cruzrojateescucha@cruzrojacolombiana.org</a></dd>
+            </dl>
+            <a class="secondary-btn contact-link" href="https://www.cruzrojacolombiana.org/" target="_blank" rel="noopener">Abrir página oficial</a>
+            <p class="source-note">Verifica siempre en la página oficial antes de compartir.</p>
+          </article>
+
+          <article class="official-contact-card">
+            <span class="contact-category">Diáspora · Bogotá/Cundinamarca</span>
+            <h3>Cruz Roja Bogotá</h3>
+            <p>
+              Seccional con líneas de asuntos humanitarios, flujos migratorios,
+              salud, gestión del riesgo y contacto institucional.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Asuntos humanitarios, migración, salud y gestión del riesgo</dd>
+            </dl>
+            <a class="secondary-btn contact-link" href="https://www.cruzrojabogota.org.co/" target="_blank" rel="noopener">Abrir página oficial</a>
+            <p class="source-note">Verifica siempre en la página oficial antes de compartir.</p>
+          </article>
+
+          <article class="official-contact-card">
+            <span class="contact-category">Diáspora · Argentina</span>
+            <h3>Cruz Roja Argentina</h3>
+            <p>
+              Cuenta con servicio de restablecimiento del contacto entre
+              familiares y contacto institucional publicado.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Reencuentro familiar, movilidad humana y emergencias</dd>
+              <dt>Teléfono</dt>
+              <dd>(5411) 6065-0450</dd>
+              <dt>Correo</dt>
+              <dd><a href="mailto:info@cruzroja.org.ar">info@cruzroja.org.ar</a></dd>
+            </dl>
+            <a class="secondary-btn contact-link" href="https://www.cruzroja.org.ar/" target="_blank" rel="noopener">Abrir página oficial</a>
+            <p class="source-note">Verifica siempre en la página oficial antes de compartir.</p>
+          </article>
+
+          <article class="official-contact-card">
+            <span class="contact-category">Diáspora · México</span>
+            <h3>Cruz Roja Mexicana</h3>
+            <p>
+              Directorio oficial de delegaciones, programas de migración,
+              socorros, reducción de riesgos y contacto institucional.
+            </p>
+            <dl>
+              <dt>Tipo de ayuda</dt>
+              <dd>Socorros, migración, delegaciones y atención humanitaria</dd>
+              <dt>Donativos/contacto publicado</dt>
+              <dd>55 1084 9000 ext. 4712</dd>
+              <dt>Correo</dt>
+              <dd><a href="mailto:donativos@cruzrojamexicana.org.mx">donativos@cruzrojamexicana.org.mx</a></dd>
+            </dl>
+            <a class="secondary-btn contact-link" href="https://www.cruzrojamexicana.org.mx/" target="_blank" rel="noopener">Abrir página oficial</a>
+            <p class="source-note">Verifica siempre en la página oficial antes de compartir.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="donaciones-medellin" class="donation-section">
+        <div class="donation-panel">
+          <div class="donation-copy">
+            <p class="eyebrow">Punto solidario comunitario</p>
+            <h2>Recepción de ayudas en Medellín</h2>
+            <p>
+              Si estás en Medellín y puedes apoyar, el estudio Santa Tinta /
+              Tattoo Keibyn Pabón (Poblado) está recibiendo ayudas humanitarias
+              para familias afectadas. Keibyn Pabón estará recibiendo mercado,
+              alimentos no perecederos y aportes solidarios en este punto.
+            </p>
+            <div class="donation-note">
+              Este punto de recepción es comunitario. Para emergencias, rescate
+              o personas en peligro inmediato, usa primero autoridades,
+              911 / VEN-911 u organismos oficiales.
+            </div>
+          </div>
+          <div class="donation-card">
+            <span class="contact-category">Medellín · Poblado</span>
+            <h3>Estudio Santa Tinta / Tattoo Keibyn Pabón</h3>
+            <dl>
+              <dt>Se recibe</dt>
+              <dd>Mercado, alimentos no perecederos y ayuda humanitaria</dd>
+              <dt>Coordinación</dt>
+              <dd>Keibyn Pabón y equipo comunitario</dd>
+              <dt>Privacidad</dt>
+              <dd>No entregues datos sensibles de familias o reportantes en público.</dd>
+            </dl>
+            <div class="donation-actions">
+              <a class="primary-btn" href="https://www.google.com/maps/place/TATTOO+KEIBYN+PAB%C3%93N+(poblado)/@6.2067756,-75.5659681,17z/data=!3m1!4b1!4m6!3m5!1s0x8e442955df3c69df:0x80e0c934ae95b562!8m2!3d6.2067756!4d-75.5659681!16s%2Fg%2F11ybzk9lm8!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">Abrir ubicación</a>
+              <a class="secondary-btn" href="https://chat.whatsapp.com/LSWcidnfp6uLwzglQ47euc" target="_blank" rel="noopener">Coordinar por WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="admin" class="admin-section">
+        <div class="section-heading">
+          <p class="eyebrow">Acceso restringido</p>
+          <h2>Panel del equipo</h2>
+          <p>
+            Revisa reportes privados, cambia estados y publica únicamente una
+            versión segura cuando el caso esté listo.
+          </p>
+        </div>
+        <div class="admin-explainer">
+          <div>
+            <strong>1. Entrar</strong>
+            <span>Usa el correo y contraseña autorizados por la coordinación.</span>
+          </div>
+          <div>
+            <strong>2. Revisar</strong>
+            <span>Los reportes nuevos llegan privados como pendiente de revisión.</span>
+          </div>
+          <div>
+            <strong>3. Publicar</strong>
+            <span>Solo se muestra al público un resumen seguro aprobado.</span>
+          </div>
+        </div>
+        <div class="admin-toolbar">
+          <form id="adminLoginForm" class="admin-login">
+            <label>
+              Correo autorizado
+              <input id="adminEmail" name="adminEmail" type="email" autocomplete="email" placeholder="admin@ejemplo.com" />
+            </label>
+            <label>
+              Contraseña
+              <input id="adminPassword" name="adminPassword" type="password" autocomplete="current-password" placeholder="Contraseña del panel" />
+            </label>
+            <button class="primary-btn" type="submit">Entrar al panel</button>
+          </form>
+          <button id="adminLogout" class="secondary-btn hidden" type="button">Cerrar sesión</button>
+          <button id="exportReports" class="secondary-btn" type="button">Descargar respaldo</button>
+          <button id="clearReports" class="danger-btn" type="button">Vaciar borradores de este equipo</button>
+        </div>
+        <div id="adminStats" class="admin-stats" aria-label="Contadores de reportes"></div>
+        <div class="admin-filters" aria-label="Filtros de reportes">
+          <label>
+            Filtrar por estado
+            <select id="adminStatusFilter">
+              <option value="all">Todos</option>
+              <option value="pending_review">Pendiente de revisión</option>
+              <option value="urgent">Urgente</option>
+              <option value="active_search">Búsqueda activa</option>
+              <option value="possible_match">Posible coincidencia</option>
+              <option value="found">Encontrado</option>
+              <option value="escalated_to_authority">Escalado a autoridad</option>
+              <option value="false_report">Reporte falso</option>
+            </select>
+          </label>
+          <label>
+            Buscar en reportes
+            <input id="adminSearch" type="search" placeholder="Nombre, ciudad, descripción o reportante" autocomplete="off" />
+          </label>
+        </div>
+        <div class="csv-importer">
+          <div class="section-heading compact-heading">
+            <p class="eyebrow">Importador manual</p>
+            <h3>Importar CSV con revisión previa</h3>
+            <p>
+              Pega o carga un CSV. Nada se publica automáticamente: todo entra privado y pendiente de revisión.
+            </p>
+          </div>
+          <div class="csv-tools">
+            <label>
+              Archivo CSV
+              <input id="csvFileInput" type="file" accept=".csv,text/csv" />
+            </label>
+            <label class="wide">
+              CSV pegado
+              <textarea id="csvTextInput" rows="5" placeholder="nombre_persona,ciudad_sector,ultimo_contacto_o_lugar_visto,edad_aproximada,descripcion,estado_general,fuente_url,foto_url"></textarea>
+            </label>
+            <div class="form-actions wide">
+              <button id="csvPreviewButton" class="secondary-btn" type="button">Previsualizar CSV</button>
+              <button id="csvImportButton" class="primary-btn hidden" type="button">Importar como pendiente</button>
+            </div>
+          </div>
+          <p id="csvImportStatus" class="form-status" role="status"></p>
+          <div id="csvPreview" class="csv-preview" aria-live="polite"></div>
+        </div>
+        <p id="adminStatus" class="form-status" role="status"></p>
+        <div id="casesList" class="cases-list" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Conecta Familia Venezuela organiza información ciudadana privada. En emergencias reales, actúa primero con los organismos oficiales.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
