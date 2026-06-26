@@ -30,6 +30,8 @@ const formStatus = document.querySelector("#formStatus");
 const whatsappButton = document.querySelector("#whatsappButton");
 const casesList = document.querySelector("#casesList");
 const publicCasesList = document.querySelector("#publicCasesList");
+const publicSearch = document.querySelector("#publicSearch");
+const publicStats = document.querySelector("#publicStats");
 const exportReports = document.querySelector("#exportReports");
 const clearReports = document.querySelector("#clearReports");
 const actionButtons = document.querySelectorAll("[data-action]");
@@ -44,6 +46,7 @@ const adminStats = document.querySelector("#adminStats");
 
 let adminFilterStatus = "all";
 let adminSearchTerm = "";
+let publicSearchTerm = "";
 
 function loadLocalReports() {
   try {
@@ -164,6 +167,22 @@ function formatDate(value) {
 
 function statusLabel(status) {
   return statusLabels[status] || status || "Sin estado";
+}
+
+function filterPublicCases(cases) {
+  const term = normalizeText(publicSearchTerm);
+  if (!term) return cases;
+
+  return cases.filter((item) => {
+    const searchable = normalizeText([
+      item.public_nombre,
+      item.public_ciudad_sector,
+      item.public_edad_aproximada,
+      item.public_resumen,
+      statusLabel(item.status),
+    ].join(" "));
+    return searchable.includes(term);
+  });
 }
 
 async function getSession() {
@@ -306,22 +325,38 @@ async function loadPublicCases() {
 
 async function renderPublicCases() {
   const cases = await loadPublicCases();
+  const filteredCases = filterPublicCases(cases);
 
   if (!cases.length) {
+    publicStats.textContent = "Sin casos publicados";
     publicCasesList.innerHTML = '<div class="empty-state">Aún no hay casos aprobados para publicación.</div>';
     return;
   }
 
-  publicCasesList.innerHTML = cases
+  publicStats.textContent = publicSearchTerm
+    ? `${filteredCases.length} de ${cases.length} caso(s) encontrados`
+    : `${cases.length} caso(s) publicados`;
+
+  if (!filteredCases.length) {
+    publicCasesList.innerHTML = '<div class="empty-state">No hay casos publicados que coincidan con la búsqueda.</div>';
+    return;
+  }
+
+  publicCasesList.innerHTML = filteredCases
     .map((item) => `
       <article class="public-case-card status-${escapeHtml(item.status)}">
-        <h3>${escapeHtml(item.public_nombre)}</h3>
+        <div class="public-case-top">
+          <div class="public-avatar" aria-hidden="true">${escapeHtml(String(item.public_nombre || "?").trim().charAt(0) || "?")}</div>
+          <div>
+            <h3>${escapeHtml(item.public_nombre)}</h3>
+            <p class="case-date">Actualizado: ${escapeHtml(formatDate(item.updated_at || item.created_at))}</p>
+          </div>
+        </div>
         <div class="case-meta">
           <span class="pill status-pill">${escapeHtml(statusLabel(item.status))}</span>
-          <span class="pill">${escapeHtml(item.public_ciudad_sector)}</span>
-          <span class="pill">${escapeHtml(item.public_edad_aproximada)}</span>
+          ${item.public_ciudad_sector ? `<span class="pill">${escapeHtml(item.public_ciudad_sector)}</span>` : ""}
+          ${item.public_edad_aproximada ? `<span class="pill">${escapeHtml(item.public_edad_aproximada)} años aprox.</span>` : ""}
         </div>
-        <p class="case-date">Actualizado: ${escapeHtml(formatDate(item.updated_at || item.created_at))}</p>
         <p>${escapeHtml(item.public_resumen)}</p>
         <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
       </article>
@@ -477,6 +512,11 @@ adminStatusFilter.addEventListener("change", async (event) => {
 adminSearch.addEventListener("input", async (event) => {
   adminSearchTerm = event.target.value;
   await renderReports();
+});
+
+publicSearch.addEventListener("input", async (event) => {
+  publicSearchTerm = event.target.value;
+  await renderPublicCases();
 });
 
 casesList.addEventListener("change", async (event) => {

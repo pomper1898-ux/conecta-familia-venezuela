@@ -990,6 +990,58 @@ code {
   margin-bottom: 10px;
 }
 
+.public-section {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(234, 243, 239, 0.9)),
+    var(--bg);
+}
+
+.public-directory-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+
+.public-directory-head .section-heading {
+  margin-bottom: 0;
+}
+
+.public-directory-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.public-search-panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  align-items: end;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 16px;
+  border: 1px solid rgba(11, 35, 70, 0.12);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(11, 35, 70, 0.08);
+}
+
+.public-search-panel label {
+  margin: 0;
+}
+
+.public-stats {
+  min-width: max-content;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
 .cases-list {
   display: grid;
   gap: 14px;
@@ -1027,11 +1079,40 @@ code {
 .public-case-card {
   grid-template-columns: 1fr;
   align-content: start;
+  min-height: 100%;
+  border-color: rgba(11, 35, 70, 0.12);
+  box-shadow: 0 12px 28px rgba(11, 35, 70, 0.08);
+}
+
+.public-case-card.status-found {
+  border-color: rgba(15, 111, 97, 0.28);
+  background:
+    linear-gradient(180deg, rgba(234, 243, 239, 0.8), #fff);
+}
+
+.public-case-top {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.public-avatar {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .case-card h3,
 .public-case-card h3 {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 1.15rem;
 }
 
@@ -1142,6 +1223,8 @@ code {
   .privacy-section,
   .case-card,
   .public-cases-list,
+  .public-directory-head,
+  .public-search-panel,
   .directory-guide,
   .whatsapp-help-card,
   .donation-panel,
@@ -1153,6 +1236,18 @@ code {
 
   .official-contact-card dl {
     grid-template-columns: 1fr;
+  }
+
+  .public-directory-head {
+    align-items: stretch;
+  }
+
+  .public-directory-actions {
+    justify-content: flex-start;
+  }
+
+  .public-stats {
+    min-width: 0;
   }
 
   .topbar {
@@ -1247,6 +1342,7 @@ code {
   }
 
   .form-actions > *,
+  .public-directory-actions > *,
   .whatsapp-help-card .primary-btn,
   .contact-link {
     width: 100%;

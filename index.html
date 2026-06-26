@@ -26,6 +26,7 @@
         </span>
       </a>
       <nav class="topnav" aria-label="Navegación principal">
+        <a href="#casos">Casos</a>
         <a href="#reporte">Reportar</a>
         <a href="#ayuda-oficial">Ayuda</a>
         <a href="#donaciones-medellin">Donar</a>
@@ -94,6 +95,31 @@
           bomberos, policía, hospitales ni organismos de rescate. Los reportes
           quedan privados y en revisión antes de cualquier acción.
         </p>
+      </section>
+
+      <section id="casos" class="public-section">
+        <div class="public-directory-head">
+          <div class="section-heading">
+            <p class="eyebrow">Directorio público seguro</p>
+            <h2>Buscar personas reportadas</h2>
+            <p>
+              Consulta casos aprobados por el equipo. Los teléfonos, reportantes,
+              direcciones exactas y datos sensibles permanecen privados.
+            </p>
+          </div>
+          <div class="public-directory-actions">
+            <a class="primary-btn" href="#reporte" data-action-link="Busco a un familiar">Reportar persona</a>
+            <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
+          </div>
+        </div>
+        <div class="public-search-panel" role="search">
+          <label>
+            Buscar por nombre, ciudad o descripción
+            <input id="publicSearch" type="search" placeholder="Ej: María, La Guaira, Catia la Mar" autocomplete="off" />
+          </label>
+          <div id="publicStats" class="public-stats" aria-live="polite"></div>
+        </div>
+        <div id="publicCasesList" class="public-cases-list" aria-live="polite"></div>
       </section>
 
       <section id="reporte" class="form-section">
@@ -435,26 +461,13 @@
         </div>
       </section>
 
-      <section id="casos" class="public-section">
-        <div class="section-heading">
-          <p class="eyebrow">Casos aprobados</p>
-          <h2>Información pública segura</h2>
-          <p>
-            Solo se muestran casos revisados por el equipo. Los reportes nuevos
-            y teléfonos permanecen privados.
-          </p>
-        </div>
-        <div id="publicCasesList" class="public-cases-list" aria-live="polite"></div>
-      </section>
-
       <section id="admin" class="admin-section">
         <div class="section-heading">
           <p class="eyebrow">Acceso restringido</p>
           <h2>Panel del equipo</h2>
           <p>
-            Este panel es solo para Axel y personas autorizadas. Aquí se
-            revisan reportes privados, se valida la información, se cambia el
-            estado del caso y se decide si se publica una versión segura.
+            Revisa reportes privados, cambia estados y publica únicamente una
+            versión segura cuando el caso esté listo.
           </p>
         </div>
         <div class="admin-explainer">
