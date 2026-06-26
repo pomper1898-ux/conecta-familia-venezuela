@@ -1632,6 +1632,7 @@ const exportReports = document.querySelector("#exportReports");
 const clearReports = document.querySelector("#clearReports");
 const correctionRequestForm = document.querySelector("#correctionRequestForm");
 const correctionStatus = document.querySelector("#correctionStatus");
+const correctionRequestsList = document.querySelector("#correctionRequestsList");
 const csvFileInput = document.querySelector("#csvFileInput");
 const csvTextInput = document.querySelector("#csvTextInput");
 const csvPreviewButton = document.querySelector("#csvPreviewButton");
@@ -1899,7 +1900,7 @@ function parseCsv(text) {
 }
 
 function csvRowToReport(row) {
-  return createReport({
+  const report = createReport({
     tipo_reporte: row.tipo_reporte || "Busco a un familiar",
     nombre_persona: row.nombre_persona || row.nombre || row.persona || "Nombre por revisar",
     ciudad_sector: row.ciudad_sector || row.ciudad || row.sector || "Zona por confirmar",
@@ -1913,6 +1914,13 @@ function csvRowToReport(row) {
     consentimiento_datos: true,
     declaracion_buena_fe: true,
   });
+
+  return {
+    ...report,
+    source_type: row.source_type || row.fuente || "CSV manual",
+    source_url: row.source_url || row.fuente_url || "",
+    photo_url: row.photo_url || row.foto_url || "",
+  };
 }
 
 function renderCsvPreview(rows) {
@@ -1961,6 +1969,79 @@ async function saveCorrectionRequest(request) {
   const existing = JSON.parse(localStorage.getItem("conecta_familia_corrections") || "[]");
   existing.unshift({ id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), ...payload });
   localStorage.setItem("conecta_familia_corrections", JSON.stringify(existing));
+}
+
+async function loadCorrectionRequests() {
+  if (!supabaseClient) {
+    return JSON.parse(localStorage.getItem("conecta_familia_corrections") || "[]");
+  }
+
+  const session = await getSession();
+  if (!session) return [];
+
+  const { data, error } = await supabaseClient
+    .from("correction_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) return [];
+  return data || [];
+}
+
+function renderCorrectionRequests(requests) {
+  if (!correctionRequestsList) return;
+
+  if (!requests.length) {
+    correctionRequestsList.innerHTML = '<div class="empty-state">No hay solicitudes de corrección o retiro pendientes.</div>';
+    return;
+  }
+
+  correctionRequestsList.innerHTML = `
+    <div class="section-heading compact-heading">
+      <p class="eyebrow">Correcciones y retiro</p>
+      <h3>Solicitudes pendientes de revisión</h3>
+    </div>
+    ${requests.map((request) => `
+      <article class="case-card status-${escapeHtml(request.status)}" data-correction-id="${escapeHtml(request.id)}">
+        <div>
+          <h3>${escapeHtml(request.case_name)}</h3>
+          <div class="case-meta">
+            <span class="pill status-pill">${escapeHtml(statusLabel(request.status))}</span>
+            <span class="pill">${escapeHtml(correctionTypeLabel(request.request_type))}</span>
+          </div>
+          <p class="case-date">Creado: ${escapeHtml(formatDate(request.created_at))}</p>
+          <dl>
+            <dt>Descripción</dt>
+            <dd>${escapeHtml(request.detail)}</dd>
+            ${request.source_url ? `<dt>Fuente</dt><dd><a href="${escapeHtml(request.source_url)}" target="_blank" rel="noopener">Abrir fuente</a></dd>` : ""}
+            <dt>Solicitante</dt>
+            <dd>${escapeHtml(request.requester_name)} (${escapeHtml(request.relationship || "Relación no indicada")})</dd>
+            <dt>WhatsApp</dt>
+            <dd>[privado - no publicar]</dd>
+          </dl>
+        </div>
+        <div class="case-controls">
+          <label>
+            Estado de revisión
+            <select class="correction-status-select" data-id="${escapeHtml(request.id)}">
+              ${statusOptions.map((status) => `<option value="${status}" ${status === request.status ? "selected" : ""}>${statusLabel(status)}</option>`).join("")}
+            </select>
+          </label>
+        </div>
+      </article>
+    `).join("")}
+  `;
+}
+
+function correctionTypeLabel(type) {
+  const labels = {
+    dato_incorrecto: "Dato incorrecto",
+    persona_localizada: "Persona localizada",
+    duplicado: "Posible duplicado",
+    retirar_informacion: "Retirar información",
+    informacion_falsa: "Información falsa",
+  };
+  return labels[type] || type || "Solicitud";
 }
 
 async function getSession() {
@@ -2036,6 +2117,7 @@ function renderAdminStats(reports) {
 
 async function renderReports() {
   const reports = await loadReports();
+  const correctionRequests = await loadCorrectionRequests();
   const session = await getSession();
 
   adminLoginForm.classList.toggle("hidden", !supabaseClient || Boolean(session));
@@ -2045,11 +2127,13 @@ async function renderReports() {
   if (supabaseClient && !session) {
     adminStats.innerHTML = "";
     adminStatus.textContent = "Bandeja privada protegida. Entra con correo y contraseña autorizados para revisar reportes.";
+    if (correctionRequestsList) correctionRequestsList.innerHTML = "";
     casesList.innerHTML = '<div class="empty-state">Solo personas autorizadas pueden ver esta bandeja privada.</div>';
     return;
   }
 
   renderAdminStats(reports);
+  renderCorrectionRequests(correctionRequests);
 
   if (!reports.length) {
     adminStatus.textContent = supabaseClient
@@ -2402,6 +2486,29 @@ casesList.addEventListener("click", async (event) => {
   }
 });
 
+if (correctionRequestsList) {
+  correctionRequestsList.addEventListener("change", async (event) => {
+    if (!event.target.matches(".correction-status-select")) return;
+    const id = event.target.dataset.id;
+    const status = event.target.value;
+
+    if (!supabaseClient) {
+      const requests = JSON.parse(localStorage.getItem("conecta_familia_corrections") || "[]").map((request) =>
+        request.id === id ? { ...request, status } : request
+      );
+      localStorage.setItem("conecta_familia_corrections", JSON.stringify(requests));
+      renderCorrectionRequests(requests);
+      return;
+    }
+
+    const { error } = await supabaseClient.from("correction_requests").update({ status }).eq("id", id);
+    adminStatus.textContent = error
+      ? "No se pudo actualizar la solicitud de corrección."
+      : "Solicitud de corrección actualizada.";
+    await renderReports();
+  });
+}
+
 csvFileInput.addEventListener("change", async () => {
   const file = csvFileInput.files && csvFileInput.files[0];
   if (!file) return;
@@ -2438,9 +2545,12 @@ correctionRequestForm.addEventListener("submit", async (event) => {
   await saveCorrectionRequest({
     case_name: correctionRequestForm.case_name.value.trim(),
     request_type: correctionRequestForm.request_type.value,
-    detail: correctionRequestForm.detail.value.trim(),
+    detail: correctionRequestForm.description.value.trim(),
+    source_url: correctionRequestForm.source_url.value.trim(),
     requester_name: correctionRequestForm.requester_name.value.trim(),
     requester_contact_private: correctionRequestForm.requester_contact.value.trim(),
+    relationship: correctionRequestForm.relationship.value.trim(),
+    consent: correctionRequestForm.consent.checked,
     good_faith: correctionRequestForm.good_faith.checked,
   });
   correctionStatus.textContent = "Solicitud enviada para revisión del equipo.";

@@ -272,22 +272,36 @@
             Tipo de solicitud
             <select id="correctionType" name="request_type" required>
               <option value="">Seleccionar</option>
-              <option value="correction">Corrección</option>
-              <option value="withdrawal">Retiro</option>
-              <option value="duplicate">Posible duplicado</option>
+              <option value="dato_incorrecto">Dato incorrecto</option>
+              <option value="persona_localizada">Persona localizada</option>
+              <option value="duplicado">Posible duplicado</option>
+              <option value="retirar_informacion">Retirar información</option>
+              <option value="informacion_falsa">Información falsa</option>
             </select>
           </label>
           <label class="wide">
-            Detalle de la solicitud
-            <textarea id="correctionDetail" name="detail" rows="4" required></textarea>
+            Descripción
+            <textarea id="correctionDetail" name="description" rows="4" required></textarea>
+          </label>
+          <label class="wide">
+            Fuente URL opcional
+            <input id="correctionSourceUrl" name="source_url" type="url" placeholder="https://..." />
           </label>
           <label>
             Nombre de quien solicita
             <input id="correctionRequester" name="requester_name" required />
           </label>
           <label>
-            WhatsApp o correo de contacto
+            WhatsApp de contacto
             <input id="correctionContact" name="requester_contact" required />
+          </label>
+          <label>
+            Relación con la persona
+            <input id="correctionRelationship" name="relationship" required />
+          </label>
+          <label class="check wide">
+            <input id="correctionConsent" name="consent" type="checkbox" required />
+            <span>Autorizo el uso privado de estos datos para revisar esta solicitud.</span>
           </label>
           <label class="check wide">
             <input id="correctionGoodFaith" name="good_faith" type="checkbox" required />
@@ -624,6 +638,7 @@
           <div id="csvPreview" class="csv-preview" aria-live="polite"></div>
         </div>
         <p id="adminStatus" class="form-status" role="status"></p>
+        <div id="correctionRequestsList" class="cases-list" aria-live="polite"></div>
         <div id="casesList" class="cases-list" aria-live="polite"></div>
       </section>
     </main>

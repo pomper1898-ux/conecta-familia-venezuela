@@ -101,12 +101,39 @@ create table if not exists public.correction_requests (
   created_at timestamptz not null default now(),
   status report_status not null default 'pending_review',
   case_name text not null,
-  request_type text not null check (request_type in ('correction', 'withdrawal', 'duplicate')),
+  request_type text not null check (request_type in ('dato_incorrecto', 'persona_localizada', 'duplicado', 'retirar_informacion', 'informacion_falsa')),
   detail text not null,
+  source_url text,
   requester_name text not null,
   requester_contact_private text not null,
+  relationship text not null,
+  consent boolean not null default false,
   good_faith boolean not null default false
 );
+
+alter table public.correction_requests add column if not exists source_url text;
+alter table public.correction_requests add column if not exists relationship text;
+alter table public.correction_requests add column if not exists consent boolean not null default false;
+
+do $$
+declare
+  constraint_name text;
+begin
+  select conname into constraint_name
+  from pg_constraint
+  where conrelid = 'public.correction_requests'::regclass
+    and contype = 'c'
+    and pg_get_constraintdef(oid) like '%request_type%'
+  limit 1;
+
+  if constraint_name is not null then
+    execute format('alter table public.correction_requests drop constraint %I', constraint_name);
+  end if;
+end $$;
+
+alter table public.correction_requests
+  add constraint correction_requests_request_type_safe_check
+  check (request_type in ('dato_incorrecto', 'persona_localizada', 'duplicado', 'retirar_informacion', 'informacion_falsa'));
 
 create table if not exists public.case_events (
   id uuid primary key default gen_random_uuid(),
@@ -214,12 +241,18 @@ with check (public.is_admin());
 drop policy if exists "anyone can request correction" on public.correction_requests;
 create policy "anyone can request correction"
 on public.correction_requests for insert to anon, authenticated
-with check (status = 'pending_review' and good_faith = true);
+with check (status = 'pending_review' and consent = true and good_faith = true);
 
 drop policy if exists "admins can read correction requests" on public.correction_requests;
 create policy "admins can read correction requests"
 on public.correction_requests for select to authenticated
 using (public.is_admin());
+
+drop policy if exists "admins can update correction requests" on public.correction_requests;
+create policy "admins can update correction requests"
+on public.correction_requests for update to authenticated
+using (public.is_admin())
+with check (public.is_admin());
 
 drop policy if exists "admins can manage events" on public.case_events;
 create policy "admins can manage events"

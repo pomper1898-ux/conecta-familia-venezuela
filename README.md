@@ -104,6 +104,8 @@ Reglas:
 - Todo reporte importado queda `pending_review`.
 - Nada se publica automáticamente.
 - No importar teléfonos públicos, cédulas, direcciones exactas ni datos médicos.
+- Usar `fuente_url`/`source_url` y `foto_url`/`photo_url` solo cuando provengan de una fuente pública verificable.
+- No copiar nombres de reportantes, contactos privados ni campos administrativos de otras plataformas aunque aparezcan embebidos en HTML público.
 
 ## Aprobar publicaciones
 
@@ -139,6 +141,10 @@ Proceso recomendado:
 4. Corregir resumen público seguro si corresponde.
 5. Registrar evento interno.
 
+Tipos aceptados: `dato_incorrecto`, `persona_localizada`, `duplicado`, `retirar_informacion`, `informacion_falsa`.
+
+Toda solicitud entra como `pending_review`. El WhatsApp del solicitante queda privado. Nada se cambia ni retira automáticamente sin revisión humana.
+
 Nunca discutir datos sensibles públicamente.
 
 ## Fuentes públicas
@@ -149,8 +155,11 @@ La página puede incluir registros de fuentes públicas externas, pero:
 - No se publica automáticamente nada importado.
 - Se conserva enlace a fuente original.
 - Se omiten teléfonos/contactos personales.
+- Se omiten cédulas, direcciones exactas, datos médicos sensibles, nombres de reportantes y `admin_notes`.
 - En menores de edad, usar información mínima.
 - Si una fuente cambia o pide retiro, revisar y retirar.
+
+Antes de usar una fuente pública, revisar `docs/source-audit-buscardesaparecidos.md` como referencia de riesgos.
 
 ## Advertencias éticas y legales
 
