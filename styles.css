@@ -1025,11 +1025,24 @@ code {
   overflow: hidden;
   border: 1px solid rgba(11, 35, 70, 0.14);
   border-radius: 8px;
-  background: #dfe9ef;
+  background:
+    radial-gradient(circle at 26% 28%, rgba(15, 111, 97, 0.24), transparent 22%),
+    radial-gradient(circle at 52% 46%, rgba(23, 61, 143, 0.2), transparent 26%),
+    radial-gradient(circle at 71% 69%, rgba(185, 28, 28, 0.12), transparent 22%),
+    linear-gradient(135deg, #edf4f1, #dfe9ef);
 }
 
-.centers-map .leaflet-control-attribution {
-  font-size: 0.68rem;
+.centers-map::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px dashed rgba(11, 35, 70, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events: none;
 }
 
 .map-fallback,
@@ -1038,6 +1051,73 @@ code {
   color: var(--muted);
   font-size: 0.9rem;
   line-height: 1.45;
+}
+
+.map-pin {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: var(--urgent);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 900;
+  text-decoration: none;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 20px rgba(11, 35, 70, 0.24);
+}
+
+.map-pin.is-approx {
+  background: var(--blue);
+}
+
+.map-pin:focus-visible {
+  outline: 3px solid rgba(255, 208, 0, 0.9);
+  outline-offset: 3px;
+}
+
+.map-legend {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(11, 35, 70, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--navy);
+  font-size: 0.82rem;
+  font-weight: 850;
+  backdrop-filter: blur(8px);
+}
+
+.map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.map-legend .exact {
+  background: var(--urgent);
+}
+
+.map-legend .approx {
+  background: var(--blue);
 }
 
 .centers-list {

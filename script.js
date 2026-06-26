@@ -234,8 +234,6 @@ let centerFilterCountry = "all";
 let centerFilterType = "all";
 let centerFilterStatus = "all";
 let aidCenters = [];
-let centersLeafletMap = null;
-let centersMarkersLayer = null;
 let csvPreviewRows = [];
 
 function loadLocalReports() {
@@ -519,47 +517,31 @@ function renderCenterCard(center) {
   `;
 }
 
-function initCentersMap() {
-  if (!centersMap || !window.L) return false;
-  if (centersLeafletMap) return true;
-
-  centersLeafletMap = window.L.map(centersMap, {
-    scrollWheelZoom: false,
-  }).setView([4.6, -70.6], 4);
-
-  window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(centersLeafletMap);
-
-  centersMarkersLayer = window.L.layerGroup().addTo(centersLeafletMap);
-  return true;
-}
-
 function renderCentersMap(centers) {
-  if (!initCentersMap()) {
-    centersMap.innerHTML = "<p class=\"map-fallback\">Mapa no disponible. Usa el listado y los botones de ubicación.</p>";
-    return;
-  }
-
-  centersMarkersLayer.clearLayers();
   const mappedCenters = centers.filter(hasCoordinates);
-  mappedCenters.forEach((center) => {
-    const marker = window.L.marker([center.mapLat, center.mapLng]).addTo(centersMarkersLayer);
-    marker.bindPopup(`
-      <strong>${escapeHtml(center.name)}</strong><br>
-      ${escapeHtml([center.city, center.country].filter(Boolean).join(", "))}<br>
-      ${center.mapApproximate ? "<em>Referencia aproximada por ciudad; confirma la dirección en la fuente.</em><br>" : ""}
-      <a href="${escapeHtml(centerMapsUrl(center))}" target="_blank" rel="noopener">Cómo llegar</a>
-    `);
-  });
-
-  if (mappedCenters.length) {
-    const bounds = window.L.latLngBounds(mappedCenters.map((center) => [center.mapLat, center.mapLng]));
-    centersLeafletMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 9 });
-  } else {
-    centersLeafletMap.setView([4.6, -70.6], 4);
-  }
+  centersMap.innerHTML = `
+    <div class="map-legend">
+      <span><i class="exact"></i>Punto exacto</span>
+      <span><i class="approx"></i>Referencia por ciudad</span>
+    </div>
+    ${mappedCenters
+      .map((center, index) => {
+        const x = Math.max(5, Math.min(95, ((center.mapLng + 102) / 44) * 100));
+        const y = Math.max(6, Math.min(94, 100 - ((center.mapLat + 15) / 37) * 100));
+        return `
+          <a
+            class="map-pin ${center.mapApproximate ? "is-approx" : "is-exact"}"
+            href="${escapeHtml(centerMapsUrl(center))}"
+            target="_blank"
+            rel="noopener"
+            style="left:${x}%;top:${y}%;"
+            aria-label="${escapeHtml(center.name)}"
+            title="${escapeHtml(center.name)} · ${escapeHtml(center.mapApproximate ? "referencia aproximada" : "punto exacto")}"
+          >${index + 1}</a>
+        `;
+      })
+      .join("")}
+  `;
 
   const withoutMap = centers.length - mappedCenters.length;
   if (centerMapNote) {
