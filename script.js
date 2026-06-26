@@ -1568,7 +1568,7 @@ const supportCenters = [
     lat: 6.2068,
     lng: -75.5660,
     url: "https://www.google.com/maps/place/TATTOO+KEIBYN+PAB%C3%93N+(poblado)/@6.2067756,-75.5659681,17z/",
-    image: "assets/santa-tinta-punto-solidario.jpg",
+    image: "/assets/santa-tinta-punto-solidario.jpg",
   },
   {
     name: "Cruz Roja Colombiana",
