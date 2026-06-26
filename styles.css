@@ -1110,6 +1110,37 @@ code {
   text-transform: uppercase;
 }
 
+.public-photo {
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(11, 35, 70, 0.1);
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--soft);
+}
+
+.source-pill {
+  background: #f4f1e8;
+  color: #66540f;
+}
+
+.public-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.public-card-actions .secondary-btn {
+  min-height: 40px;
+  padding: 9px 12px;
+  font-size: 0.88rem;
+}
+
+.source-link {
+  color: var(--navy);
+}
+
 .case-card h3,
 .public-case-card h3 {
   margin: 0;

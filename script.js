@@ -25,6 +25,136 @@ const statusLabels = {
   false_report: "Reporte falso",
 };
 
+const externalPublicCases = [
+  {
+    id: "external-bd-luis-angel-jayaro",
+    status: "active_search",
+    public_nombre: "Luis Angel Jayaro",
+    public_edad_aproximada: "7",
+    public_ciudad_sector: "Zona por confirmar",
+    public_resumen: "Caso publicado en una plataforma pública de búsqueda. La información disponible indica que se busca confirmar ubicación y estado de la persona.",
+    photo_url: "https://reconexion-api-images-147455119818.s3.us-east-1.amazonaws.com/images/p3e93b44d6d79.jpg",
+    source_url: "https://buscardesaparecidos.com/caso/luis-angel-jayaro-9asoju",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:04.000000Z",
+  },
+  {
+    id: "external-bd-vanessa-martinez",
+    status: "active_search",
+    public_nombre: "Vanessa Martinez",
+    public_edad_aproximada: "15",
+    public_ciudad_sector: "Edificio, piso 9",
+    public_resumen: "Caso publicado en una plataforma pública de búsqueda. Se conserva solo información general y se omiten contactos personales.",
+    photo_url: "https://reconexion-api-images-147455119818.s3.us-east-1.amazonaws.com/images/pb9451665ed80.jpg",
+    source_url: "https://buscardesaparecidos.com/caso/vanessa-martinez-tnrfo5",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:04.000000Z",
+  },
+  {
+    id: "external-bd-omar-villan",
+    status: "active_search",
+    public_nombre: "Omar Villan",
+    public_edad_aproximada: "66",
+    public_ciudad_sector: "Catia La Mar",
+    public_resumen: "Persona reportada en búsqueda. Descripción pública disponible: estatura aproximada 1.60, piel morena, ojos pardos, cabello canoso, músico y profesor de cuatro.",
+    source_url: "https://buscardesaparecidos.com/caso/omar-villan-ifluez",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:04.000000Z",
+  },
+  {
+    id: "external-bd-maribel-maqueda",
+    status: "active_search",
+    public_nombre: "Maribel Maqueda",
+    public_edad_aproximada: "19",
+    public_ciudad_sector: "La Guaira",
+    public_resumen: "Caso publicado en una plataforma pública de búsqueda. Se muestra información mínima para facilitar consulta comunitaria segura.",
+    source_url: "https://buscardesaparecidos.com/caso/maribel-maqueda-gululg",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:04.000000Z",
+  },
+  {
+    id: "external-bd-camila-salazar",
+    status: "found",
+    public_nombre: "Camila Andrea Salazar Albarran",
+    public_edad_aproximada: "24",
+    public_ciudad_sector: "Residencias El Palmar Caribe, Camuri Chico",
+    public_resumen: "Caso marcado como encontrado en la fuente pública consultada. Mantener verificación antes de compartir nuevos datos.",
+    photo_url: "https://reconexion-api-images-147455119818.s3.us-east-1.amazonaws.com/images/p725d5ebc0cad.jpg",
+    source_url: "https://buscardesaparecidos.com/caso/camila-andrea-salazar-albarran-budoy1",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:03.000000Z",
+  },
+  {
+    id: "external-bd-pablo-armas",
+    status: "found",
+    public_nombre: "Pablo Armas Borges",
+    public_edad_aproximada: "25",
+    public_ciudad_sector: "La Guaira",
+    public_resumen: "Caso marcado como encontrado en la fuente pública consultada. No se publican contactos personales en esta página.",
+    photo_url: "https://reconexion-api-images-147455119818.s3.us-east-1.amazonaws.com/images/p3daadbc9f2a9.jpg",
+    source_url: "https://buscardesaparecidos.com/caso/pablo-armas-borges-7zo1ni",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:03.000000Z",
+  },
+  {
+    id: "external-bd-greider-martinez",
+    status: "active_search",
+    public_nombre: "Greider Martinez",
+    public_edad_aproximada: "15",
+    public_ciudad_sector: "La Guaira",
+    public_resumen: "Persona reportada en búsqueda. Se conserva información general publicada y se omiten teléfonos o datos de reportantes.",
+    source_url: "https://buscardesaparecidos.com/caso/greider-martinez-3p0fbd",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:03.000000Z",
+  },
+  {
+    id: "external-bd-amaia-landaeta",
+    status: "active_search",
+    public_nombre: "Amaia Landaeta",
+    public_edad_aproximada: "6",
+    public_ciudad_sector: "Punta de Mulatos",
+    public_resumen: "Caso publicado en una plataforma pública de búsqueda. Por tratarse de una menor, se muestra solo información mínima y fuente externa.",
+    photo_url: "https://reconexion-api-images-147455119818.s3.us-east-1.amazonaws.com/images/p9e5db6270f5f.jpg",
+    source_url: "https://buscardesaparecidos.com/caso/amaia-landaeta-ihlxex",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:03.000000Z",
+  },
+  {
+    id: "external-bd-alberto-carrasquero",
+    status: "active_search",
+    public_nombre: "Alberto Gerardo Carrasquero Quiroz",
+    public_edad_aproximada: "55",
+    public_ciudad_sector: "Bolipuerto, La Guaira",
+    public_resumen: "Persona reportada en búsqueda. Descripción pública disponible: estatura aproximada 1.75, piel blanca.",
+    photo_url: "https://reconexion-api-images-147455119818.s3.us-east-1.amazonaws.com/images/p831c33b26a48.jpg",
+    source_url: "https://buscardesaparecidos.com/caso/alberto-gerardo-carrasquero-quiroz-xd7z58",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:03.000000Z",
+  },
+  {
+    id: "external-bd-barbara-villegas",
+    status: "active_search",
+    public_nombre: "Barbara Villegas",
+    public_edad_aproximada: "20",
+    public_ciudad_sector: "La Guaira",
+    public_resumen: "Persona reportada en búsqueda. Descripción pública disponible: delgada, estatura aproximada 1.70, cabello negro, collares y pulseras artesanales.",
+    photo_url: "https://reconexion-api-images-147455119818.s3.us-east-1.amazonaws.com/images/p30aa4eb3275f.jpg",
+    source_url: "https://buscardesaparecidos.com/caso/barbara-villegas-kp5yqo",
+    source_label: "Buscar Desaparecidos",
+    source_type: "Fuente externa pública",
+    updated_at: "2026-06-26T04:35:03.000000Z",
+  },
+];
+
 const reportForm = document.querySelector("#reportForm");
 const formStatus = document.querySelector("#formStatus");
 const whatsappButton = document.querySelector("#whatsappButton");
@@ -296,7 +426,7 @@ async function renderReports() {
 
 async function loadPublicCases() {
   if (!supabaseClient) {
-    return loadLocalReports()
+    const localCases = loadLocalReports()
       .filter((report) => report.published)
       .map((report) => ({
         id: report.id,
@@ -307,7 +437,9 @@ async function loadPublicCases() {
         public_ciudad_sector: report.public_ciudad_sector || report.ciudad_sector,
         public_edad_aproximada: report.public_edad_aproximada || report.edad_aproximada,
         public_resumen: report.public_resumen,
+        source_type: "Reporte revisado por el equipo",
       }));
+    return [...localCases, ...externalPublicCases];
   }
 
   const { data, error } = await supabaseClient
@@ -320,7 +452,7 @@ async function loadPublicCases() {
     return [];
   }
 
-  return data || [];
+  return [...(data || []), ...externalPublicCases];
 }
 
 async function renderPublicCases() {
@@ -346,7 +478,9 @@ async function renderPublicCases() {
     .map((item) => `
       <article class="public-case-card status-${escapeHtml(item.status)}">
         <div class="public-case-top">
-          <div class="public-avatar" aria-hidden="true">${escapeHtml(String(item.public_nombre || "?").trim().charAt(0) || "?")}</div>
+          ${item.photo_url
+            ? `<img class="public-photo" src="${escapeHtml(item.photo_url)}" alt="Foto pública de referencia de ${escapeHtml(item.public_nombre)}" loading="lazy" referrerpolicy="no-referrer" />`
+            : `<div class="public-avatar" aria-hidden="true">${escapeHtml(String(item.public_nombre || "?").trim().charAt(0) || "?")}</div>`}
           <div>
             <h3>${escapeHtml(item.public_nombre)}</h3>
             <p class="case-date">Actualizado: ${escapeHtml(formatDate(item.updated_at || item.created_at))}</p>
@@ -354,11 +488,15 @@ async function renderPublicCases() {
         </div>
         <div class="case-meta">
           <span class="pill status-pill">${escapeHtml(statusLabel(item.status))}</span>
+          ${item.source_type ? `<span class="pill source-pill">${escapeHtml(item.source_type)}</span>` : ""}
           ${item.public_ciudad_sector ? `<span class="pill">${escapeHtml(item.public_ciudad_sector)}</span>` : ""}
           ${item.public_edad_aproximada ? `<span class="pill">${escapeHtml(item.public_edad_aproximada)} años aprox.</span>` : ""}
         </div>
         <p>${escapeHtml(item.public_resumen)}</p>
-        <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
+        <div class="public-card-actions">
+          <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
+          ${item.source_url ? `<a class="secondary-btn source-link" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener">Ver fuente original</a>` : ""}
+        </div>
       </article>
     `)
     .join("");
