@@ -985,6 +985,8 @@ async function renderReports() {
 }
 
 async function loadPublicCases() {
+  const externalCases = await loadAuthorizedExternalCases();
+
   if (!supabaseClient) {
     const localCases = loadLocalReports()
       .filter((report) => report.published)
@@ -999,7 +1001,7 @@ async function loadPublicCases() {
         public_resumen: report.public_resumen,
         source_type: "Reporte revisado por el equipo",
       }));
-    return localCases;
+    return [...externalCases, ...localCases];
   }
 
   const { data, error } = await supabaseClient
@@ -1018,7 +1020,23 @@ async function loadPublicCases() {
     photo_url: item.public_photo_url,
     source_type: "Reporte revisado por el equipo",
   }));
-  return safeCases;
+  return [...externalCases, ...safeCases];
+}
+
+async function loadAuthorizedExternalCases() {
+  try {
+    const response = await fetch("/data/external/authorized-missing-cases.json", { cache: "no-store" });
+    if (!response.ok) return externalPublicCases;
+    const payload = await response.json();
+    return (payload.cases || []).map((item) => ({
+      ...item,
+      created_at: item.updated_at,
+      source_type: item.source_type || "Fuente autorizada",
+    }));
+  } catch (error) {
+    console.warn(error);
+    return externalPublicCases;
+  }
 }
 
 async function renderPublicCases() {
