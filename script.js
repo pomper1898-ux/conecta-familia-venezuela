@@ -184,7 +184,7 @@ async function loadReports() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    adminStatus.textContent = `No se pudieron cargar casos: ${error.message}`;
+    adminStatus.textContent = "No se pudieron cargar los reportes. Intenta actualizar la bandeja.";
     return [];
   }
 
@@ -248,7 +248,7 @@ async function renderReports() {
   if (supabaseClient && !session) {
     adminStats.innerHTML = "";
     adminStatus.textContent = "Bandeja privada protegida. Entra con correo y contraseña autorizados para revisar reportes.";
-    casesList.innerHTML = '<div class="empty-state">Supabase está configurado como modo real. Solo administradores autorizados pueden ver esta bandeja.</div>';
+    casesList.innerHTML = '<div class="empty-state">Solo personas autorizadas pueden ver esta bandeja privada.</div>';
     return;
   }
 
@@ -257,7 +257,7 @@ async function renderReports() {
   if (!reports.length) {
     adminStatus.textContent = supabaseClient
       ? "Bandeja privada lista. Todo reporte nuevo entrará como pendiente de revisión y no se publicará automáticamente."
-      : "Modo local sin Supabase. Úsalo solo para pruebas; la operación real guarda reportes en Supabase.";
+      : "Bandeja de respaldo disponible en este equipo. Úsala solo para revisión temporal.";
     casesList.innerHTML = '<div class="empty-state">No hay reportes pendientes en la bandeja.</div>';
     return;
   }
@@ -265,7 +265,7 @@ async function renderReports() {
   const filteredReports = filterReports(reports);
   adminStatus.textContent = supabaseClient
     ? `${filteredReports.length} de ${reports.length} reporte(s) en la bandeja privada. Publica solo después de escribir un resumen seguro.`
-    : `${filteredReports.length} de ${reports.length} reporte(s) locales. Configura Supabase para operación real.`;
+    : `${filteredReports.length} de ${reports.length} reporte(s) en revisión temporal desde este equipo.`;
 
   if (!filteredReports.length) {
     casesList.innerHTML = '<div class="empty-state">No hay reportes que coincidan con el filtro o búsqueda.</div>';
@@ -391,7 +391,7 @@ async function updateReport(id, patch) {
 
   const { error } = await supabaseClient.from("reports").update(patch).eq("id", id);
   if (error) {
-    adminStatus.textContent = `No se pudo actualizar: ${error.message}`;
+    adminStatus.textContent = "No se pudo guardar el cambio. Revisa la conexión e intenta de nuevo.";
     return;
   }
 
@@ -460,12 +460,12 @@ reportForm.addEventListener("submit", async (event) => {
     reportForm.tipo_reporte.value = "Busco a un familiar";
     formStatus.textContent = supabaseClient
       ? "Reporte enviado de forma privada con estado pendiente de revisión."
-      : "Reporte guardado localmente como privado con estado pendiente de revisión.";
+      : "Reporte guardado como borrador privado en este equipo.";
     updateWhatsAppLink();
     await renderReports();
     await renderPublicCases();
   } catch (error) {
-    formStatus.textContent = `No se pudo guardar el reporte: ${error.message}`;
+    formStatus.textContent = "No se pudo guardar el reporte. Revisa la conexión e intenta de nuevo.";
   }
 });
 
@@ -529,7 +529,7 @@ casesList.addEventListener("click", async (event) => {
 adminLoginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!supabaseClient) {
-    adminStatus.textContent = "Configura Supabase en config.js para activar la bandeja privada real.";
+    adminStatus.textContent = "La bandeja privada no está disponible en este momento. Intenta de nuevo más tarde.";
     return;
   }
 
@@ -546,8 +546,8 @@ adminLoginForm.addEventListener("submit", async (event) => {
   });
 
   adminStatus.textContent = error
-    ? `No se pudo iniciar sesión: ${error.message}`
-    : "Sesión iniciada. Si este usuario está autorizado, verás la bandeja privada.";
+    ? "No se pudo iniciar sesión. Revisa el correo, la contraseña o solicita autorización al equipo."
+    : "Sesión iniciada. Si este usuario está autorizado, verá la bandeja privada.";
   if (!error) {
     adminPassword.value = "";
     await renderReports();
@@ -573,7 +573,7 @@ exportReports.addEventListener("click", async () => {
 });
 
 clearReports.addEventListener("click", async () => {
-  const confirmed = confirm("¿Vaciar todos los reportes guardados localmente?");
+  const confirmed = confirm("¿Vaciar los borradores guardados en este equipo?");
   if (!confirmed) return;
   localStorage.removeItem(STORAGE_KEY);
   await renderReports();
