@@ -384,7 +384,20 @@ function navigateToRoute(path, replace = false) {
     window.history[method]({}, "", normalizedPath);
   }
 
+  updateActiveNavigation(normalizedPath);
   target.scrollIntoView({ behavior: replace ? "auto" : "smooth", block: "start" });
+}
+
+function updateActiveNavigation(path = window.location.pathname) {
+  const normalizedPath = ROUTES[path] ? path : "/";
+  document.querySelectorAll("[data-route-link]").forEach((link) => {
+    const linkPath = new URL(link.href).pathname;
+    if (linkPath === normalizedPath) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
 }
 
 function routeFromCurrentUrl() {
