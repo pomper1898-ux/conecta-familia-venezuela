@@ -8,6 +8,12 @@
       name="description"
       content="Conecta Familia Venezuela organiza reportes ciudadanos privados para emergencias familiares. No reemplaza autoridades ni organismos oficiales de rescate."
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQPDafE74e6rO0JJlTHJ6mdr+WY2DUM="
+      crossorigin=""
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -246,23 +252,50 @@
       </section>
 
       <section id="centros" class="centers-section" data-route-section="centros">
-        <div class="section-heading">
-          <p class="eyebrow">Centros y puntos de apoyo</p>
-          <h2>Mapa comunitario de ayuda</h2>
-          <p>
-            Directorio informativo de centros, puntos solidarios y canales oficiales. Verifica siempre antes de movilizar ayuda.
-          </p>
+        <div class="public-directory-head">
+          <div class="section-heading">
+            <p class="eyebrow">Centros y puntos de apoyo</p>
+            <h2>Mapa comunitario de ayuda</h2>
+            <p>
+              Directorio informativo de centros, puntos solidarios y canales oficiales para Venezuela y la diáspora. Verifica siempre antes de movilizar ayuda.
+            </p>
+          </div>
+          <div class="public-directory-actions">
+            <a class="primary-btn" href="#reporte" data-action-link="Tengo información">Agregar centro</a>
+            <a class="secondary-btn" href="#correcciones">Reportar cambio</a>
+          </div>
         </div>
-        <div class="map-layout">
+        <div class="map-layout centers-map-layout">
           <div id="centersMap" class="centers-map" aria-label="Mapa de centros de ayuda"></div>
           <div>
-            <div class="public-search-panel compact-panel" role="search">
+            <div class="public-search-panel compact-panel centers-controls" role="search">
               <label>
                 Buscar centro o ciudad
                 <input id="centerSearch" type="search" placeholder="Ej: Medellín, Cruz Roja, Caracas" autocomplete="off" />
               </label>
+              <label>
+                País
+                <select id="centerCountryFilter">
+                  <option value="all">Todos los países</option>
+                </select>
+              </label>
+              <label>
+                Tipo
+                <select id="centerTypeFilter">
+                  <option value="all">Todos los tipos</option>
+                </select>
+              </label>
+              <label>
+                Estado
+                <select id="centerStatusFilter">
+                  <option value="all">Todos</option>
+                  <option value="verificado">Verificado</option>
+                  <option value="pendiente">Pendiente de verificación</option>
+                </select>
+              </label>
               <div id="centerStats" class="public-stats" aria-live="polite"></div>
             </div>
+            <p id="centerMapNote" class="center-map-note" aria-live="polite"></p>
             <div id="centersList" class="centers-list" aria-live="polite"></div>
           </div>
         </div>
@@ -661,7 +694,13 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
     <script src="config.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
+

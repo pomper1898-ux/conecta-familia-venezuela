@@ -25,6 +25,24 @@ const statusLabels = {
   false_report: "Reporte falso",
 };
 
+const countryOrder = ["Venezuela", "Colombia", "Peru", "Brasil", "Ecuador", "Mexico", "Argentina"];
+
+const cityMapReferences = {
+  "venezuela|distrito capital|caracas": [10.4806, -66.9036],
+  "venezuela|tachira|san cristobal": [7.7669, -72.2250],
+  "venezuela|tachira|san antonio del tachira": [7.8145, -72.4431],
+  "venezuela|zulia|maracaibo": [10.6427, -71.6125],
+  "venezuela|apure|guasdualito": [7.2424, -70.7324],
+  "venezuela|amazonas|puerto ayacucho": [5.6639, -67.6236],
+  "colombia|antioquia|medellin": [6.2067756, -75.5659681],
+  "colombia|arauca|arauca": [7.0847, -70.7591],
+  "colombia|norte de santander|cucuta": [7.8939, -72.5078],
+  "peru|tumbes|tumbes": [-3.5669, -80.4515],
+  "peru|lima|san juan de lurigancho": [-11.9828, -76.9983],
+  "brasil|roraima|boa vista": [2.8235, -60.6758],
+  "brasil|roraima|pacaraima": [4.4799, -61.1477],
+};
+
 const externalSourceDirectories = [
   {
     name: "Buscar Desaparecidos",
@@ -34,6 +52,15 @@ const externalSourceDirectories = [
     url: "https://buscardesaparecidos.com/",
     action: "Buscar en la fuente original",
     note: "No copiamos sus registros masivamente porque la fuente puede exponer teléfonos, reportantes, menores y datos sensibles.",
+  },
+  {
+    name: "Venezuela Te Busca",
+    type: "Plataforma ciudadana",
+    confidence: "Pendiente de permiso",
+    scope: "Fuente externa con reportes públicos de personas buscadas y localizadas",
+    url: "https://venezuelatebusca.com/",
+    action: "Buscar en la fuente original",
+    note: "Se enlaza como fuente externa; cualquier dato que llegue a Conecta Familia Venezuela debe pasar por revisión humana.",
   },
   {
     name: "CICR - Restablecimiento de contacto familiar",
@@ -73,1512 +100,7 @@ const externalSourceDirectories = [
   },
 ];
 
-const externalPublicCases = [
-  {
-    "id": "external-bd-guillermo-el-negro-arratia-uhjai6",
-    "status": "active_search",
-    "public_nombre": "Guillermo \"el Negro\" Arratia",
-    "public_edad_aproximada": "66",
-    "public_ciudad_sector": "Naiguatá",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Diastema evidente. Excoralista de la coral de la Facultad de Ciencias UCV..",
-    "photo_url": "https://venezuelatebusca.com/media/photos/69deddc5-6360-4911-9c4b-6fb9ea881e1c.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/guillermo-el-negro-arratia-uhjai6",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:09:03.000000Z"
-  },
-  {
-    "id": "external-bd-raquel-marquez-qhkjfy",
-    "status": "active_search",
-    "public_nombre": "Raquel Marquez",
-    "public_edad_aproximada": "65",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Contextura delgada, mide aproximadamente 1.62. Trabaja para la inmobiliaria Atlantics en La Guaira.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/37add037-9709-4c6c-957a-1d33777d0cb5.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/raquel-marquez-qhkjfy",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:09:03.000000Z"
-  },
-  {
-    "id": "external-bd-marbella-del-valles-campo-4qccdw",
-    "status": "active_search",
-    "public_nombre": "Marbella del Valles Campo",
-    "public_edad_aproximada": "55",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/marbella-del-valles-campo-4qccdw",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:09:03.000000Z"
-  },
-  {
-    "id": "external-bd-ana-hilden-3tsqpt",
-    "status": "found",
-    "public_nombre": "Ana Hilden",
-    "public_edad_aproximada": "4",
-    "public_ciudad_sector": "Hospital Dr. Domingo Luciani",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: LOCALIZADA EN LISTADO DE PACIENTES INGRESADOS EN EL HOSPITAL DR DOMINGO LUCIANI. ZONA DE PEDIATRIA.",
-    "source_url": "https://buscardesaparecidos.com/caso/ana-hilden-3tsqpt",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:09:03.000000Z"
-  },
-  {
-    "id": "external-bd-magda-paola-fa3bm1",
-    "status": "active_search",
-    "public_nombre": "Magda Paola",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/c04a468f-7cff-442d-8c61-9b17ca257bf1.jpg",
-    "source_url": "https://buscardesaparecidos.com/caso/magda-paola-fa3bm1",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:09:03.000000Z"
-  },
-  {
-    "id": "external-bd-yermani-barcelo-salazar-lgh0qk",
-    "status": "active_search",
-    "public_nombre": "Yermani Barcelo Salazar",
-    "public_edad_aproximada": "20",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/73b5848a-17f2-4387-b8b4-2a8869e0d104.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/yermani-barcelo-salazar-lgh0qk",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:07.000000Z"
-  },
-  {
-    "id": "external-bd-kevin-gregorio-garcia-palma-fdwekp",
-    "status": "active_search",
-    "public_nombre": "Kevin Gregorio García Palma",
-    "public_edad_aproximada": "24",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/kevin-gregorio-garcia-palma-fdwekp",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:06.000000Z"
-  },
-  {
-    "id": "external-bd-antonieta-rosanni-brito-febres-hmjs5g",
-    "status": "active_search",
-    "public_nombre": "Antonieta Rosanni Brito Febres",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/antonieta-rosanni-brito-febres-hmjs5g",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:06.000000Z"
-  },
-  {
-    "id": "external-bd-miranda-cataleya-albornos-sanchez-ni8alo",
-    "status": "active_search",
-    "public_nombre": "Miranda Cataleya Albornos Sanchez",
-    "public_edad_aproximada": "6",
-    "public_ciudad_sector": "Playa Grande, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Pelo rizo morena.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/1f514d36-ce0c-4388-beec-1fd20f72874b.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/miranda-cataleya-albornos-sanchez-ni8alo",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:06.000000Z"
-  },
-  {
-    "id": "external-bd-francis-xibdln",
-    "status": "active_search",
-    "public_nombre": "Francis .",
-    "public_edad_aproximada": "30",
-    "public_ciudad_sector": "Vivía en los edificios de Estrella del mar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/francis-xibdln",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:06.000000Z"
-  },
-  {
-    "id": "external-bd-juan-miguel-ramirez-romero-zucoxw",
-    "status": "active_search",
-    "public_nombre": "Juan Miguel Ramirez Romero",
-    "public_edad_aproximada": "44",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/440f9932-2423-47d6-87e5-3f72144f6ecd.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/juan-miguel-ramirez-romero-zucoxw",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:06.000000Z"
-  },
-  {
-    "id": "external-bd-flanklin-alexander-silva-palacio-yi8mf3",
-    "status": "active_search",
-    "public_nombre": "Flanklin Alexander Silva Palacio",
-    "public_edad_aproximada": "19",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/8d314350-4268-4d2b-b7ec-4562d69ab8e5.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/flanklin-alexander-silva-palacio-yi8mf3",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:06.000000Z"
-  },
-  {
-    "id": "external-bd-daileydy-herrera-6ymhuu",
-    "status": "active_search",
-    "public_nombre": "Daileydy Herrera",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/3df55c62-2671-40bf-a0a9-ab36affe6e47.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/daileydy-herrera-6ymhuu",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:06.000000Z"
-  },
-  {
-    "id": "external-bd-alirio-rodriguez-toledo-gwhpzc",
-    "status": "active_search",
-    "public_nombre": "Alirio Rodríguez Toledo",
-    "public_edad_aproximada": "58",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/alirio-rodriguez-toledo-gwhpzc",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:05.000000Z"
-  },
-  {
-    "id": "external-bd-marbelis-moreno-5puwz7",
-    "status": "active_search",
-    "public_nombre": "Marbelis Moreno",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Está en lista de pacientes hospitalizados de La Guaira, ubicados en el Hospital José Gregorio Hernandez de Oeste. HOY viernes 26 de junio..",
-    "source_url": "https://buscardesaparecidos.com/caso/marbelis-moreno-5puwz7",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:05.000000Z"
-  },
-  {
-    "id": "external-bd-miriam-garcia-bckkqx",
-    "status": "active_search",
-    "public_nombre": "Miriam García",
-    "public_edad_aproximada": "47",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Se descose.",
-    "source_url": "https://buscardesaparecidos.com/caso/miriam-garcia-bckkqx",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:05.000000Z"
-  },
-  {
-    "id": "external-bd-leinel-david-oropeza-salazar-bdkyts",
-    "status": "active_search",
-    "public_nombre": "Leinel David Oropeza Salazar",
-    "public_edad_aproximada": "16",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/leinel-david-oropeza-salazar-bdkyts",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-maria-morocoima-3zrnf1",
-    "status": "active_search",
-    "public_nombre": "María Morocoima",
-    "public_edad_aproximada": "22",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/84beb598-f699-46ff-b66c-92130869382a.jpg",
-    "source_url": "https://buscardesaparecidos.com/caso/maria-morocoima-3zrnf1",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-marisol-sojo-marcano-6zyxa9",
-    "status": "active_search",
-    "public_nombre": "Marisol Sojo Marcano",
-    "public_edad_aproximada": "59",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Señora mayor de 59 años piel Negra no se sabe vestimenta.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/39df91da-21b2-471d-b265-f29620641754.png",
-    "source_url": "https://buscardesaparecidos.com/caso/marisol-sojo-marcano-6zyxa9",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-maikel-morillo-wepfwj",
-    "status": "active_search",
-    "public_nombre": "Maikel Morillo",
-    "public_edad_aproximada": "47",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/maikel-morillo-wepfwj",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-sophia-aurora-tibisay-bergudo-bergudo-perez-nifv57",
-    "status": "active_search",
-    "public_nombre": "Sophia Aurora Tibisay Bergudo Bergudo Pérez",
-    "public_edad_aproximada": "26",
-    "public_ciudad_sector": "Guaíra Lis cocos",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/7d2747d0-8c23-4202-83fa-f89314b7c93b.jpg",
-    "source_url": "https://buscardesaparecidos.com/caso/sophia-aurora-tibisay-bergudo-bergudo-perez-nifv57",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-adrian-cardona-0onrwm",
-    "status": "active_search",
-    "public_nombre": "Adrian Cardona",
-    "public_edad_aproximada": "40",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/5855db8e-ba94-4a20-b947-e5bd0e7e2181.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/adrian-cardona-0onrwm",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-nelson-jesus-oropeza-salazar-019r0q",
-    "status": "active_search",
-    "public_nombre": "Nelson Jesus Oropeza Salazar",
-    "public_edad_aproximada": "14",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/nelson-jesus-oropeza-salazar-019r0q",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-julio-marcano-6ze8e2",
-    "status": "active_search",
-    "public_nombre": "Julio Marcano",
-    "public_edad_aproximada": "67",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/julio-marcano-6ze8e2",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-oswaldo-briceno-jzxtem",
-    "status": "active_search",
-    "public_nombre": "Oswaldo Briceño",
-    "public_edad_aproximada": "49",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/oswaldo-briceno-jzxtem",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:07:04.000000Z"
-  },
-  {
-    "id": "external-bd-henry-jose-barcelo-salazar-yvmsze",
-    "status": "active_search",
-    "public_nombre": "Henry Jose Barcelo Salazar",
-    "public_edad_aproximada": "12",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/henry-jose-barcelo-salazar-yvmsze",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-alirio-rodriguez-toledo-nwcctr",
-    "status": "active_search",
-    "public_nombre": "Alirio Rodríguez Toledo",
-    "public_edad_aproximada": "55",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/alirio-rodriguez-toledo-nwcctr",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-briceno-amikar-c0a41u",
-    "status": "active_search",
-    "public_nombre": "Briceño Amikar",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "hospital perez carreño",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Encontrado en lista hospitalaria de Hospital Dr. Miguel Pérez Carreño. La persona figura como ingresada. Procedencia La Guaira. NUEVO. Que Dios lo bendiga (Si el pariente lo confir.",
-    "source_url": "https://buscardesaparecidos.com/caso/briceno-amikar-c0a41u",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-juan-carlos-villegas-castillo-iqjd2h",
-    "status": "active_search",
-    "public_nombre": "Juan Carlos Villegas Castillo",
-    "public_edad_aproximada": "37",
-    "public_ciudad_sector": "Aeropuerto Maiquetía",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Llegó en el vuelo 164.",
-    "source_url": "https://buscardesaparecidos.com/caso/juan-carlos-villegas-castillo-iqjd2h",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-yaneisa-del-valle-gomez-acosta-9hmgre",
-    "status": "active_search",
-    "public_nombre": "Yaneisa del Valle Gómez Acosta",
-    "public_edad_aproximada": "44",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/yaneisa-del-valle-gomez-acosta-9hmgre",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-adriana-mendoza-pkpk8h",
-    "status": "active_search",
-    "public_nombre": "Adriana Mendoza",
-    "public_edad_aproximada": "16",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: pelinegra, con brackets y lentes.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/fde3044b-1038-425b-83bb-2072abcec8c1.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/adriana-mendoza-pkpk8h",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-adrian-jaen-xipcvw",
-    "status": "active_search",
-    "public_nombre": "Adrian Jaen",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Está en lista de pacientes hospitalizados de La Guaira, ubicados en el Hospital José Gregorio Hernandez de Oeste. HOY viernes 26 de junio. DIRIGIRSE AL HOSPITAL..",
-    "source_url": "https://buscardesaparecidos.com/caso/adrian-jaen-xipcvw",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-hernan-gil-mu1qg1",
-    "status": "active_search",
-    "public_nombre": "Hernan Gil",
-    "public_edad_aproximada": "42",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/hernan-gil-mu1qg1",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-nelson-antorio-oropeza-atencio-mijsqi",
-    "status": "active_search",
-    "public_nombre": "Nelson Antorio Oropeza Atencio",
-    "public_edad_aproximada": "40",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/nelson-antorio-oropeza-atencio-mijsqi",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-maryam-emilie-gil-anton-tuzoyg",
-    "status": "active_search",
-    "public_nombre": "Maryam Emilie Gil Anton",
-    "public_edad_aproximada": "15",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/a6ac6ae5-95f0-416d-aac4-644e41d9d431.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/maryam-emilie-gil-anton-tuzoyg",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-scarlett-omary-leventiur-reyes-bk9gvv",
-    "status": "active_search",
-    "public_nombre": "Scarlett Omary Leventiur Reyes",
-    "public_edad_aproximada": "36",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/f5a1aa75-0c90-4851-ae6d-e7a5291b067b.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/scarlett-omary-leventiur-reyes-bk9gvv",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-danna-castano-bpsczi",
-    "status": "found",
-    "public_nombre": "Danna Castaño",
-    "public_edad_aproximada": "12",
-    "public_ciudad_sector": "Hospital Dr. Domingo Luciani",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: LOCALIZADA EN LISTADO DE PACIENTES INGRESADOS EN EL HOSPITAL DR DOMINGO LUCIANI. ZONA DE PEDIATRIA.",
-    "source_url": "https://buscardesaparecidos.com/caso/danna-castano-bpsczi",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-hunberto-manuel-solano-ugajss",
-    "status": "active_search",
-    "public_nombre": "Hunberto Manuel Solano",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/faa4962b-4a26-44d8-8967-67d4ab6a7281.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/hunberto-manuel-solano-ugajss",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-karelis-hernandez-w3t1eo",
-    "status": "active_search",
-    "public_nombre": "Karelis Hernández",
-    "public_edad_aproximada": "26",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Gorda , color de piel clara, cabello negro lisado ojos marrones.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/dd032be4-f638-4070-b30a-d8132e59f944.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/karelis-hernandez-w3t1eo",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-betsy-escobar-15jhxg",
-    "status": "active_search",
-    "public_nombre": "Betsy Escobar",
-    "public_edad_aproximada": "50",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Morena, corte Bob, gordita, sonrisa grande, tiene 5 hijos, todos desaparecidos junto con ella.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/ab63e3ec-bd43-4654-ac41-6154c407a710.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/betsy-escobar-15jhxg",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:04.000000Z"
-  },
-  {
-    "id": "external-bd-sara-gabriela-parra-gomez-naoy8o",
-    "status": "active_search",
-    "public_nombre": "Sara Gabriela Parra Gómez",
-    "public_edad_aproximada": "16",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/sara-gabriela-parra-gomez-naoy8o",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:03.000000Z"
-  },
-  {
-    "id": "external-bd-eramos-moreno-dog2sb",
-    "status": "active_search",
-    "public_nombre": "Eramos Moreno",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Está en lista de pacientes hospitalizados de La Guaira, ubicados en el Hospital José Gregorio Hernandez de Oeste. HOY viernes 26 de junio..",
-    "source_url": "https://buscardesaparecidos.com/caso/eramos-moreno-dog2sb",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:03.000000Z"
-  },
-  {
-    "id": "external-bd-jhosnayder-jesus-marcano-marcano-montilla-xnzxrk",
-    "status": "active_search",
-    "public_nombre": "Jhosnayder Jesús Marcano Marcano Montilla",
-    "public_edad_aproximada": "9",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/jhosnayder-jesus-marcano-marcano-montilla-xnzxrk",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:03.000000Z"
-  },
-  {
-    "id": "external-bd-francheska-maria-portal-morocoina-90hiwl",
-    "status": "active_search",
-    "public_nombre": "Francheska María Portal Morocoina",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Edificio los cocos torre 27",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/eed31ddf-503a-4cc7-bb2a-3d4beff39d58.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/francheska-maria-portal-morocoina-90hiwl",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:03.000000Z"
-  },
-  {
-    "id": "external-bd-yohan-sojo-vakfdz",
-    "status": "active_search",
-    "public_nombre": "Yohan Sojo",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Usa lentes.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/ac3774e7-a64a-4828-8cae-b0c0f4dba520.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/yohan-sojo-vakfdz",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:05:03.000000Z"
-  },
-  {
-    "id": "external-bd-jenny-zuluaga-bk9c4k",
-    "status": "found",
-    "public_nombre": "Jenny Zuluaga",
-    "public_edad_aproximada": "40",
-    "public_ciudad_sector": "Barquisimeto, Lara",
-    "public_resumen": "Caso marcado como encontrado en la fuente pública consultada. Verifica siempre la fuente antes de compartir nuevos datos.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/fcb16edf-8c67-4aad-af83-8e6fdeb60501.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/jenny-zuluaga-bk9c4k",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:07.000000Z"
-  },
-  {
-    "id": "external-bd-yuary-pino-5tsywf",
-    "status": "active_search",
-    "public_nombre": "Yuary Pino",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Actualmente tiene el cabello largo.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/ed301152-a054-4831-a332-bf9e0f7e4ca0.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/yuary-pino-5tsywf",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:04.000000Z"
-  },
-  {
-    "id": "external-bd-leila-ester-salazar-rodriguez-81qvwp",
-    "status": "active_search",
-    "public_nombre": "Leila Ester Salazar Rodriguez",
-    "public_edad_aproximada": "40",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/leila-ester-salazar-rodriguez-81qvwp",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:04.000000Z"
-  },
-  {
-    "id": "external-bd-yamilet-biscochea-abvsiu",
-    "status": "active_search",
-    "public_nombre": "Yamilet Biscochea",
-    "public_edad_aproximada": "45",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/yamilet-biscochea-abvsiu",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:04.000000Z"
-  },
-  {
-    "id": "external-bd-ranfi-insegura-ramon-btj9pc",
-    "status": "active_search",
-    "public_nombre": "Ranfi (Insegura) Ramon",
-    "public_edad_aproximada": "34",
-    "public_ciudad_sector": "hospital perez carreno",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Encontrado en lista hospitalaria de Hospital Dr. Miguel Pérez Carreño. La persona figura como ingresada. Procedencia La Guaira. NUEVO. Que Dios lo bendiga (Si el pariente lo confir.",
-    "source_url": "https://buscardesaparecidos.com/caso/ranfi-insegura-ramon-btj9pc",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:04.000000Z"
-  },
-  {
-    "id": "external-bd-miguel-garcia-dxnb6z",
-    "status": "active_search",
-    "public_nombre": "Miguel Garcia",
-    "public_edad_aproximada": "26",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/32e87264-1178-4ab8-b9b0-9583709b98f6.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/miguel-garcia-dxnb6z",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:04.000000Z"
-  },
-  {
-    "id": "external-bd-heliodoro-fernando-hernandez-lobo-5ffbum",
-    "status": "active_search",
-    "public_nombre": "Heliodoro Fernando Hernández Lobo",
-    "public_edad_aproximada": "61",
-    "public_ciudad_sector": "Carabobo",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Zarrapastroso.",
-    "source_url": "https://buscardesaparecidos.com/caso/heliodoro-fernando-hernandez-lobo-5ffbum",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:04.000000Z"
-  },
-  {
-    "id": "external-bd-omar-barrios-revilla-ia26fr",
-    "status": "active_search",
-    "public_nombre": "Omar Barrios Revilla",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: no sé sabe.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/fdb77481-28e1-406b-8b99-55a037f5619a.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/omar-barrios-revilla-ia26fr",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:03.000000Z"
-  },
-  {
-    "id": "external-bd-yenderlin-moreno-funes-ok2pie",
-    "status": "active_search",
-    "public_nombre": "Yenderlin Moreno Funes",
-    "public_edad_aproximada": "21",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/d1f95cb6-d85d-4221-b697-d27b9c280d12.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/yenderlin-moreno-funes-ok2pie",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:03.000000Z"
-  },
-  {
-    "id": "external-bd-francis-duboy-glc7l4",
-    "status": "active_search",
-    "public_nombre": "Francis Duboy",
-    "public_edad_aproximada": "30",
-    "public_ciudad_sector": "Vivía en los edificios de Estrella del mar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/3ffaf96f-c435-4816-b1db-05b0780c1560.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/francis-duboy-glc7l4",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:03.000000Z"
-  },
-  {
-    "id": "external-bd-olivia-garcia-wcrieh",
-    "status": "active_search",
-    "public_nombre": "Olivia Garcia",
-    "public_edad_aproximada": "6",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/c16695e5-edc6-497b-ab0c-18d24507bbaf.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/olivia-garcia-wcrieh",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:03.000000Z"
-  },
-  {
-    "id": "external-bd-liliana-caraballo-qczi4w",
-    "status": "active_search",
-    "public_nombre": "Liliana Caraballo",
-    "public_edad_aproximada": "38",
-    "public_ciudad_sector": "Tanaguarena res. Humboldt",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/liliana-caraballo-qczi4w",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:03.000000Z"
-  },
-  {
-    "id": "external-bd-diego-maluenga-solorzano-irudzh",
-    "status": "active_search",
-    "public_nombre": "Diego Maluenga Solorzano",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/9f345007-acec-4688-9344-5d91d4d3589a.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/diego-maluenga-solorzano-irudzh",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T17:00:03.000000Z"
-  },
-  {
-    "id": "external-bd-juana-iriarte-t91vt7",
-    "status": "active_search",
-    "public_nombre": "Juana Iriarte",
-    "public_edad_aproximada": "85",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/91fec544-81a9-4415-8813-7faa7b6a0d54.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/juana-iriarte-t91vt7",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:06.000000Z"
-  },
-  {
-    "id": "external-bd-evelyn-dominguez-sierraalta-tt1ele",
-    "status": "active_search",
-    "public_nombre": "Evelyn Dominguez Sierraalta",
-    "public_edad_aproximada": "68",
-    "public_ciudad_sector": "Edificio Obelisco, Los Palos Grandes",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Piel blanca, pelo negro, ojos marrones.",
-    "source_url": "https://buscardesaparecidos.com/caso/evelyn-dominguez-sierraalta-tt1ele",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:06.000000Z"
-  },
-  {
-    "id": "external-bd-emmanuel-antonio-hernandez-poleo-ebxils",
-    "status": "active_search",
-    "public_nombre": "Emmanuel Antonio Hernández Poleo",
-    "public_edad_aproximada": "24",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/0f563f3e-805e-4262-99e5-86eec89d499d.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/emmanuel-antonio-hernandez-poleo-ebxils",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:06.000000Z"
-  },
-  {
-    "id": "external-bd-alexander-bastidas-bzikbe",
-    "status": "active_search",
-    "public_nombre": "Alexander Bastidas",
-    "public_edad_aproximada": "19",
-    "public_ciudad_sector": "Playa Grande, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Mide aproximadamente 1.70 Contextura delgada Tiene uniceja Ojos marrones.",
-    "source_url": "https://buscardesaparecidos.com/caso/alexander-bastidas-bzikbe",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:06.000000Z"
-  },
-  {
-    "id": "external-bd-victoria-landaeta-cphhj5",
-    "status": "active_search",
-    "public_nombre": "Victoria Landaeta",
-    "public_edad_aproximada": "20",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/18e270a8-e8b9-4fc6-945b-fe113335b96d.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/victoria-landaeta-cphhj5",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-michelle-tovar-tens0c",
-    "status": "active_search",
-    "public_nombre": "Michelle Tovar",
-    "public_edad_aproximada": "35",
-    "public_ciudad_sector": "Maracay",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/30aa32c5-b014-4a8d-b516-3d4b49b26aa0.jpg",
-    "source_url": "https://buscardesaparecidos.com/caso/michelle-tovar-tens0c",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-emmanuel-alejandro-hernandez-tovar-sm1vry",
-    "status": "active_search",
-    "public_nombre": "Emmanuel Alejandro Hernández Tovar",
-    "public_edad_aproximada": "18",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Mide 1.80 aprox, Moreno, delgado.",
-    "source_url": "https://buscardesaparecidos.com/caso/emmanuel-alejandro-hernandez-tovar-sm1vry",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-irani-nicol-contreras-aguero-ojmc2f",
-    "status": "active_search",
-    "public_nombre": "Iraní Nicol Contreras Agüero",
-    "public_edad_aproximada": "15",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Caribes entrada de los cocos, edificio oppe 26 torre A.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/0f2a0606-c126-4b1d-b6a4-88ad031c31b3.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/irani-nicol-contreras-aguero-ojmc2f",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-miriam-vasquez-silvera-iv07zw",
-    "status": "active_search",
-    "public_nombre": "Miriam Vásquez Silvera",
-    "public_edad_aproximada": "65",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Jean azul camisa roja.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/a882954b-81a3-4367-82e5-463736c58b60.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/miriam-vasquez-silvera-iv07zw",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-nathalia-gabriela-guevara-gomez-djew6d",
-    "status": "active_search",
-    "public_nombre": "Nathalia Gabriela Guevara Gómez",
-    "public_edad_aproximada": "11",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/nathalia-gabriela-guevara-gomez-djew6d",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-tomas-alberto-gonzalez-irima-djy7tr",
-    "status": "active_search",
-    "public_nombre": "Tomás Alberto Gonzalez Irima",
-    "public_edad_aproximada": "84",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/918fea0f-f4bb-4cc5-b8fc-444dc1302b7f.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/tomas-alberto-gonzalez-irima-djy7tr",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-mariannis-sojo-03lcg5",
-    "status": "active_search",
-    "public_nombre": "Mariannis Sojo",
-    "public_edad_aproximada": "20",
-    "public_ciudad_sector": "Naiguata",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Pantalón azul y camisa negra.",
-    "source_url": "https://buscardesaparecidos.com/caso/mariannis-sojo-03lcg5",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:05.000000Z"
-  },
-  {
-    "id": "external-bd-carlos-enrique-dominguez-yiavqe",
-    "status": "active_search",
-    "public_nombre": "Carlos Enrique Domínguez",
-    "public_edad_aproximada": "65",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Tiene dificultad visual.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/7fa7e1cd-47fa-4537-bf57-91afac8f0b56.jpg",
-    "source_url": "https://buscardesaparecidos.com/caso/carlos-enrique-dominguez-yiavqe",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:04.000000Z"
-  },
-  {
-    "id": "external-bd-juan-silva-salgado-7qsd7c",
-    "status": "active_search",
-    "public_nombre": "Juan Silva Salgado",
-    "public_edad_aproximada": "60",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/11241851-03cb-4f6d-b3a9-667011ab5fd3.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/juan-silva-salgado-7qsd7c",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:04.000000Z"
-  },
-  {
-    "id": "external-bd-brayne-alek-delgado-chavez-s47goi",
-    "status": "active_search",
-    "public_nombre": "Brayne Alek Delgado Chávez",
-    "public_edad_aproximada": "8",
-    "public_ciudad_sector": "Guayra",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/914f2cc0-7d5c-4056-8d56-a63a6f4aa83e.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/brayne-alek-delgado-chavez-s47goi",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:04.000000Z"
-  },
-  {
-    "id": "external-bd-omar-cardenas-8lkvb9",
-    "status": "active_search",
-    "public_nombre": "Omar Cardenas",
-    "public_edad_aproximada": "67",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Edificio misión vivienda playa los cocos la guaira.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/2d521839-ec74-4b25-b3ce-fe6e37b17baa.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/omar-cardenas-8lkvb9",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:04.000000Z"
-  },
-  {
-    "id": "external-bd-luisana-munoz-lgvxi6",
-    "status": "active_search",
-    "public_nombre": "Luisana Muñoz",
-    "public_edad_aproximada": "58",
-    "public_ciudad_sector": "Caracas",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/luisana-munoz-lgvxi6",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:04.000000Z"
-  },
-  {
-    "id": "external-bd-anarabia-sofia-lomelli-veramendi-7c0c18",
-    "status": "active_search",
-    "public_nombre": "Anarabia Sofía Lomelli Veramendi",
-    "public_edad_aproximada": "17",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/f1348be3-c01f-4149-9f4d-12d6a74b0265.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/anarabia-sofia-lomelli-veramendi-7c0c18",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:04.000000Z"
-  },
-  {
-    "id": "external-bd-carlos-jose-gomez-jxetgc",
-    "status": "active_search",
-    "public_nombre": "Carlos José Gómez",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Pariata",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/d878ad42-0310-4ee6-af42-8dc9fdefe858.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/carlos-jose-gomez-jxetgc",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:04.000000Z"
-  },
-  {
-    "id": "external-bd-yimvert-berroteran-qo4nhc",
-    "status": "active_search",
-    "public_nombre": "Yimvert Berroteran",
-    "public_edad_aproximada": "18",
-    "public_ciudad_sector": "Los corales",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: No sé.",
-    "source_url": "https://buscardesaparecidos.com/caso/yimvert-berroteran-qo4nhc",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:03.000000Z"
-  },
-  {
-    "id": "external-bd-juan-francisco-pacheco-marrero-dcovox",
-    "status": "active_search",
-    "public_nombre": "Juan Francisco Pacheco Marrero",
-    "public_edad_aproximada": "30",
-    "public_ciudad_sector": "Tanaguarenas vargas",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/juan-francisco-pacheco-marrero-dcovox",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:03.000000Z"
-  },
-  {
-    "id": "external-bd-maria-fernanda-mayora-ob7m1z",
-    "status": "active_search",
-    "public_nombre": "Maria Fernanda Mayora",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Tiene un bebe de 2 años.",
-    "source_url": "https://buscardesaparecidos.com/caso/maria-fernanda-mayora-ob7m1z",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:03.000000Z"
-  },
-  {
-    "id": "external-bd-vicky-urdaneta-kjgm2o",
-    "status": "active_search",
-    "public_nombre": "Vicky Urdaneta",
-    "public_edad_aproximada": "21",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/54d0101b-5839-4f27-b002-dfeef713b3c3.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/vicky-urdaneta-kjgm2o",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:03.000000Z"
-  },
-  {
-    "id": "external-bd-yeferson-gonzales-xgjmro",
-    "status": "active_search",
-    "public_nombre": "Yeferson Gonzales",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/2c098110-74a9-432d-85f6-b4e7275693a6.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/yeferson-gonzales-xgjmro",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-leonardo-garcia-yvpstw",
-    "status": "active_search",
-    "public_nombre": "Leonardo García",
-    "public_edad_aproximada": "20",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/leonardo-garcia-yvpstw",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-johan-betancurt-ru7sg1",
-    "status": "active_search",
-    "public_nombre": "Johan Betancurt",
-    "public_edad_aproximada": "49",
-    "public_ciudad_sector": "Playa Grande, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/johan-betancurt-ru7sg1",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-antonio-rodriguez-i9hkxq",
-    "status": "active_search",
-    "public_nombre": "Antonio Rodriguez",
-    "public_edad_aproximada": "60",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Reside en el 10 de Marzo pero estaba en caraballeda en el momento del terremoto.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/0725a7b5-978f-45ad-b963-0c0d7d404c79.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/antonio-rodriguez-i9hkxq",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-alfonso-espinoza-s5n8kj",
-    "status": "active_search",
-    "public_nombre": "Alfonso Espinoza",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/aba9b526-8c55-417e-88fa-3b7f28d93935.jpg",
-    "source_url": "https://buscardesaparecidos.com/caso/alfonso-espinoza-s5n8kj",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-jose-francisco-cervantes-blanco-zntavp",
-    "status": "active_search",
-    "public_nombre": "Jose Francisco Cervantes Blanco",
-    "public_edad_aproximada": "54",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: No se.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/8e9e2da3-a309-4dfb-9879-d0aed335abc5.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/jose-francisco-cervantes-blanco-zntavp",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-emmanuel-alejandro-hernandez-tovar-gpv25b",
-    "status": "active_search",
-    "public_nombre": "Emmanuel Alejandro Hernández Tovar",
-    "public_edad_aproximada": "18",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/emmanuel-alejandro-hernandez-tovar-gpv25b",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-oswely-suarez-axmasv",
-    "status": "active_search",
-    "public_nombre": "Oswely Suarez",
-    "public_edad_aproximada": "20",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/456078e7-37f0-4439-adec-a03296ecb5d5.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/oswely-suarez-axmasv",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-carlos-jose-zambrano-c7q0w7",
-    "status": "active_search",
-    "public_nombre": "Carlos José Zambrano",
-    "public_edad_aproximada": "66",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/524363ad-7a34-4aca-b5dd-f425a4204dfb.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/carlos-jose-zambrano-c7q0w7",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:57:02.000000Z"
-  },
-  {
-    "id": "external-bd-petra-sifonte-y-oscar-burgos-sifonte-burgos-i7bipw",
-    "status": "active_search",
-    "public_nombre": "Petra Sifonte y Oscar Burgos Sifonte-Burgos",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/7ad56623-b99c-4f41-a114-01f14ee525b7.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/petra-sifonte-y-oscar-burgos-sifonte-burgos-i7bipw",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-wilmen-arraiz-uwzygk",
-    "status": "active_search",
-    "public_nombre": "Wilmen Arraiz",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/83be3399-75ad-46aa-92c1-98f340d3e402.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/wilmen-arraiz-uwzygk",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-rafaela-maria-teran-jimenez-4jbobp",
-    "status": "active_search",
-    "public_nombre": "Rafaela Maria Teran Jimenez",
-    "public_edad_aproximada": "60",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/51362907-085f-4f5d-b5e8-6624a5848e60.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/rafaela-maria-teran-jimenez-4jbobp",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-manuel-diaz-q29wvz",
-    "status": "active_search",
-    "public_nombre": "Manuel Diaz",
-    "public_edad_aproximada": "57",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: SIN NOTICIA.",
-    "source_url": "https://buscardesaparecidos.com/caso/manuel-diaz-q29wvz",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-orlando-gonzalez-nai32a",
-    "status": "active_search",
-    "public_nombre": "Orlando Gonzalez",
-    "public_edad_aproximada": "77",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/42d62548-c80c-4dac-adb8-0fb35816d18e.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/orlando-gonzalez-nai32a",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-oliver-eduardo-tortolero-castillo-y89wfe",
-    "status": "active_search",
-    "public_nombre": "Oliver Eduardo Tortolero Castillo",
-    "public_edad_aproximada": "18",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/oliver-eduardo-tortolero-castillo-y89wfe",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-yuli-parlione-kdk1ns",
-    "status": "active_search",
-    "public_nombre": "Yuli Parlione",
-    "public_edad_aproximada": "65",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Cabello corto entre rojizo y cobrizo. Tez morena, contextura delgada..",
-    "photo_url": "https://venezuelatebusca.com/media/photos/f17a8ecf-9c48-4650-ab9e-ea377bafac5e.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/yuli-parlione-kdk1ns",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-fraibert-nazareth-gomez-rivas-5k7hqt",
-    "status": "active_search",
-    "public_nombre": "Fraibert Nazareth Gomez Rivas",
-    "public_edad_aproximada": "20",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/b6c73a30-b663-4694-a141-0fa276bb57e7.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/fraibert-nazareth-gomez-rivas-5k7hqt",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-cinthia-torre-sandoval-3rgmxv",
-    "status": "active_search",
-    "public_nombre": "Cinthia Torre Sandoval",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/cinthia-torre-sandoval-3rgmxv",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-viviana-caruzzo-voluntis-crrpsr",
-    "status": "active_search",
-    "public_nombre": "Viviana Caruzzo Voluntis",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Caracas",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/viviana-caruzzo-voluntis-crrpsr",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-luis-corona-yij2uj",
-    "status": "active_search",
-    "public_nombre": "Luis Corona",
-    "public_edad_aproximada": "63",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: jean azul camisa negra.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/628fddc4-94f6-4978-9a9c-d29f06ebb795.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/luis-corona-yij2uj",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-aymarin-perez-yvgtki",
-    "status": "active_search",
-    "public_nombre": "Aymarin Perez",
-    "public_edad_aproximada": "32",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/aymarin-perez-yvgtki",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-juan-alberto-rodriguez-rodriguez-c22b58",
-    "status": "active_search",
-    "public_nombre": "Juan Alberto Rodriguez Rodriguez",
-    "public_edad_aproximada": "63",
-    "public_ciudad_sector": "Moron edo falcon",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/juan-alberto-rodriguez-rodriguez-c22b58",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-carolina-delgado-5hondy",
-    "status": "active_search",
-    "public_nombre": "Carolina Delgado",
-    "public_edad_aproximada": "64",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Se encontraba en tanaguarenas, alrededor del edificio tanamar. No sabemos nada de ella desde los sucesos del 24/06.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/d2b9eb3f-8478-46e6-a883-1d7c42aaa0f4.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/carolina-delgado-5hondy",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:03.000000Z"
-  },
-  {
-    "id": "external-bd-carlos-jose-zambrano-hp2vya",
-    "status": "active_search",
-    "public_nombre": "Carlos José Zambrano",
-    "public_edad_aproximada": "66",
-    "public_ciudad_sector": "Zona por confirmar",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/carlos-jose-zambrano-hp2vya",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:02.000000Z"
-  },
-  {
-    "id": "external-bd-maria-luisa-mata-rondon-t3expi",
-    "status": "active_search",
-    "public_nombre": "Maria Luisa Mata Rondón",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/ad728798-dd6f-445a-9dab-653f47124a8e.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/maria-luisa-mata-rondon-t3expi",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:02.000000Z"
-  },
-  {
-    "id": "external-bd-alberto-fernandez-monilo-yqtjvd",
-    "status": "active_search",
-    "public_nombre": "Alberto Fernandez Monilo",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "Caracas",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/alberto-fernandez-monilo-yqtjvd",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:02.000000Z"
-  },
-  {
-    "id": "external-bd-ruben-moreno-6sfqvx",
-    "status": "active_search",
-    "public_nombre": "Rubén Moreno",
-    "public_edad_aproximada": "65",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/53bbaf77-7ac0-4865-ab9e-ecbc1fdb264e.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/ruben-moreno-6sfqvx",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:02.000000Z"
-  },
-  {
-    "id": "external-bd-jabricio-gutierrez-hba6gd",
-    "status": "active_search",
-    "public_nombre": "Jabricio Gutierrez",
-    "public_edad_aproximada": "",
-    "public_ciudad_sector": "hospital perez carreno",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Encontrado en lista hospitalaria de Hospital Dr. Miguel Pérez Carreño. La persona figura como ingresada. Procedencia La Guaira. NUEVO. Que Dios lo bendiga (Si el pariente lo confir.",
-    "source_url": "https://buscardesaparecidos.com/caso/jabricio-gutierrez-hba6gd",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:02.000000Z"
-  },
-  {
-    "id": "external-bd-lizmar-gonzalez-rodriguez-nv0iym",
-    "status": "active_search",
-    "public_nombre": "Lizmar González Rodríguez",
-    "public_edad_aproximada": "19",
-    "public_ciudad_sector": "Urbanización Hugo Chávez",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Sin conocimiento.",
-    "source_url": "https://buscardesaparecidos.com/caso/lizmar-gonzalez-rodriguez-nv0iym",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:55:02.000000Z"
-  },
-  {
-    "id": "external-bd-nanaj-serrano-oiwpxj",
-    "status": "found",
-    "public_nombre": "Nanaj Serrano",
-    "public_edad_aproximada": "67",
-    "public_ciudad_sector": "Caracas",
-    "public_resumen": "Caso marcado como encontrado en la fuente pública consultada. Verifica siempre la fuente antes de compartir nuevos datos.",
-    "source_url": "https://buscardesaparecidos.com/caso/nanaj-serrano-oiwpxj",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-ketty-arcaya-im5fyx",
-    "status": "active_search",
-    "public_nombre": "Ketty Arcaya",
-    "public_edad_aproximada": "50",
-    "public_ciudad_sector": "Caribe, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/746dd027-345f-4da6-a414-3ee23d494c66.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/ketty-arcaya-im5fyx",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-mirla-narvaez-salazar-tjzirx",
-    "status": "active_search",
-    "public_nombre": "Mirla Narvaez Salazar",
-    "public_edad_aproximada": "58",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Piel blanca cabello negro liso mide 1.67 contextura delgada.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/912d0932-56b2-43e7-9091-2194dbcc44f7.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/mirla-narvaez-salazar-tjzirx",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-arturo-alkibelis-garcia-x8aggx",
-    "status": "active_search",
-    "public_nombre": "Arturo Alkibelis Garcia",
-    "public_edad_aproximada": "25",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Camisa rosa.",
-    "source_url": "https://buscardesaparecidos.com/caso/arturo-alkibelis-garcia-x8aggx",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-michelle-tovar-c0cfmj",
-    "status": "active_search",
-    "public_nombre": "Michelle Tovar",
-    "public_edad_aproximada": "35",
-    "public_ciudad_sector": "Maracay",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/cf380979-f555-4e95-8eb4-d0cd85e53de3.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/michelle-tovar-c0cfmj",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-carolina-delgado-wy3cdr",
-    "status": "active_search",
-    "public_nombre": "Carolina Delgado",
-    "public_edad_aproximada": "64",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Persona reportada en búsqueda. Descripción pública disponible: Se encontraba en tanaguarenas, alrededor del edificio tanamar.",
-    "source_url": "https://buscardesaparecidos.com/caso/carolina-delgado-wy3cdr",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-migdalia-mayora-x9mxxx",
-    "status": "active_search",
-    "public_nombre": "Migdalia Mayora",
-    "public_edad_aproximada": "46",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "source_url": "https://buscardesaparecidos.com/caso/migdalia-mayora-x9mxxx",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-dionisia-ramona-dominguez-xexnvx",
-    "status": "active_search",
-    "public_nombre": "Dionisia Ramona Domínguez",
-    "public_edad_aproximada": "83",
-    "public_ciudad_sector": "Catia La Mar, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/ad039102-908c-4ea8-86e4-0832070c063c.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/dionisia-ramona-dominguez-xexnvx",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-adriannis-valeria-briceno-sojo-bddsbs",
-    "status": "active_search",
-    "public_nombre": "Adriannis Valeria Briceño Sojo",
-    "public_edad_aproximada": "12",
-    "public_ciudad_sector": "Caraballeda, La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/03cd69ab-c15f-4fe7-8ed7-464db7537766.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/adriannis-valeria-briceno-sojo-bddsbs",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  },
-  {
-    "id": "external-bd-raul-cruz-altuve-09jpad",
-    "status": "active_search",
-    "public_nombre": "Raul Cruz Altuve",
-    "public_edad_aproximada": "70",
-    "public_ciudad_sector": "La Guaira",
-    "public_resumen": "Caso publicado en una fuente pública de búsqueda. Se muestra información general y se omiten contactos personales o datos sensibles.",
-    "photo_url": "https://venezuelatebusca.com/media/photos/0da8dc61-b89f-4ece-975c-df070b00a305.webp",
-    "source_url": "https://buscardesaparecidos.com/caso/raul-cruz-altuve-09jpad",
-    "source_label": "Buscar Desaparecidos",
-    "source_type": "Fuente externa pública",
-    "updated_at": "2026-06-26T16:53:02.000000Z"
-  }
-];
+const externalPublicCases = [];
 
 const supportCenters = [
   {
@@ -1674,7 +196,11 @@ const publicStats = document.querySelector("#publicStats");
 const publicFilters = document.querySelectorAll("[data-public-status]");
 const publicShowMore = document.querySelector("#publicShowMore");
 const centerSearch = document.querySelector("#centerSearch");
+const centerCountryFilter = document.querySelector("#centerCountryFilter");
+const centerTypeFilter = document.querySelector("#centerTypeFilter");
+const centerStatusFilter = document.querySelector("#centerStatusFilter");
 const centerStats = document.querySelector("#centerStats");
+const centerMapNote = document.querySelector("#centerMapNote");
 const centersMap = document.querySelector("#centersMap");
 const centersList = document.querySelector("#centersList");
 const exportReports = document.querySelector("#exportReports");
@@ -1704,6 +230,12 @@ let publicSearchTerm = "";
 let publicFilterStatus = "all";
 let publicVisibleCount = 24;
 let centerSearchTerm = "";
+let centerFilterCountry = "all";
+let centerFilterType = "all";
+let centerFilterStatus = "all";
+let aidCenters = [];
+let centersLeafletMap = null;
+let centersMarkersLayer = null;
 let csvPreviewRows = [];
 
 function loadLocalReports() {
@@ -1871,40 +403,266 @@ function routeFromCurrentUrl() {
 
 function filterCenters() {
   const term = normalizeText(centerSearchTerm);
-  if (!term) return supportCenters;
-  return supportCenters.filter((center) =>
-    normalizeText([center.name, center.city, center.type, center.description].join(" ")).includes(term)
-  );
+  return aidCenters.filter((center) => {
+    const countryMatches = centerFilterCountry === "all" || center.country === centerFilterCountry;
+    const typeMatches = centerFilterType === "all" || center.type === centerFilterType;
+    const statusMatches = centerFilterStatus === "all" || center.status === centerFilterStatus;
+    const searchable = normalizeText([
+      center.name,
+      center.country,
+      center.state,
+      center.city,
+      center.type,
+      center.description,
+      center.offer,
+      center.receives,
+      center.sourceName,
+    ].join(" "));
+    return countryMatches && typeMatches && statusMatches && (!term || searchable.includes(term));
+  });
 }
 
 function renderCenters() {
   if (!centersList || !centersMap) return;
   const centers = filterCenters();
-  centerStats.textContent = `${centers.length} centro(s)`;
+  const mappedCount = centers.filter((center) => hasCoordinates(center)).length;
+  const countries = new Set(centers.map((center) => center.country).filter(Boolean)).size;
+  centerStats.textContent = `${centers.length} centro(s) · ${countries} país(es) · ${mappedCount} con punto en mapa`;
+  renderCentersMap(centers);
 
-  centersMap.innerHTML = centers
-    .map((center, index) => {
-      const x = Math.max(8, Math.min(92, ((center.lng + 100) / 45) * 100));
-      const y = Math.max(8, Math.min(92, 100 - ((center.lat + 40) / 55) * 100));
-      return `<button class="map-pin" style="left:${x}%;top:${y}%;" type="button" data-center-index="${index}" aria-label="${escapeHtml(center.name)}">${index + 1}</button>`;
-    })
-    .join("");
+  const grouped = centers.reduce((groups, center) => {
+    const country = center.country || "Sin país";
+    groups[country] = groups[country] || [];
+    groups[country].push(center);
+    return groups;
+  }, {});
 
-  centersList.innerHTML = centers
-    .map((center, index) => `
-      <article class="center-card" data-center-card="${index}">
-        ${center.image ? `<img class="center-card-image" src="${escapeHtml(center.image)}" alt="${escapeHtml(center.name)} - punto solidario comunitario" loading="lazy">` : ""}
-        <span class="contact-category">${escapeHtml(center.type)}</span>
-        <h3>${escapeHtml(center.name)}</h3>
-        <p>${escapeHtml(center.description)}</p>
-        <div class="case-meta">
-          <span class="pill">${escapeHtml(center.city)}</span>
-          <span class="pill">Verificar antes de compartir</span>
+  centersList.innerHTML = Object.entries(grouped)
+    .sort(([countryA], [countryB]) => countrySortValue(countryA) - countrySortValue(countryB) || countryA.localeCompare(countryB, "es"))
+    .map(([country, items]) => `
+      <section class="center-country-group">
+        <div class="center-country-heading">
+          <h3>${escapeHtml(country)}</h3>
+          <span>${items.length} registro(s)</span>
         </div>
-        ${center.url ? `<a class="secondary-btn" href="${escapeHtml(center.url)}" target="_blank" rel="noopener">Abrir fuente</a>` : ""}
-      </article>
+        ${items.map((center) => renderCenterCard(center)).join("")}
+      </section>
     `)
     .join("");
+}
+
+function countrySortValue(country) {
+  const index = countryOrder.indexOf(country);
+  return index === -1 ? 999 : index;
+}
+
+function typeLabel(type) {
+  const labels = {
+    centro_acopio: "Centro de acopio",
+    refugio: "Refugio",
+    hospital: "Hospital",
+    punto_medico: "Punto médico",
+    alimento: "Alimento",
+    agua: "Agua",
+    medicamentos: "Medicamentos",
+    ong: "ONG",
+    iglesia: "Iglesia",
+    informacion: "Información",
+  };
+  return labels[type] || type || "Información";
+}
+
+function hasCoordinates(center) {
+  return Number.isFinite(center.mapLat) && Number.isFinite(center.mapLng);
+}
+
+function centerMapsUrl(center) {
+  if (Number.isFinite(center.lat) && Number.isFinite(center.lng)) return `https://www.google.com/maps?q=${center.lat},${center.lng}`;
+  const query = [center.address, center.city, center.state, center.country].filter(Boolean).join(", ");
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query || center.name)}`;
+}
+
+function renderCenterCard(center) {
+  const mapsUrl = centerMapsUrl(center);
+  const location = [center.city, center.state].filter(Boolean).join(" · ") || center.country;
+  const mapLabel = center.mapApproximate ? "Mapa aproximado por ciudad" : "Punto verificado en mapa";
+  return `
+    <article class="center-card ${center.status === "pendiente" ? "is-pending" : ""}">
+      ${center.image ? `<img class="center-card-image" src="${escapeHtml(center.image)}" alt="${escapeHtml(center.name)} - punto solidario comunitario" loading="lazy">` : ""}
+      <div>
+        <span class="contact-category">${escapeHtml(typeLabel(center.type))}</span>
+        <h4>${escapeHtml(center.name)}</h4>
+        <p>${escapeHtml(center.description || center.offer || "Punto de apoyo registrado para verificación comunitaria.")}</p>
+      </div>
+      <div class="case-meta">
+        <span class="pill">${escapeHtml(location)}</span>
+        <span class="pill">${escapeHtml(center.status === "verificado" ? "Verificado" : "Pendiente de verificación")}</span>
+        <span class="pill">${escapeHtml(center.confidence || "por confirmar")}</span>
+        ${hasCoordinates(center) ? `<span class="pill">${escapeHtml(mapLabel)}</span>` : ""}
+      </div>
+      <dl class="center-details">
+        ${center.address ? `<div><dt>Dirección general</dt><dd>${escapeHtml(center.address)}</dd></div>` : ""}
+        ${center.reference ? `<div><dt>Referencia</dt><dd>${escapeHtml(center.reference)}</dd></div>` : ""}
+        ${center.schedule ? `<div><dt>Horario</dt><dd>${escapeHtml(center.schedule)}</dd></div>` : ""}
+        ${center.receives ? `<div><dt>Recibe</dt><dd>${escapeHtml(center.receives)}</dd></div>` : ""}
+        ${center.offer ? `<div><dt>Ofrece</dt><dd>${escapeHtml(center.offer)}</dd></div>` : ""}
+        ${center.phone ? `<div><dt>Teléfono institucional</dt><dd>${escapeHtml(center.phone)}</dd></div>` : ""}
+        ${center.sourceName ? `<div><dt>Fuente</dt><dd>${escapeHtml(center.sourceName)} · ${escapeHtml(center.verifiedAt || "sin fecha")}</dd></div>` : ""}
+      </dl>
+      <p class="source-note">${escapeHtml(center.notes || "Verifica siempre en la fuente original antes de movilizar ayuda.")}</p>
+      <div class="public-card-actions">
+        ${center.sourceUrl ? `<a class="secondary-btn" href="${escapeHtml(center.sourceUrl)}" target="_blank" rel="noopener">Abrir fuente</a>` : ""}
+        <a class="secondary-btn" href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener">Cómo llegar</a>
+        <a class="secondary-btn" href="https://chat.whatsapp.com/LSWcidnfp6uLwzglQ47euc" target="_blank" rel="noopener">Coordinar por WhatsApp</a>
+      </div>
+    </article>
+  `;
+}
+
+function initCentersMap() {
+  if (!centersMap || !window.L) return false;
+  if (centersLeafletMap) return true;
+
+  centersLeafletMap = window.L.map(centersMap, {
+    scrollWheelZoom: false,
+  }).setView([4.6, -70.6], 4);
+
+  window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(centersLeafletMap);
+
+  centersMarkersLayer = window.L.layerGroup().addTo(centersLeafletMap);
+  return true;
+}
+
+function renderCentersMap(centers) {
+  if (!initCentersMap()) {
+    centersMap.innerHTML = "<p class=\"map-fallback\">Mapa no disponible. Usa el listado y los botones de ubicación.</p>";
+    return;
+  }
+
+  centersMarkersLayer.clearLayers();
+  const mappedCenters = centers.filter(hasCoordinates);
+  mappedCenters.forEach((center) => {
+    const marker = window.L.marker([center.mapLat, center.mapLng]).addTo(centersMarkersLayer);
+    marker.bindPopup(`
+      <strong>${escapeHtml(center.name)}</strong><br>
+      ${escapeHtml([center.city, center.country].filter(Boolean).join(", "))}<br>
+      ${center.mapApproximate ? "<em>Referencia aproximada por ciudad; confirma la dirección en la fuente.</em><br>" : ""}
+      <a href="${escapeHtml(centerMapsUrl(center))}" target="_blank" rel="noopener">Cómo llegar</a>
+    `);
+  });
+
+  if (mappedCenters.length) {
+    const bounds = window.L.latLngBounds(mappedCenters.map((center) => [center.mapLat, center.mapLng]));
+    centersLeafletMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 9 });
+  } else {
+    centersLeafletMap.setView([4.6, -70.6], 4);
+  }
+
+  const withoutMap = centers.length - mappedCenters.length;
+  if (centerMapNote) {
+    centerMapNote.textContent = withoutMap
+      ? `${withoutMap} registro(s) no tienen referencia geográfica suficiente y aparecen solo en el listado.`
+      : "Los puntos pueden ser exactos o aproximados por ciudad; confirma siempre en la fuente original.";
+  }
+}
+
+function normalizeAidCenter(row) {
+  const lat = Number.parseFloat(String(row.latitud || "").replace(",", "."));
+  const lng = Number.parseFloat(String(row.longitud || "").replace(",", "."));
+  const exactCoordinates = Number.isFinite(lat) && Number.isFinite(lng);
+  const cityKey = normalizeText([row.pais, row.estado_region, row.ciudad].join("|"));
+  const referenceCoordinates = exactCoordinates ? [lat, lng] : cityMapReferences[cityKey] || [];
+  return {
+    name: row.nombre || "Centro por revisar",
+    type: row.tipo || "informacion",
+    country: row.pais || "Sin país",
+    state: row.estado_region || "",
+    city: row.ciudad || "",
+    address: row.direccion_general || "",
+    reference: row.referencia || "",
+    lat,
+    lng,
+    mapLat: referenceCoordinates[0],
+    mapLng: referenceCoordinates[1],
+    mapApproximate: !exactCoordinates && referenceCoordinates.length === 2,
+    schedule: row.horario || "",
+    phone: row.telefono_publico || "",
+    receives: row.que_recibe || "",
+    offer: row.que_ofrece || "",
+    sourceUrl: row.fuente_url || "",
+    sourceName: row.fuente_nombre || "",
+    verifiedAt: row.fecha_verificacion || "",
+    verifiedBy: row.verificado_por || "",
+    confidence: row.nivel_confianza || "por confirmar",
+    status: row.estado_verificacion || "pendiente",
+    notes: row.notas || "",
+    image: normalizeText(row.nombre || "").includes("santa tinta") ? "/assets/santa-tinta-punto-solidario.jpg" : "",
+    description: row.que_ofrece || row.que_recibe || row.notas || "",
+  };
+}
+
+function fallbackAidCenters() {
+  return supportCenters.map((center) => ({
+    name: center.name,
+    type: "informacion",
+    country: center.city === "Medellín" ? "Colombia" : center.city,
+    state: "",
+    city: center.city,
+    address: "",
+    reference: "",
+    lat: center.lat,
+    lng: center.lng,
+    mapLat: center.lat,
+    mapLng: center.lng,
+    mapApproximate: false,
+    schedule: "",
+    phone: "",
+    receives: "",
+    offer: center.description,
+    sourceUrl: center.url,
+    sourceName: center.name,
+    verifiedAt: "2026-06-26",
+    verifiedBy: "Conecta Familia Venezuela",
+    confidence: "alta",
+    status: "pendiente",
+    notes: "Registro de respaldo local; verificar fuente original antes de movilizar ayuda.",
+    image: center.image || "",
+    description: center.description,
+  }));
+}
+
+function populateCenterFilters() {
+  if (!centerCountryFilter || !centerTypeFilter) return;
+  const countries = [...new Set(aidCenters.map((center) => center.country).filter(Boolean))].sort();
+  const types = [...new Set(aidCenters.map((center) => center.type).filter(Boolean))].sort();
+
+  const orderedCountries = countries.sort((a, b) => countrySortValue(a) - countrySortValue(b) || a.localeCompare(b, "es"));
+
+  centerCountryFilter.innerHTML = `<option value="all">Todos los países</option>${orderedCountries
+    .map((country) => `<option value="${escapeHtml(country)}">${escapeHtml(country)}</option>`)
+    .join("")}`;
+
+  centerTypeFilter.innerHTML = `<option value="all">Todos los tipos</option>${types
+    .map((type) => `<option value="${escapeHtml(type)}">${escapeHtml(typeLabel(type))}</option>`)
+    .join("")}`;
+}
+
+async function loadAidCenters() {
+  try {
+    const response = await fetch("/data/research/aid-centers-research.csv", { cache: "no-store" });
+    if (!response.ok) throw new Error("No se pudo cargar el CSV de centros.");
+    const csvText = await response.text();
+    aidCenters = parseCsv(csvText).map(normalizeAidCenter);
+  } catch (error) {
+    console.warn(error);
+    aidCenters = fallbackAidCenters();
+  }
+
+  populateCenterFilters();
+  renderCenters();
 }
 
 function renderPublicSources() {
@@ -2503,6 +1261,21 @@ centerSearch.addEventListener("input", (event) => {
   renderCenters();
 });
 
+centerCountryFilter.addEventListener("change", (event) => {
+  centerFilterCountry = event.target.value;
+  renderCenters();
+});
+
+centerTypeFilter.addEventListener("change", (event) => {
+  centerFilterType = event.target.value;
+  renderCenters();
+});
+
+centerStatusFilter.addEventListener("change", (event) => {
+  centerFilterStatus = event.target.value;
+  renderCenters();
+});
+
 casesList.addEventListener("change", async (event) => {
   if (event.target.matches(".status-select")) {
     await updateReport(event.target.dataset.id, { status: event.target.value });
@@ -2696,5 +1469,6 @@ updateWhatsAppLink();
 renderReports();
 renderPublicCases();
 renderPublicSources();
-renderCenters();
+loadAidCenters();
 routeFromCurrentUrl();
+
