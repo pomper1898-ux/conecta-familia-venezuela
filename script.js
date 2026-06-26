@@ -48,10 +48,11 @@ const externalSourceDirectories = [
     name: "Buscar Desaparecidos",
     type: "Plataforma ciudadana",
     confidence: "Pendiente de permiso",
-    scope: "Directorio amplio con miles de reportes públicos",
-    url: "https://buscardesaparecidos.com/",
+    scope: "Directorio amplio con reportes públicos de personas buscadas y localizadas",
+    url: "https://buscardesaparecidos.com/buscar",
     action: "Buscar en la fuente original",
-    note: "No copiamos sus registros masivamente porque la fuente puede exponer teléfonos, reportantes, menores y datos sensibles.",
+    note: "Fuente externa prioritaria. Usa la búsqueda original y reporta aquí cualquier pista útil para revisión humana.",
+    featured: true,
   },
   {
     name: "Venezuela Te Busca",
@@ -652,7 +653,7 @@ function renderPublicSources() {
 
   publicSourcesList.innerHTML = externalSourceDirectories
     .map((source) => `
-      <article class="source-directory-card">
+      <article class="source-directory-card ${source.featured ? "is-featured-source" : ""}">
         <div>
           <span class="contact-category">${escapeHtml(source.type)}</span>
           <h4>${escapeHtml(source.name)}</h4>
@@ -1014,7 +1015,16 @@ async function renderPublicCases() {
 
   if (!cases.length) {
     publicStats.textContent = "Sin casos publicados";
-    publicCasesList.innerHTML = '<div class="empty-state">Aún no hay casos aprobados para públicación.</div>';
+    publicCasesList.innerHTML = `
+      <div class="empty-state">
+        Aún no hay casos aprobados dentro de Conecta Familia Venezuela.
+        Usa la fuente externa prioritaria para buscar reportes ya publicados y vuelve aquí si tienes información.
+        <div class="public-card-actions">
+          <a class="secondary-btn" href="https://buscardesaparecidos.com/buscar" target="_blank" rel="noopener">Buscar reportes externos</a>
+          <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Reportar información aquí</a>
+        </div>
+      </div>
+    `;
     publicShowMore.classList.add("hidden");
     return;
   }
