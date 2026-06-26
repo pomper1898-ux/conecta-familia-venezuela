@@ -1568,6 +1568,7 @@ const supportCenters = [
     lat: 6.2068,
     lng: -75.5660,
     url: "https://www.google.com/maps/place/TATTOO+KEIBYN+PAB%C3%93N+(poblado)/@6.2067756,-75.5659681,17z/",
+    image: "assets/santa-tinta-punto-solidario.jpg",
   },
   {
     name: "Cruz Roja Colombiana",
@@ -1842,6 +1843,7 @@ function renderCenters() {
   centersList.innerHTML = centers
     .map((center, index) => `
       <article class="center-card" data-center-card="${index}">
+        ${center.image ? `<img class="center-card-image" src="${escapeHtml(center.image)}" alt="${escapeHtml(center.name)} - punto solidario comunitario" loading="lazy">` : ""}
         <span class="contact-category">${escapeHtml(center.type)}</span>
         <h3>${escapeHtml(center.name)}</h3>
         <p>${escapeHtml(center.description)}</p>

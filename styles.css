@@ -863,6 +863,21 @@ textarea:focus {
   box-shadow: 0 16px 40px rgba(23, 32, 27, 0.08);
 }
 
+.donation-card-image,
+.center-card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+
+.donation-card-image {
+  margin-bottom: 2px;
+}
+
 .donation-card h3 {
   margin: 0;
   color: var(--navy);
@@ -1051,6 +1066,11 @@ code {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
+}
+
+.center-card {
+  display: grid;
+  gap: 10px;
 }
 
 .compact-panel {
