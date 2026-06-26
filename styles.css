@@ -990,6 +990,108 @@ code {
   margin-bottom: 10px;
 }
 
+.centers-section,
+.correction-section {
+  padding: clamp(44px, 7vw, 84px) clamp(18px, 4vw, 56px);
+}
+
+.map-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.centers-map {
+  position: sticky;
+  top: 96px;
+  min-height: 460px;
+  overflow: hidden;
+  border: 1px solid rgba(11, 35, 70, 0.14);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 30% 35%, rgba(15, 111, 97, 0.2), transparent 22%),
+    radial-gradient(circle at 62% 58%, rgba(23, 61, 143, 0.18), transparent 24%),
+    linear-gradient(135deg, #edf4f1, #dfe9ef);
+}
+
+.centers-map::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px dashed rgba(11, 35, 70, 0.18);
+  border-radius: 8px;
+}
+
+.map-pin {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: var(--urgent);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 20px rgba(11, 35, 70, 0.24);
+}
+
+.centers-list {
+  display: grid;
+  gap: 12px;
+}
+
+.center-card,
+.csv-importer {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.compact-panel {
+  grid-template-columns: minmax(220px, 1fr) auto;
+  margin-bottom: 12px;
+}
+
+.compact-heading {
+  margin-bottom: 14px;
+}
+
+.csv-importer {
+  max-width: 980px;
+  margin: 18px 0;
+}
+
+.csv-tools {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) 1fr;
+  gap: 12px;
+}
+
+.csv-preview {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.csv-preview table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.csv-preview th,
+.csv-preview td {
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
 .public-section {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(234, 243, 239, 0.9)),
@@ -1291,6 +1393,8 @@ code {
   .public-cases-list,
   .public-directory-head,
   .public-search-panel,
+  .map-layout,
+  .csv-tools,
   .directory-guide,
   .whatsapp-help-card,
   .donation-panel,
@@ -1320,6 +1424,12 @@ code {
     width: 100%;
     overflow-x: auto;
     border-radius: 14px;
+  }
+
+  .centers-map {
+    position: relative;
+    top: auto;
+    min-height: 320px;
   }
 
   .topbar {

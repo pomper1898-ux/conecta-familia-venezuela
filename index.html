@@ -26,12 +26,12 @@
         </span>
       </a>
       <nav class="topnav" aria-label="Navegación principal">
-        <a href="#casos">Casos</a>
+        <a href="/personas" data-route-link>Personas</a>
+        <a href="/centros" data-route-link>Centros</a>
         <a href="#reporte">Reportar</a>
         <a href="#ayuda-oficial">Ayuda</a>
-        <a href="#donaciones-medellin">Donar</a>
         <a href="#privacidad">Privacidad</a>
-        <a class="team-link" href="#admin">Equipo</a>
+        <a class="team-link" href="/admin" data-route-link>Equipo</a>
       </nav>
     </header>
 
@@ -97,7 +97,7 @@
         </p>
       </section>
 
-      <section id="casos" class="public-section">
+      <section id="personas" class="public-section" data-route-section="personas">
         <div class="public-directory-head">
           <div class="section-heading">
             <p class="eyebrow">Directorio público seguro</p>
@@ -230,6 +230,74 @@
           <li>No se solicita cédula ni documentos de identidad.</li>
           <li>No se muestran datos sensibles en espacios públicos.</li>
         </ul>
+      </section>
+
+      <section id="centros" class="centers-section" data-route-section="centros">
+        <div class="section-heading">
+          <p class="eyebrow">Centros y puntos de apoyo</p>
+          <h2>Mapa comunitario de ayuda</h2>
+          <p>
+            Directorio informativo de centros, puntos solidarios y canales oficiales. Verifica siempre antes de movilizar ayuda.
+          </p>
+        </div>
+        <div class="map-layout">
+          <div id="centersMap" class="centers-map" aria-label="Mapa de centros de ayuda"></div>
+          <div>
+            <div class="public-search-panel compact-panel" role="search">
+              <label>
+                Buscar centro o ciudad
+                <input id="centerSearch" type="search" placeholder="Ej: Medellín, Cruz Roja, Caracas" autocomplete="off" />
+              </label>
+              <div id="centerStats" class="public-stats" aria-live="polite"></div>
+            </div>
+            <div id="centersList" class="centers-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="correcciones" class="correction-section">
+        <div class="section-heading">
+          <p class="eyebrow">Correcciones y retiro</p>
+          <h2>Solicitar corrección o retiro de información</h2>
+          <p>
+            Si un dato público es incorrecto, sensible o ya no debe mostrarse, envía una solicitud para revisión del equipo.
+          </p>
+        </div>
+        <form id="correctionRequestForm" class="report-form">
+          <label>
+            Nombre de la persona o caso
+            <input id="correctionCaseName" name="case_name" required />
+          </label>
+          <label>
+            Tipo de solicitud
+            <select id="correctionType" name="request_type" required>
+              <option value="">Seleccionar</option>
+              <option value="correction">Corrección</option>
+              <option value="withdrawal">Retiro</option>
+              <option value="duplicate">Posible duplicado</option>
+            </select>
+          </label>
+          <label class="wide">
+            Detalle de la solicitud
+            <textarea id="correctionDetail" name="detail" rows="4" required></textarea>
+          </label>
+          <label>
+            Nombre de quien solicita
+            <input id="correctionRequester" name="requester_name" required />
+          </label>
+          <label>
+            WhatsApp o correo de contacto
+            <input id="correctionContact" name="requester_contact" required />
+          </label>
+          <label class="check wide">
+            <input id="correctionGoodFaith" name="good_faith" type="checkbox" required />
+            <span>Declaro que hago esta solicitud de buena fe.</span>
+          </label>
+          <div class="form-actions wide">
+            <button class="primary-btn" type="submit">Enviar solicitud</button>
+          </div>
+          <p id="correctionStatus" class="form-status wide" role="status"></p>
+        </form>
       </section>
 
       <section id="ayuda-oficial" class="official-directory-section">
@@ -528,6 +596,31 @@
             Buscar en reportes
             <input id="adminSearch" type="search" placeholder="Nombre, ciudad, descripción o reportante" autocomplete="off" />
           </label>
+        </div>
+        <div class="csv-importer">
+          <div class="section-heading compact-heading">
+            <p class="eyebrow">Importador manual</p>
+            <h3>Importar CSV con revisión previa</h3>
+            <p>
+              Pega o carga un CSV. Nada se publica automáticamente: todo entra privado y pendiente de revisión.
+            </p>
+          </div>
+          <div class="csv-tools">
+            <label>
+              Archivo CSV
+              <input id="csvFileInput" type="file" accept=".csv,text/csv" />
+            </label>
+            <label class="wide">
+              CSV pegado
+              <textarea id="csvTextInput" rows="5" placeholder="nombre_persona,ciudad_sector,ultimo_contacto_o_lugar_visto,edad_aproximada,descripcion,estado_general,fuente_url,foto_url"></textarea>
+            </label>
+            <div class="form-actions wide">
+              <button id="csvPreviewButton" class="secondary-btn" type="button">Previsualizar CSV</button>
+              <button id="csvImportButton" class="primary-btn hidden" type="button">Importar como pendiente</button>
+            </div>
+          </div>
+          <p id="csvImportStatus" class="form-status" role="status"></p>
+          <div id="csvPreview" class="csv-preview" aria-live="polite"></div>
         </div>
         <p id="adminStatus" class="form-status" role="status"></p>
         <div id="casesList" class="cases-list" aria-live="polite"></div>
