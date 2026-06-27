@@ -17,27 +17,27 @@ const statusOptions = [
 ];
 
 const statusLabels = {
-  pending_review: "Pendiente de revisi?n",
+  pending_review: "Pendiente de revisión",
   urgent: "Urgente",
-  active_search: "B?squeda activa",
+  active_search: "Búsqueda activa",
   possible_match: "Posible coincidencia",
   found: "Encontrado",
   escalated_to_authority: "Escalado a autoridad",
   false_report: "Reporte falso",
 };
 
-const countryOrder = ["Venezuela", "Colombia", "Peru", "Brasil", "Ecuador", "Mexico", "Argentina"];
+const countryOrder = ["Venezuela", "Colombia", "Perú", "Brasil", "Ecuador", "México", "Argentina"];
 
 const cityMapReferences = {
   "venezuela|distrito capital|caracas": [10.4806, -66.9036],
-  "venezuela|tachira|san cristobal": [7.7669, -72.2250],
-  "venezuela|tachira|san antonio del tachira": [7.8145, -72.4431],
+  "venezuela|táchira|san cristóbal": [7.7669, -72.2250],
+  "venezuela|táchira|san antonio del táchira": [7.8145, -72.4431],
   "venezuela|zulia|maracaibo": [10.6427, -71.6125],
   "venezuela|apure|guasdualito": [7.2424, -70.7324],
   "venezuela|amazonas|puerto ayacucho": [5.6639, -67.6236],
-  "colombia|antioquia|medellin": [6.2067756, -75.5659681],
+  "colombia|antioquia|medellín": [6.2067756, -75.5659681],
   "colombia|arauca|arauca": [7.0847, -70.7591],
-  "colombia|norte de santander|cucuta": [7.8939, -72.5078],
+  "colombia|norte de santander|cúcuta": [7.8939, -72.5078],
   "peru|tumbes|tumbes": [-3.5669, -80.4515],
   "peru|lima|san juan de lurigancho": [-11.9828, -76.9983],
   "brasil|roraima|boa vista": [2.8235, -60.6758],
@@ -49,47 +49,47 @@ const externalSourceDirectories = [
     name: "Buscar Desaparecidos",
     type: "Plataforma ciudadana",
     confidence: "Pendiente de permiso",
-    scope: "Directorio amplio con reportes p?blicos de personas buscadas y localizadas",
+    scope: "Directorio amplio con reportes públicos de personas buscadas y localizadas",
     url: "https://buscardesaparecidos.com/buscar",
     action: "Buscar en la fuente original",
-    note: "Fuente externa prioritaria. Usa la b?squeda original y reporta aqu? cualquier pista ?til para revisi?n humana.",
+    note: "Fuente externa prioritaria. Usa la búsqueda original y reporta aquí cualquier pista útil para revisión humana.",
     featured: true,
   },
   {
     name: "Venezuela Te Busca",
     type: "Plataforma ciudadana",
     confidence: "Pendiente de permiso",
-    scope: "Fuente externa con reportes p?blicos de personas buscadas y localizadas",
+    scope: "Fuente externa con reportes públicos de personas buscadas y localizadas",
     url: "https://venezuelatebusca.com/",
     action: "Buscar en la fuente original",
-    note: "Se enlaza como fuente externa; cualquier dato que llegue a Conecta Familia Venezuela debe pasar por revisi?n humana.",
+    note: "Se enlaza como fuente externa; cualquier dato que llegue a Conecta Familia Venezuela debe pasar por revisión humana.",
   },
   {
     name: "CICR - Restablecimiento de contacto familiar",
     type: "Organismo humanitario",
     confidence: "Oficial",
-    scope: "B?squeda y reconexi?n familiar internacional",
+    scope: "Búsqueda y reconexión familiar internacional",
     url: "https://www.icrc.org/en/what-we-do/reconnecting-families",
     action: "Abrir canal humanitario",
-    note: "Fuente recomendada para familias separadas por desastres, violencia, migraci?n o emergencias.",
+    note: "Fuente recomendada para familias separadas por desastres, violencia, migración o emergencias.",
   },
   {
     name: "R4V - Plataforma Regional Venezuela",
-    type: "Coordinaci?n humanitaria",
+    type: "Coordinación humanitaria",
     confidence: "Alta",
-    scope: "Informaci?n regional sobre personas refugiadas y migrantes de Venezuela",
+    scope: "Información regional sobre personas refugiadas y migrantes de Venezuela",
     url: "https://www.r4v.info/",
     action: "Abrir plataforma",
-    note: "?til para ubicar reportes, organizaciones y servicios, sin copiar datos personales.",
+    note: "Útil para ubicar reportes, organizaciones y servicios, sin copiar datos personales.",
   },
   {
     name: "ACNUR Help",
-    type: "Canal oficial de orientaci?n",
+    type: "Canal oficial de orientación",
     confidence: "Oficial",
     scope: "Ayuda para personas refugiadas, migrantes y solicitantes de asilo",
     url: "https://help.unhcr.org/",
     action: "Abrir ACNUR Help",
-    note: "Usar para orientaci?n territorial y rutas de ayuda en pa?ses de di?spora.",
+    note: "Usar para orientación territorial y rutas de ayuda en países de diáspora.",
   },
   {
     name: "ReliefWeb Venezuela",
@@ -98,7 +98,7 @@ const externalSourceDirectories = [
     scope: "Reportes, mapas y actualizaciones humanitarias sobre Venezuela",
     url: "https://reliefweb.int/country/ven",
     action: "Abrir ReliefWeb",
-    note: "Fuente ?til para contexto humanitario y documentos, no para datos personales de reportantes.",
+    note: "Fuente útil para contexto humanitario y documentos, no para datos personales de reportantes.",
   },
 ];
 
@@ -109,7 +109,7 @@ const supportCenters = [
     name: "911 / VEN-911",
     city: "Venezuela",
     type: "Emergencia inmediata",
-    description: "L?nea inicial para personas atrapadas, heridas o en peligro inmediato.",
+    description: "Línea inicial para personas atrapadas, heridas o en peligro inmediato.",
     lat: 10.4806,
     lng: -66.9036,
     url: "",
@@ -126,17 +126,17 @@ const supportCenters = [
   {
     name: "UNICEF Venezuela",
     city: "Venezuela",
-    type: "Ni?ez y protecci?n",
-    description: "Canal institucional para informaci?n humanitaria y protecci?n de ni?ez.",
+    type: "Niñez y protección",
+    description: "Canal institucional para información humanitaria y protección de niñez.",
     lat: 10.4806,
     lng: -66.9036,
     url: "https://www.unicef.org/venezuela/",
   },
   {
-    name: "Santa Tinta / Tattoo Keibyn Pab?n",
-    city: "Medell?n",
+    name: "Santa Tinta / Tattoo Keibyn Pabón",
+    city: "Medellín",
     type: "Punto solidario comunitario",
-    description: "Recepci?n comunitaria de mercado, alimentos no perecederos y ayuda humanitaria.",
+    description: "Recepción comunitaria de mercado, alimentos no perecederos y ayuda humanitaria.",
     lat: 6.2068,
     lng: -75.5660,
     url: "https://www.google.com/maps/place/TATTOO+KEIBYN+PAB%C3%93N+(poblado)/@6.2067756,-75.5659681,17z/",
@@ -145,17 +145,17 @@ const supportCenters = [
   {
     name: "Cruz Roja Colombiana",
     city: "Colombia",
-    type: "Di?spora y ayuda humanitaria",
-    description: "Canales institucionales para orientaci?n, emergencias y donaciones.",
+    type: "Diáspora y ayuda humanitaria",
+    description: "Canales institucionales para orientación, emergencias y donaciones.",
     lat: 4.7110,
     lng: -74.0721,
     url: "https://www.cruzrojacolombiana.org/",
   },
   {
-    name: "Cruz Roja Bogot?",
-    city: "Bogot?",
-    type: "Migraci?n y asuntos humanitarios",
-    description: "Seccional con servicios humanitarios y orientaci?n territorial.",
+    name: "Cruz Roja Bogotá",
+    city: "Bogotá",
+    type: "Migración y asuntos humanitarios",
+    description: "Seccional con servicios humanitarios y orientación territorial.",
     lat: 4.7110,
     lng: -74.0721,
     url: "https://www.cruzrojabogota.org.co/",
@@ -171,9 +171,9 @@ const supportCenters = [
   },
   {
     name: "Cruz Roja Mexicana",
-    city: "M?xico",
-    type: "Socorros y migraci?n",
-    description: "Canales institucionales de delegaciones, socorros y programas de migraci?n.",
+    city: "México",
+    type: "Socorros y migración",
+    description: "Canales institucionales de delegaciones, socorros y programas de migración.",
     lat: 19.4326,
     lng: -99.1332,
     url: "https://www.cruzrojamexicana.org.mx/",
@@ -303,13 +303,13 @@ function createWhatsAppMessage(data) {
     `Tipo: ${data.tipo_reporte || "Busco a un familiar"}`,
     `Persona: ${data.nombre_persona || ""}`,
     `Ciudad/sector: ${data.ciudad_sector || ""}`,
-    `?ltimo contacto o lugar visto: ${data.ultimo_contacto_o_lugar_visto || ""}`,
+    `Último contacto o lugar visto: ${data.ultimo_contacto_o_lugar_visto || ""}`,
     `Edad aproximada: ${data.edad_aproximada || ""}`,
     `Estado general: ${data.estado_general || ""}`,
-    `Descripci?n: ${data.descripcion || ""}`,
+    `Descripción: ${data.descripcion || ""}`,
     `Reportante: ${data.nombre_reportante || ""}`,
-    `Relaci?n: ${data.relacion_con_persona || ""}`,
-    "Confirmo que esta informaci?n se env?a de buena fe. No reemplaza a autoridades ni organismos de rescate.",
+    `Relación: ${data.relacion_con_persona || ""}`,
+    "Confirmo que esta información se envía de buena fe. No reemplaza a autoridades ni organismos de rescate.",
   ].join("\n");
 }
 
@@ -321,7 +321,7 @@ function updateWhatsAppLink() {
   if (config.whatsappGroupLink) {
     whatsappButton.href = config.whatsappGroupLink;
     whatsappButton.textContent = "Abrir grupo de WhatsApp";
-    whatsappButton.title = "El reporte se guarda primero; el grupo sirve para coordinaci?n.";
+    whatsappButton.title = "El reporte se guarda primero; el grupo sirve para coordinación.";
     return;
   }
 
@@ -482,11 +482,11 @@ function renderCenters() {
   const centers = filterCenters();
   const mappedCount = centers.filter((center) => hasCoordinates(center)).length;
   const countries = new Set(centers.map((center) => center.country).filter(Boolean)).size;
-  centerStats.textContent = `${centers.length} centro(s) ? ${countries} pa?s(es) ? ${mappedCount} con punto en mapa`;
+  centerStats.textContent = `${centers.length} centro(s) · ${countries} país(es) · ${mappedCount} con punto en mapa`;
   renderCentersMap(centers);
 
   const grouped = centers.reduce((groups, center) => {
-    const country = center.country || "Sin pa?s";
+    const country = center.country || "Sin país";
     groups[country] = groups[country] || [];
     groups[country].push(center);
     return groups;
@@ -516,15 +516,15 @@ function typeLabel(type) {
     centro_acopio: "Centro de acopio",
     refugio: "Refugio",
     hospital: "Hospital",
-    punto_medico: "Punto m?dico",
+    punto_medico: "Punto médico",
     alimento: "Alimento",
     agua: "Agua",
     medicamentos: "Medicamentos",
     ong: "ONG",
     iglesia: "Iglesia",
-    informacion: "Informaci?n",
+    informacion: "Información",
   };
-  return labels[type] || type || "Informaci?n";
+  return labels[type] || type || "Información";
 }
 
 function hasCoordinates(center) {
@@ -547,27 +547,27 @@ function renderCenterCard(center) {
       <div>
         <span class="contact-category">${escapeHtml(typeLabel(center.type))}</span>
         <h4>${escapeHtml(center.name)}</h4>
-        <p>${escapeHtml(center.description || center.offer || "Punto de apoyo registrado para verificaci?n comunitaria.")}</p>
+        <p>${escapeHtml(center.description || center.offer || "Punto de apoyo registrado para verificación comunitaria.")}</p>
       </div>
       <div class="case-meta">
         <span class="pill">${escapeHtml(location)}</span>
-        <span class="pill">${escapeHtml(center.status === "verificado" ? "Verificado" : "Pendiente de verificaci?n")}</span>
+        <span class="pill">${escapeHtml(center.status === "verificado" ? "Verificado" : "Pendiente de verificación")}</span>
         <span class="pill">${escapeHtml(center.confidence || "por confirmar")}</span>
         ${hasCoordinates(center) ? `<span class="pill">${escapeHtml(mapLabel)}</span>` : ""}
       </div>
       <dl class="center-details">
-        ${center.address ? `<div><dt>Direcci?n general</dt><dd>${escapeHtml(center.address)}</dd></div>` : ""}
+        ${center.address ? `<div><dt>Dirección general</dt><dd>${escapeHtml(center.address)}</dd></div>` : ""}
         ${center.reference ? `<div><dt>Referencia</dt><dd>${escapeHtml(center.reference)}</dd></div>` : ""}
         ${center.schedule ? `<div><dt>Horario</dt><dd>${escapeHtml(center.schedule)}</dd></div>` : ""}
         ${center.receives ? `<div><dt>Recibe</dt><dd>${escapeHtml(center.receives)}</dd></div>` : ""}
         ${center.offer ? `<div><dt>Ofrece</dt><dd>${escapeHtml(center.offer)}</dd></div>` : ""}
-        ${center.phone ? `<div><dt>Tel?fono institucional</dt><dd>${escapeHtml(center.phone)}</dd></div>` : ""}
+        ${center.phone ? `<div><dt>Teléfono institucional</dt><dd>${escapeHtml(center.phone)}</dd></div>` : ""}
         ${center.sourceName ? `<div><dt>Fuente</dt><dd>${escapeHtml(center.sourceName)} ? ${escapeHtml(center.verifiedAt || "sin fecha")}</dd></div>` : ""}
       </dl>
-      <p class="source-note">${escapeHtml(center.notes || "Verifica siempre en la fuente original antes de movilizar ayuda.")}</p>
+      <p class="source-note">${escapeHtml(center.notes || "Verifica siempre en la fuente original antes de móvilizar ayuda.")}</p>
       <div class="public-card-actions">
         ${center.sourceUrl ? `<a class="secondary-btn" href="${escapeHtml(center.sourceUrl)}" target="_blank" rel="noopener">Abrir fuente</a>` : ""}
-        <a class="secondary-btn" href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener">C?mo llegar</a>
+        <a class="secondary-btn" href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener">Cómo llegar</a>
         <a class="secondary-btn" href="https://chat.whatsapp.com/LSWcidnfp6uLwzglQ47euc" target="_blank" rel="noopener">Coordinar por WhatsApp</a>
       </div>
     </article>
@@ -603,7 +603,7 @@ function renderCentersMap(centers) {
   const withoutMap = centers.length - mappedCenters.length;
   if (centerMapNote) {
     centerMapNote.textContent = withoutMap
-      ? `${withoutMap} registro(s) no tienen referencia geogr?fica suficiente y aparecen solo en el listado.`
+      ? `${withoutMap} registro(s) no tienen referencia geográfica suficiente y aparecen solo en el listado.`
       : "Los puntos pueden ser exactos o aproximados por ciudad; confirma siempre en la fuente original.";
   }
 }
@@ -612,12 +612,12 @@ function normalizeAidCenter(row) {
   const lat = Number.parseFloat(String(row.latitud || "").replace(",", "."));
   const lng = Number.parseFloat(String(row.longitud || "").replace(",", "."));
   const exactCoordinates = Number.isFinite(lat) && Number.isFinite(lng);
-  const cityKey = normalizeText([row.pais, row.estado_region, row.ciudad].join("|"));
+  const cityKey = normalizeText([row.país, row.estado_region, row.ciudad].join("|"));
   const referenceCoordinates = exactCoordinates ? [lat, lng] : cityMapReferences[cityKey] || [];
   return {
     name: row.nombre || "Centro por revisar",
     type: row.tipo || "informacion",
-    country: row.pais || "Sin pa?s",
+    country: row.país || "Sin país",
     state: row.estado_region || "",
     city: row.ciudad || "",
     address: row.direccion_general || "",
@@ -628,7 +628,7 @@ function normalizeAidCenter(row) {
     mapLng: referenceCoordinates[1],
     mapApproximate: !exactCoordinates && referenceCoordinates.length === 2,
     schedule: row.horario || "",
-    phone: row.telefono_publico || "",
+    phone: row.telefono_público || "",
     receives: row.que_recibe || "",
     offer: row.que_ofrece || "",
     sourceUrl: row.fuente_url || "",
@@ -647,7 +647,7 @@ function fallbackAidCenters() {
   return supportCenters.map((center) => ({
     name: center.name,
     type: "informacion",
-    country: center.city === "Medell?n" ? "Colombia" : center.city,
+    country: center.city === "Medellín" ? "Colombia" : center.city,
     state: "",
     city: center.city,
     address: "",
@@ -667,7 +667,7 @@ function fallbackAidCenters() {
     verifiedBy: "Conecta Familia Venezuela",
     confidence: "alta",
     status: "pendiente",
-    notes: "Registro de respaldo local; verificar fuente original antes de movilizar ayuda.",
+    notes: "Registro de respaldo local; verificar fuente original antes de móvilizar ayuda.",
     image: center.image || "",
     description: center.description,
   }));
@@ -680,7 +680,7 @@ function populateCenterFilters() {
 
   const orderedCountries = countries.sort((a, b) => countrySortValue(a) - countrySortValue(b) || a.localeCompare(b, "es"));
 
-  centerCountryFilter.innerHTML = `<option value="all">Todos los pa?ses</option>${orderedCountries
+  centerCountryFilter.innerHTML = `<option value="all">Todos los países</option>${orderedCountries
     .map((country) => `<option value="${escapeHtml(country)}">${escapeHtml(country)}</option>`)
     .join("")}`;
 
@@ -722,7 +722,7 @@ function renderPublicSources() {
         <p class="source-note">${escapeHtml(source.note)}</p>
         <div class="public-card-actions">
           <a class="secondary-btn source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(source.action)}</a>
-          <a class="secondary-btn" href="#reporte" data-action-link="Tengo informaci?n">Reportar informaci?n aqu?</a>
+          <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Reportar información aquí</a>
         </div>
       </article>
     `)
@@ -791,12 +791,12 @@ function loadScriptOnce(src, globalName) {
 
 async function readHospitalImportFile(file) {
   if (/\.xlsx$/i.test(file.name)) {
-    hospitalImportStatus.textContent = "Leyendo Excel. Esto puede tardar unos segundos.";
+    hospitalImportStatus.textContent = "Leyendo Excel. Esto puede tardar unos segúndos.";
     const XLSX = await loadScriptOnce("https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js", "XLSX");
     const buffer = await file.arrayBuffer();
     const workbook = XLSX.read(buffer, { type: "array" });
     const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-    return XLSX.utils.sheet_to_csv(firstSheet);
+    return XLSX.útils.sheet_to_csv(firstSheet);
   }
   return file.text();
 }
@@ -808,11 +808,11 @@ function csvRowToReport(row) {
     ciudad_sector: row.ciudad_sector || row.ciudad || row.sector || "Zona por confirmar",
     ultimo_contacto_o_lugar_visto: row.ultimo_contacto_o_lugar_visto || row.ultimo_lugar || row.lugar_visto || "Por confirmar",
     edad_aproximada: row.edad_aproximada || row.edad || "Por confirmar",
-    descripcion: row.descripcion || row.resumen || "Importado desde CSV para revisi?n manual.",
-    estado_general: row.estado_general || "Informaci?n por confirmar",
-    nombre_reportante: row.nombre_reportante || "Importaci?n CSV",
+    descripcion: row.descripcion || row.resumen || "Importado desde CSV para revisión manual.",
+    estado_general: row.estado_general || "Información por confirmar",
+    nombre_reportante: row.nombre_reportante || "Importación CSV",
     whatsapp_reportante: row.whatsapp_reportante || "",
-    relacion_con_persona: row.relacion_con_persona || "Fuente p?blica/importaci?n manual",
+    relacion_con_persona: row.relacion_con_persona || "Fuente pública/importación manual",
     consentimiento_datos: true,
     declaracion_buena_fe: true,
   });
@@ -869,7 +869,7 @@ function fillHospitalMapping(headers) {
       ciudad_estado: ["ciudad_estado", "ciudad", "estado", "ubicacion"],
       edad_aproximada: ["edad_aproximada", "edad"],
       fecha_ingreso: ["fecha_ingreso", "ingreso"],
-      fecha_publicacion: ["fecha_publicacion", "fecha", "publicacion"],
+      fecha_publicacion: ["fecha_publicacion", "fecha", "publicación"],
       estado_publico: ["estado_publico", "estado"],
       notas_publicas: ["notas_publicas", "nota", "observacion", "descripcion"],
     }[field];
@@ -893,7 +893,7 @@ function normalizeHospitalRows(rows, approveSafe = false) {
       updated_at: new Date().toISOString(),
       import_batch_id: batchId,
       source_url: hospitalSourceUrl?.value.trim() || row.source_url || row.fuente_url || "",
-      source_name: row.source_name || row.fuente_nombre || "Fuente hospitalaria p?blica",
+      source_name: row.source_name || row.fuente_nombre || "Fuente hospitalaria pública",
       nombre_persona: get("nombre_persona").trim(),
       edad_aproximada: get("edad_aproximada").trim(),
       hospital: get("hospital").trim(),
@@ -1029,7 +1029,7 @@ async function renderHospitalAdmissions() {
   const filtered = filterHospitalRecords(records);
   hospitalStats.textContent = `${filtered.length} de ${records.length} registro(s)`;
   if (!filtered.length) {
-    hospitalList.innerHTML = '<div class="empty-state">A?n no hay registros hospitalarios aprobados o no coinciden con la b?squeda.</div>';
+    hospitalList.innerHTML = '<div class="empty-state">Aún no hay registros hospitalarios aprobados o no coinciden con la búsqueda.</div>';
     return;
   }
   const grouped = filtered.reduce((groups, record) => {
@@ -1058,7 +1058,7 @@ function renderHospitalCard(record) {
       </div>
       <div class="case-meta">
         <span class="pill status-pill">${escapeHtml(record.estado_publico || "Hospitalizado")}</span>
-        ${record.edad_aproximada ? `<span class="pill">${escapeHtml(record.edad_aproximada)} a?os aprox.</span>` : ""}
+        ${record.edad_aproximada ? `<span class="pill">${escapeHtml(record.edad_aproximada)} años aprox.</span>` : ""}
         ${record.ciudad_estado ? `<span class="pill">${escapeHtml(record.ciudad_estado)}</span>` : ""}
         ${record.confirmado_por_familiar ? '<span class="pill">Confirmado por familiar</span>' : ""}
         ${record.trasladado ? '<span class="pill">Trasladado</span>' : ""}
@@ -1066,8 +1066,8 @@ function renderHospitalCard(record) {
       </div>
       ${record.notas_publicas ? `<p>${escapeHtml(record.notas_publicas)}</p>` : ""}
       <div class="public-card-actions">
-        <a class="secondary-btn" href="#reporte" data-action-link="Tengo informaci?n">Tengo informaci?n</a>
-        <a class="secondary-btn" href="#correcciones">Correcci?n/retiro</a>
+        <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
+        <a class="secondary-btn" href="#correcciones">Corrección/retiro</a>
         ${record.source_url ? `<a class="secondary-btn source-link" href="${escapeHtml(record.source_url)}" target="_blank" rel="noopener">Ver fuente original</a>` : ""}
       </div>
     </article>
@@ -1079,7 +1079,7 @@ function renderCsvPreview(rows) {
   csvImportButton.classList.toggle("hidden", rows.length === 0);
   csvImportStatus.textContent = rows.length
     ? `${rows.length} fila(s) listas para importar como pending_review.`
-    : "No se encontraron filas v?lidas.";
+    : "No se encontraron filas válidas.";
 
   if (!rows.length) {
     csvPreview.innerHTML = "";
@@ -1207,12 +1207,12 @@ async function renderHospitalAdmin() {
             record.possible_duplicate ? "posible duplicado" : "",
           ].filter(Boolean).join(", ") || "sin alertas"}</dd>
         </dl>
-        <label class="wide">Notas p?blicas
+        <label class="wide">Notas públicas
           <textarea class="hospital-public-notes" data-id="${escapeHtml(record.id)}" rows="2">${escapeHtml(record.notas_publicas || "")}</textarea>
         </label>
       </div>
       <div class="case-controls">
-        <button class="secondary-btn hospital-approve" data-id="${escapeHtml(record.id)}" type="button">Aprobar publicaci?n</button>
+        <button class="secondary-btn hospital-approve" data-id="${escapeHtml(record.id)}" type="button">Aprobar publicación</button>
         <button class="secondary-btn hospital-duplicate" data-id="${escapeHtml(record.id)}" type="button">Marcar duplicado</button>
         <button class="secondary-btn hospital-family" data-id="${escapeHtml(record.id)}" type="button">Confirmado por familiar</button>
         <button class="secondary-btn hospital-transferred" data-id="${escapeHtml(record.id)}" type="button">Trasladado</button>
@@ -1262,14 +1262,14 @@ function renderCorrectionRequests(requests) {
   if (!correctionRequestsList) return;
 
   if (!requests.length) {
-    correctionRequestsList.innerHTML = '<div class="empty-state">No hay solicitudes de correcci?n o retiro pendientes.</div>';
+    correctionRequestsList.innerHTML = '<div class="empty-state">No hay solicitudes de corrección o retiro pendientes.</div>';
     return;
   }
 
   correctionRequestsList.innerHTML = `
     <div class="section-heading compact-heading">
       <p class="eyebrow">Correcciones y retiro</p>
-      <h3>Solicitudes pendientes de revisi?n</h3>
+      <h3>Solicitudes pendientes de revisión</h3>
     </div>
     ${requests.map((request) => `
       <article class="case-card status-${escapeHtml(request.status)}" data-correction-id="${escapeHtml(request.id)}">
@@ -1281,18 +1281,18 @@ function renderCorrectionRequests(requests) {
           </div>
           <p class="case-date">Creado: ${escapeHtml(formatDate(request.created_at))}</p>
           <dl>
-            <dt>Descripci?n</dt>
+            <dt>Descripción</dt>
             <dd>${escapeHtml(request.detail)}</dd>
             ${request.source_url ? `<dt>Fuente</dt><dd><a href="${escapeHtml(request.source_url)}" target="_blank" rel="noopener">Abrir fuente</a></dd>` : ""}
             <dt>Solicitante</dt>
-            <dd>${escapeHtml(request.requester_name)} (${escapeHtml(request.relationship || "Relaci?n no indicada")})</dd>
+            <dd>${escapeHtml(request.requester_name)} (${escapeHtml(request.relationship || "Relación no indicada")})</dd>
             <dt>WhatsApp</dt>
             <dd>[privado - no publicar]</dd>
           </dl>
         </div>
         <div class="case-controls">
           <label>
-            Estado de revisi?n
+            Estado de revisión
             <select class="correction-status-select" data-id="${escapeHtml(request.id)}">
               ${statusOptions.map((status) => `<option value="${status}" ${status === request.status ? "selected" : ""}>${statusLabel(status)}</option>`).join("")}
             </select>
@@ -1308,8 +1308,8 @@ function correctionTypeLabel(type) {
     dato_incorrecto: "Dato incorrecto",
     persona_localizada: "Persona localizada",
     duplicado: "Posible duplicado",
-    retirar_informacion: "Retirar informaci?n",
-    informacion_falsa: "Informaci?n falsa",
+    retirar_informacion: "Retirar información",
+    informacion_falsa: "Información falsa",
   };
   return labels[type] || type || "Solicitud";
 }
@@ -1396,7 +1396,7 @@ async function renderReports() {
 
   if (supabaseClient && !session) {
     adminStats.innerHTML = "";
-    adminStatus.textContent = "Bandeja privada protegida. Entra con correo y contrase?a autorizados para revisar reportes.";
+    adminStatus.textContent = "Bandeja privada protegida. Entra con correo y contraseña autorizados para revisar reportes.";
     if (correctionRequestsList) correctionRequestsList.innerHTML = "";
     casesList.innerHTML = '<div class="empty-state">Solo personas autorizadas pueden ver esta bandeja privada.</div>';
     return;
@@ -1407,19 +1407,19 @@ async function renderReports() {
 
   if (!reports.length) {
     adminStatus.textContent = supabaseClient
-      ? "Bandeja privada lista. Todo reporte nuevo entrar? como pendiente de revisi?n y no se publicar? autom?ticamente."
-      : "Bandeja de respaldo disponible en este equipo. ?sala solo para revisi?n temporal.";
+      ? "Bandeja privada lista. Todo reporte nuevo entrará como pendiente de revisión y no se publicará automáticamente."
+      : "Bandeja de respaldo disponible en este equipo. Úsala solo para revisión temporal.";
     casesList.innerHTML = '<div class="empty-state">No hay reportes pendientes en la bandeja.</div>';
     return;
   }
 
   const filteredReports = filterReports(reports);
   adminStatus.textContent = supabaseClient
-    ? `${filteredReports.length} de ${reports.length} reporte(s) en la bandeja privada. Publica solo despu?s de escribir un resumen seguro.`
-    : `${filteredReports.length} de ${reports.length} reporte(s) en revisi?n temporal desde este equipo.`;
+    ? `${filteredReports.length} de ${reports.length} reporte(s) en la bandeja privada. Publica solo después de escribir un resumen seguro.`
+    : `${filteredReports.length} de ${reports.length} reporte(s) en revisión temporal desde este equipo.`;
 
   if (!filteredReports.length) {
-    casesList.innerHTML = '<div class="empty-state">No hay reportes que coincidan con el filtro o b?squeda.</div>';
+    casesList.innerHTML = '<div class="empty-state">No hay reportes que coincidan con el filtro o búsqueda.</div>';
     return;
   }
 
@@ -1452,7 +1452,7 @@ async function loadPublicCases() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    publicCasesList.innerHTML = '<div class="empty-state">No se pudo cargar la vista p?blica segura.</div>';
+    publicCasesList.innerHTML = '<div class="empty-state">No se pudo cargar la vista pública segura.</div>';
     return [];
   }
 
@@ -1490,11 +1490,11 @@ async function renderPublicCases() {
     publicStats.textContent = "Sin casos publicados";
     publicCasesList.innerHTML = `
       <div class="empty-state">
-        A?n no hay casos aprobados dentro de Conecta Familia Venezuela.
-        Usa la fuente externa prioritaria para buscar reportes ya publicados y vuelve aqu? si tienes informaci?n.
+        Aún no hay casos aprobados dentro de Conecta Familia Venezuela.
+        Usa la fuente externa prioritaria para buscar reportes ya publicados y vuelve aquí si tienes información.
         <div class="public-card-actions">
           <a class="secondary-btn" href="https://buscardesaparecidos.com/buscar" target="_blank" rel="noopener">Buscar reportes externos</a>
-          <a class="secondary-btn" href="#reporte" data-action-link="Tengo informaci?n">Reportar informaci?n aqu?</a>
+          <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Reportar información aquí</a>
         </div>
       </div>
     `;
@@ -1505,20 +1505,20 @@ async function renderPublicCases() {
   publicStats.textContent = `${filteredCases.length} de ${cases.length} caso(s)`;
 
   if (!filteredCases.length) {
-    publicCasesList.innerHTML = '<div class="empty-state">No hay casos publicados que coincidan con la b?squeda.</div>';
+    publicCasesList.innerHTML = '<div class="empty-state">No hay casos publicados que coincidan con la búsqueda.</div>';
     publicShowMore.classList.add("hidden");
     return;
   }
 
   publicShowMore.classList.toggle("hidden", visibleCases.length >= filteredCases.length);
-  publicShowMore.textContent = `Ver m?s casos (${visibleCases.length}/${filteredCases.length})`;
+  publicShowMore.textContent = `Ver más casos (${visibleCases.length}/${filteredCases.length})`;
 
   publicCasesList.innerHTML = visibleCases
     .map((item) => `
       <article class="public-case-card status-${escapeHtml(item.status)}">
         <div class="public-case-top">
           ${item.photo_url
-            ? `<img class="public-photo" src="${escapeHtml(item.photo_url)}" alt="Foto p?blica de referencia de ${escapeHtml(item.public_nombre)}" loading="lazy" referrerpolicy="no-referrer" />`
+            ? `<img class="public-photo" src="${escapeHtml(item.photo_url)}" alt="Foto pública de referencia de ${escapeHtml(item.public_nombre)}" loading="lazy" referrerpolicy="no-referrer" />`
             : `<div class="public-avatar" aria-hidden="true">${escapeHtml(String(item.public_nombre || "?").trim().charAt(0) || "?")}</div>`}
           <div>
             <h3>${escapeHtml(item.public_nombre)}</h3>
@@ -1529,11 +1529,11 @@ async function renderPublicCases() {
           <span class="pill status-pill">${escapeHtml(statusLabel(item.status))}</span>
           ${item.source_type ? `<span class="pill source-pill">${escapeHtml(item.source_type)}</span>` : ""}
           ${item.public_ciudad_sector ? `<span class="pill">${escapeHtml(item.public_ciudad_sector)}</span>` : ""}
-          ${item.public_edad_aproximada ? `<span class="pill">${escapeHtml(item.public_edad_aproximada)} a?os aprox.</span>` : ""}
+          ${item.public_edad_aproximada ? `<span class="pill">${escapeHtml(item.public_edad_aproximada)} años aprox.</span>` : ""}
         </div>
         <p>${escapeHtml(item.public_resumen)}</p>
         <div class="public-card-actions">
-          <a class="secondary-btn" href="#reporte" data-action-link="Tengo informaci?n">Tengo informaci?n</a>
+          <a class="secondary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
           ${item.source_url ? `<a class="secondary-btn source-link" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener">Ver fuente original</a>` : ""}
         </div>
       </article>
@@ -1559,13 +1559,13 @@ function renderCaseCard(report) {
         <dl>
           <dt>Ciudad/sector</dt>
           <dd>${escapeHtml(report.ciudad_sector)}</dd>
-          <dt>?ltimo contacto</dt>
+          <dt>Último contacto</dt>
           <dd>${escapeHtml(report.ultimo_contacto_o_lugar_visto)}</dd>
           <dt>Edad aproximada</dt>
           <dd>${escapeHtml(report.edad_aproximada)}</dd>
           <dt>Estado general</dt>
           <dd>${escapeHtml(report.estado_general)}</dd>
-          <dt>Descripci?n</dt>
+          <dt>Descripción</dt>
           <dd>${escapeHtml(report.descripcion)}</dd>
           <dt>Reportante</dt>
           <dd>${escapeHtml(report.nombre_reportante)} (${escapeHtml(report.relacion_con_persona)})</dd>
@@ -1579,11 +1579,11 @@ function renderCaseCard(report) {
           <select class="status-select" data-id="${escapeHtml(report.id)}">${options}</select>
         </label>
         <label>
-          Resumen p?blico seguro
-          <textarea class="public-summary" data-id="${escapeHtml(report.id)}" rows="4" placeholder="Obligatorio antes de publicar. No incluyas tel?fonos, c?dulas, direcciones exactas ni datos m?dicos.">${escapeHtml(report.public_resumen || "")}</textarea>
+          Resumen público seguro
+          <textarea class="public-summary" data-id="${escapeHtml(report.id)}" rows="4" placeholder="Obligatorio antes de publicar. No incluyas teléfonos, cédulas, direcciones exactas ni datos médicos.">${escapeHtml(report.public_resumen || "")}</textarea>
         </label>
-        <button class="secondary-btn publish-case" type="button" data-id="${escapeHtml(report.id)}">Publicar versi?n segura</button>
-        <button class="secondary-btn unpublish-case" type="button" data-id="${escapeHtml(report.id)}">Ocultar p?blico</button>
+        <button class="secondary-btn publish-case" type="button" data-id="${escapeHtml(report.id)}">Publicar versión segura</button>
+        <button class="secondary-btn unpublish-case" type="button" data-id="${escapeHtml(report.id)}">Ocultar público</button>
         <button class="secondary-btn duplicate-case" type="button" data-id="${escapeHtml(report.id)}">Marcar posible duplicado</button>
         <button class="secondary-btn copy-summary" type="button" data-id="${escapeHtml(report.id)}">Copiar resumen seguro</button>
       </div>
@@ -1604,7 +1604,7 @@ async function updateReport(id, patch) {
 
   const { error } = await supabaseClient.from("reports").update(patch).eq("id", id);
   if (error) {
-    adminStatus.textContent = "No se pudo guardar el cambio. Revisa la conexi?n e intenta de nuevo.";
+    adminStatus.textContent = "No se pudo guardar el cambio. Revisa la conexión e intenta de nuevo.";
     return;
   }
 
@@ -1628,10 +1628,10 @@ function safeSummary(report) {
     `Caso: ${report.nombre_persona}`,
     `Estado: ${statusLabel(report.status)}`,
     `Ciudad/sector: ${report.ciudad_sector}`,
-    `?ltimo contacto o lugar visto: ${report.ultimo_contacto_o_lugar_visto}`,
+    `Último contacto o lugar visto: ${report.ultimo_contacto_o_lugar_visto}`,
     `Edad aproximada: ${report.edad_aproximada}`,
     `Estado general: ${report.estado_general}`,
-    `Descripci?n: ${report.descripcion}`,
+    `Descripción: ${report.descripcion}`,
     "Contacto del reportante: privado, no publicar.",
   ].join("\n");
 }
@@ -1672,13 +1672,13 @@ reportForm.addEventListener("submit", async (event) => {
     reportForm.reset();
     reportForm.tipo_reporte.value = "Busco a un familiar";
     formStatus.textContent = supabaseClient
-      ? "Reporte enviado de forma privada con estado pendiente de revisi?n."
+      ? "Reporte enviado de forma privada con estado pendiente de revisión."
       : "Reporte guardado como borrador privado en este equipo.";
     updateWhatsAppLink();
     await renderReports();
     await renderPublicCases();
   } catch (error) {
-    formStatus.textContent = "No se pudo guardar el reporte. Revisa la conexi?n e intenta de nuevo.";
+    formStatus.textContent = "No se pudo guardar el reporte. Revisa la conexión e intenta de nuevo.";
   }
 });
 
@@ -1804,7 +1804,7 @@ casesList.addEventListener("click", async (event) => {
     if (!report) return;
 
     if (!summary) {
-      adminStatus.textContent = "Escribe un resumen p?blico seguro antes de publicar.";
+      adminStatus.textContent = "Escribe un resumen público seguro antes de publicar.";
       return;
     }
 
@@ -1827,8 +1827,8 @@ casesList.addEventListener("click", async (event) => {
     await updateReport(id, {
       status: "possible_match",
       public_resumen: duplicateOf
-        ? `Posible duplicado o coincidencia con: ${duplicateOf}. Pendiente de revisi?n.`
-        : "Posible duplicado o coincidencia. Pendiente de revisi?n.",
+        ? `Posible duplicado o coincidencia con: ${duplicateOf}. Pendiente de revisión.`
+        : "Posible duplicado o coincidencia. Pendiente de revisión.",
     });
   }
 });
@@ -1850,8 +1850,8 @@ if (correctionRequestsList) {
 
     const { error } = await supabaseClient.from("correction_requests").update({ status }).eq("id", id);
     adminStatus.textContent = error
-      ? "No se pudo actualizar la solicitud de correcci?n."
-      : "Solicitud de correcci?n actualizada.";
+      ? "No se pudo actualizar la solicitud de corrección."
+      : "Solicitud de corrección actualizada.";
     await renderReports();
   });
 }
@@ -1860,7 +1860,7 @@ csvFileInput.addEventListener("change", async () => {
   const file = csvFileInput.files && csvFileInput.files[0];
   if (!file) return;
   csvTextInput.value = await file.text();
-  csvImportStatus.textContent = "Archivo cargado. Revisa la previsualizaci?n antes de importar.";
+  csvImportStatus.textContent = "Archivo cargado. Revisa la previsualización antes de importar.";
 });
 
 csvPreviewButton.addEventListener("click", () => {
@@ -1993,21 +1993,21 @@ correctionRequestForm.addEventListener("submit", async (event) => {
     consent: correctionRequestForm.consent.checked,
     good_faith: correctionRequestForm.good_faith.checked,
   });
-  correctionStatus.textContent = "Solicitud enviada para revisi?n del equipo.";
+  correctionStatus.textContent = "Solicitud enviada para revisión del equipo.";
   correctionRequestForm.reset();
 });
 
 adminLoginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!supabaseClient) {
-    adminStatus.textContent = "La bandeja privada no est? disponible en este momento. Intenta de nuevo m?s tarde.";
+    adminStatus.textContent = "La bandeja privada no está disponible en este momento. Intenta de nuevo más tarde.";
     return;
   }
 
   const email = adminEmail.value.trim();
   const password = adminPassword.value;
   if (!email || !password) {
-    adminStatus.textContent = "Escribe el correo y la contrase?a del panel admin.";
+    adminStatus.textContent = "Escribe el correo y la contraseña del panel admin.";
     return;
   }
 
@@ -2017,8 +2017,8 @@ adminLoginForm.addEventListener("submit", async (event) => {
   });
 
   adminStatus.textContent = error
-    ? "No se pudo iniciar sesi?n. Revisa el correo, la contrase?a o solicita autorizaci?n al equipo."
-    : "Sesi?n iniciada. Si este usuario est? autorizado, ver? la bandeja privada.";
+    ? "No se pudo iniciar sesión. Revisa el correo, la contraseña o solicita autorización al equipo."
+    : "Sesión iniciada. Si este usuario está autorizado, verá la bandeja privada.";
   if (!error) {
     adminPassword.value = "";
     await renderReports();
@@ -2044,7 +2044,7 @@ exportReports.addEventListener("click", async () => {
 });
 
 clearReports.addEventListener("click", async () => {
-  const confirmed = confirm("?Vaciar los borradores guardados en este equipo?");
+  const confirmed = confirm("¿Vaciar los borradores guardados en este equipo?");
   if (!confirmed) return;
   localStorage.removeItem(STORAGE_KEY);
   await renderReports();

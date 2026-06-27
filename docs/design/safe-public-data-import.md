@@ -16,16 +16,16 @@ Objetivo: permitir importacion manual y revisable sin publicar automaticamente d
 6. El sistema detecta:
    - errores de columnas obligatorias.
    - posibles duplicados.
-   - telefonos.
-   - cedulas/documentos.
+   - teléfonos.
+   - cédulas/documentos.
    - correos privados.
    - direcciones exactas sensibles.
-   - datos medicos sensibles.
+   - datos médicos sensibles.
    - nombres de reportantes.
    - `admin_notes` / `private_notes`.
 7. Admin confirma importacion.
 8. Se crea `import_batch_id`.
-9. Cada fila se guarda como privada/en revision:
+9. Cada fila se guarda como privada/en revisión:
    - personas: `pending_review`, `published=false`.
    - centros/fuentes: `pendiente`, `public_approved=false`.
 10. Admin puede revisar lote, aprobar fila por fila o hacer rollback.
@@ -33,10 +33,10 @@ Objetivo: permitir importacion manual y revisable sin publicar automaticamente d
 ## Reglas de bloqueo
 
 - Bloquear importacion si falta `source_url` para fuentes externas.
-- Bloquear publicacion si hay campos sensibles en resumen publico.
+- Bloquear publicación si hay campos sensibles en resumen público.
 - No guardar `service_role` ni secretos en frontend.
 - No hacer fetch remoto automatico desde webs con captcha, login o bloqueo.
-- Si el CSV contiene columnas como `nombre_reportante`, `whatsapp_reportante`, `telefono`, `contacto`, `admin_notes` o `private_notes`, marcarlas como sensibles y excluirlas de cualquier campo publico.
+- Si el CSV contiene columnas como `nombre_reportante`, `whatsapp_reportante`, `telefono`, `contacto`, `admin_notes` o `private_notes`, marcarlas como sensibles y excluirlas de cualquier campo público.
 - Si hay registros publicados dentro de un lote, el rollback debe ocultar primero lo publicado o limitarse a filas pendientes.
 
 ## Deteccion de duplicados
@@ -61,7 +61,7 @@ Fuentes:
 
 - URL normalizada.
 - nombre_fuente.
-- pais/estado_region.
+- país/estado_region.
 
 ## Salida esperada de preview
 
