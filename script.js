@@ -242,6 +242,7 @@ const hospitalApproveSafeButton = document.querySelector("#hospitalApproveSafeBu
 const hospitalImportStatus = document.querySelector("#hospitalImportStatus");
 const hospitalImportPreview = document.querySelector("#hospitalImportPreview");
 const hospitalAdminList = document.querySelector("#hospitalAdminList");
+const hospitalSourceFiles = document.querySelector("#hospitalSourceFiles");
 const adminHospitalFilter = document.querySelector("#adminHospitalFilter");
 const adminHospitalStatusFilter = document.querySelector("#adminHospitalStatusFilter");
 const hospitalMapSelects = {
@@ -978,6 +979,47 @@ async function loadExternalHospitalAdmissions() {
   } catch {
     return [];
   }
+}
+
+async function loadHospitalSourceFiles() {
+  try {
+    const response = await fetch("/data/external/hospital-source-files.json", { cache: "no-store" });
+    if (!response.ok) return [];
+    return await response.json();
+  } catch {
+    return [];
+  }
+}
+
+async function renderHospitalSourceFiles() {
+  if (!hospitalSourceFiles) return;
+  const files = await loadHospitalSourceFiles();
+  if (!files.length) {
+    hospitalSourceFiles.innerHTML = '<div class="empty-state">No hay archivos fuente adicionales publicados.</div>';
+    return;
+  }
+  const grouped = files.reduce((groups, file) => {
+    const group = file.group || "Fuente sin grupo";
+    groups[group] = groups[group] || [];
+    groups[group].push(file);
+    return groups;
+  }, {});
+  hospitalSourceFiles.innerHTML = Object.entries(grouped).map(([group, items]) => `
+    <article class="source-file-group">
+      <div class="center-country-heading">
+        <h4>${escapeHtml(group)}</h4>
+        <span>${items.length} archivo(s)</span>
+      </div>
+      <div class="source-file-list">
+        ${items.map((item) => `
+          <a class="source-file-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">
+            <span>${escapeHtml(item.name)}</span>
+            <small>${escapeHtml(item.kind || "archivo")}</small>
+          </a>
+        `).join("")}
+      </div>
+    </article>
+  `).join("");
 }
 
 async function renderHospitalAdmissions() {
@@ -2015,6 +2057,7 @@ if (supabaseClient) {
     renderPublicCases();
     renderHospitalAdmin();
     renderHospitalAdmissions();
+    renderHospitalSourceFiles();
   });
 }
 
@@ -2023,6 +2066,7 @@ renderReports();
 renderPublicCases();
 renderHospitalAdmissions();
 renderHospitalAdmin();
+renderHospitalSourceFiles();
 renderPublicSources();
 loadAidCenters();
 routeFromCurrentUrl();

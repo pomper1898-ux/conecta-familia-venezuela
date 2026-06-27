@@ -1162,6 +1162,62 @@ code {
   border-left: 4px solid var(--blue);
 }
 
+.hospital-source-files-panel {
+  margin-top: 28px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.hospital-source-files {
+  display: grid;
+  gap: 14px;
+}
+
+.source-file-group {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(23, 61, 143, 0.14);
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.source-file-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+  max-height: 260px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.source-file-link {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.source-file-link span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-file-link small {
+  flex: 0 0 auto;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
 .center-card,
 .csv-importer {
   padding: 16px;
