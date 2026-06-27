@@ -71,7 +71,7 @@ Todo CSV entra como privado y pendiente de revisión.
 
 Entrar a `/admin/importar-hospitales`.
 
-Además, `/hospitales` carga un lote público autorizado desde `data/external/authorized-hospital-admissions.json`, generado a partir del registro maestro de pacientes del Drive SISMO 2026 VZLA. Ese archivo solo contiene campos públicos seguros.
+Además, `/hospitales` carga un lote público autorizado desde `data/external/authorized-hospital-admissions.json`, generado a partir del registro maestro de pacientes y el PDF de ingresos hospitalarios del Drive SISMO 2026 VZLA. Ese archivo solo contiene campos públicos seguros.
 
 Permite:
 
