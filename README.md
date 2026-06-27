@@ -18,21 +18,22 @@ Abrir:
 http://127.0.0.1:8767/
 ```
 
-Rutas principales en producción:
+Rutas principales:
 
-- `/personas`: buscador público de personas.
+- `/personas`: buscador público de personas reportadas.
+- `/hospitales`: personas localizadas o reportadas en hospitales con campos seguros.
 - `/centros`: mapa/lista de centros y puntos de apoyo.
 - `/admin`: revisión privada.
-
-En local con `python -m http.server`, entra por `/` y usa la navegación interna.
+- `/admin/importar-hospitales`: importador manual de listados hospitalarios.
 
 ## Configurar Supabase
 
 1. Crear proyecto en Supabase.
 2. Abrir SQL Editor.
-3. Ejecutar `schema.sql`.
-4. Crear usuarios admin en Authentication.
-5. Promover usuarios en `profiles`:
+3. Ejecutar `schema.sql` si es una instalación nueva.
+4. Ejecutar migraciones seguras en `supabase/migrations/`, especialmente `safe_hospital_admissions_migration.sql`.
+5. Crear usuarios admin en Authentication.
+6. Promover usuarios en `profiles`:
 
 ```sql
 insert into public.profiles (id, email, role)
@@ -42,28 +43,84 @@ where email in ('admin1@dominio.com', 'admin2@dominio.com')
 on conflict (id) do update set role = 'admin';
 ```
 
-6. En `config.js`, configurar:
-
-```js
-window.CONFAM_CONFIG = {
-  supabaseUrl: "https://TU-PROYECTO.supabase.co",
-  supabaseAnonKey: "TU_ANON_PUBLIC_KEY",
-  whatsappGroupLink: "https://chat.whatsapp.com/..."
-};
-```
+7. En `config.js`, configurar la URL pública, anon key y grupo de WhatsApp.
 
 Nunca usar `service_role key` en el navegador.
 
-## Configurar RLS
+## Reglas de privacidad
 
-`schema.sql` activa RLS y aplica estas reglas:
+- Los reportes nuevos entran como privados y `pending_review`.
+- Nada se publica automáticamente.
+- La vista pública solo debe mostrar campos seguros aprobados.
+- No publicar teléfonos, cédulas, direcciones exactas, diagnósticos, historia clínica, nombres de reportantes, contactos familiares, `admin_notes` ni `private_notes`.
+- Toda corrección, retiro o cambio sensible requiere revisión humana.
 
-- Cualquier visitante puede crear reportes privados con `pending_review`.
-- Los reportes nuevos entran con `visibility = private` y `published = false`.
-- Solo admins/reviewers pueden leer reportes completos.
-- La vista `public_cases` muestra solo campos seguros aprobados.
-- Correcciones/retiros entran como `pending_review`.
-- Centros publicados se consultan desde vista pública segura.
+## Importar CSV general
+
+Entrar a `/admin`, iniciar sesión y usar “Importar CSV con revisión previa”.
+
+Columnas recomendadas:
+
+```csv
+nombre_persona,ciudad_sector,ultimo_contacto_o_lugar_visto,edad_aproximada,descripcion,estado_general,fuente_url,foto_url
+```
+
+Todo CSV entra como privado y pendiente de revisión.
+
+## Importar personas localizadas en hospitales
+
+Entrar a `/admin/importar-hospitales`.
+
+Permite:
+
+- Subir CSV, TSV o Excel `.xlsx`.
+- Pegar una URL pública si el navegador puede leerla directamente.
+- Previsualizar antes de guardar.
+- Mapear columnas manualmente.
+- Detectar columnas sensibles.
+- Detectar filas incompletas y posibles duplicados.
+- Agrupar por hospital.
+- Guardar `import_batch_id`.
+- Aprobar individualmente.
+- Aprobar en lote solo filas seguras.
+- Hacer rollback por lote.
+
+Columnas esperadas:
+
+```csv
+nombre_persona,hospital,ciudad_estado,edad_aproximada,fecha_ingreso,fecha_publicacion,estado_publico,notas_publicas
+```
+
+Campos públicos permitidos:
+
+- nombre de la persona
+- edad aproximada
+- hospital
+- ciudad/estado general
+- fecha de ingreso o publicación
+- estado público seguro
+- notas públicas sanitizadas
+- fuente original
+
+Si una fila contiene teléfono, cédula, diagnóstico, dirección exacta, correo, contacto familiar o datos de reportantes, queda bloqueada para aprobación en lote.
+
+## Aprobar publicaciones
+
+En `/admin` o `/admin/importar-hospitales`:
+
+1. Revisar el registro.
+2. Confirmar fuente original.
+3. Editar `notas_publicas` si hace falta.
+4. Confirmar que no hay datos sensibles.
+5. Aprobar publicación o mantener privado.
+
+## Marcar duplicados
+
+Los duplicados se detectan por nombre normalizado, hospital, ciudad/estado y fecha de ingreso/publicación. Si parece duplicado, se marca para revisión y no se fusiona automáticamente.
+
+## Corrección o retiro
+
+La página incluye formulario de corrección/retiro. Toda solicitud entra como pendiente. Si alguien pide retirar o corregir información, se debe revisar y, ante duda, ocultar primero.
 
 ## Subir a Vercel
 
@@ -74,11 +131,7 @@ Configuración:
 - Output Directory: `.`
 - Install Command: vacío
 
-`vercel.json` incluye rewrites para:
-
-- `/personas`
-- `/centros`
-- `/admin`
+`vercel.json` incluye rewrites para `/personas`, `/hospitales`, `/centros`, `/admin` y `/admin/importar-hospitales`.
 
 En Supabase Authentication configurar:
 
@@ -86,86 +139,8 @@ En Supabase Authentication configurar:
 - Redirect URLs:
   - `https://conecta-familia-venezuela.vercel.app`
   - `https://conecta-familia-venezuela.vercel.app/admin`
-
-## Importar CSV
-
-Entrar a `/admin`, iniciar sesión y usar “Importar CSV con revisión previa”.
-
-Columnas recomendadas:
-
-```csv
-nombre_persona,ciudad_sector,ultimo_contacto_o_lugar_visto,edad_aproximada,descripcion,estado_general,fuente_url,foto_url
-```
-
-Reglas:
-
-- El importador muestra preview antes de importar.
-- Todo CSV entra como reporte privado.
-- Todo reporte importado queda `pending_review`.
-- Nada se publica automáticamente.
-- No importar teléfonos públicos, cédulas, direcciones exactas ni datos médicos.
-- Usar `fuente_url`/`source_url` y `foto_url`/`photo_url` solo cuando provengan de una fuente pública verificable.
-- No copiar nombres de reportantes, contactos privados ni campos administrativos de otras plataformas aunque aparezcan embebidos en HTML público.
-
-## Aprobar publicaciones
-
-En `/admin`:
-
-1. Revisar reporte completo.
-2. Cambiar estado si aplica.
-3. Escribir resumen público seguro.
-4. Confirmar que el resumen no incluya teléfonos, cédulas, direcciones exactas, datos médicos o reportantes.
-5. Click en “Publicar versión segura”.
-
-La sección `/personas` solo muestra la versión pública aprobada.
-
-## Marcar duplicados
-
-En `/admin`:
-
-1. Buscar el reporte.
-2. Click en “Marcar posible duplicado”.
-3. Indicar ID o nombre del caso relacionado si se conoce.
-4. El caso queda como `possible_match`.
-5. No eliminar hasta confirmar con fuente o familiar responsable.
-
-## Solicitudes de retiro/corrección
-
-La página incluye formulario de correcciones/retiro.
-
-Proceso recomendado:
-
-1. Revisar identidad o legitimidad de quien solicita.
-2. Verificar si la información es sensible, incorrecta, duplicada o ya no debe mostrarse.
-3. Ocultar caso si hay riesgo.
-4. Corregir resumen público seguro si corresponde.
-5. Registrar evento interno.
-
-Tipos aceptados: `dato_incorrecto`, `persona_localizada`, `duplicado`, `retirar_informacion`, `informacion_falsa`.
-
-Toda solicitud entra como `pending_review`. El WhatsApp del solicitante queda privado. Nada se cambia ni retira automáticamente sin revisión humana.
-
-Nunca discutir datos sensibles públicamente.
-
-## Fuentes públicas
-
-La página puede incluir registros de fuentes públicas externas, pero:
-
-- No hay scraping automático en producción.
-- No se publica automáticamente nada importado.
-- Se conserva enlace a fuente original.
-- Se omiten teléfonos/contactos personales.
-- Se omiten cédulas, direcciones exactas, datos médicos sensibles, nombres de reportantes y `admin_notes`.
-- En menores de edad, usar información mínima.
-- Si una fuente cambia o pide retiro, revisar y retirar.
-
-Antes de usar una fuente pública, revisar `docs/source-audit-buscardesaparecidos.md` como referencia de riesgos.
+  - `https://conecta-familia-venezuela.vercel.app/admin/importar-hospitales`
 
 ## Advertencias éticas y legales
 
-- Este proyecto organiza información ciudadana; no valida identidad por sí solo.
-- La publicación de datos de personas desaparecidas puede generar riesgo.
-- No publicar teléfonos privados, cédulas, direcciones exactas, datos médicos o datos de menores salvo mínima información necesaria y fuente verificable.
-- Si hay peligro inmediato, llamar primero al 911 / VEN-911 o autoridades locales.
-- Respetar solicitudes legítimas de corrección o retiro.
-- Evitar rumores, cadenas de WhatsApp, capturas sin fuente y contenido no verificable.
+Este proyecto organiza información ciudadana y fuentes públicas. No valida identidad por sí solo. Si hay peligro inmediato, llamar primero al 911 / VEN-911 o autoridades locales. Respetar fuentes originales, solicitudes legítimas de retiro y el principio de publicar solo lo mínimo necesario para ayudar.

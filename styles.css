@@ -1013,7 +1013,8 @@ code {
 }
 
 .centers-section,
-.correction-section {
+.correction-section,
+.hospital-section {
   padding: clamp(44px, 7vw, 84px) clamp(18px, 4vw, 56px);
 }
 
@@ -1134,6 +1135,31 @@ code {
   overflow: auto;
   padding-right: 4px;
   scrollbar-gutter: stable;
+}
+
+.hospital-list,
+.hospital-group {
+  display: grid;
+  gap: 14px;
+}
+
+.hospital-search-panel {
+  grid-template-columns: minmax(240px, 1fr) minmax(180px, 260px) minmax(180px, 260px) auto;
+}
+
+.hospital-map-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.hospital-admin-panel {
+  border-color: rgba(23, 61, 143, 0.2);
+  background: linear-gradient(180deg, #fff, #f8fbff);
+}
+
+.hospital-card {
+  border-left: 4px solid var(--blue);
 }
 
 .center-card,

@@ -11,7 +11,15 @@
       "destination": "/index.html"
     },
     {
+      "source": "/hospitales",
+      "destination": "/index.html"
+    },
+    {
       "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/importar-hospitales",
       "destination": "/index.html"
     }
   ],

@@ -27,6 +27,7 @@
       </a>
       <nav class="topnav" aria-label="Navegación principal">
         <a href="/personas" data-route-link>Personas</a>
+        <a href="/hospitales" data-route-link>Hospitales</a>
         <a href="/centros" data-route-link>Centros</a>
         <a href="#fuentes-personas">Fuentes</a>
         <a href="#reporte">Reportar</a>
@@ -96,6 +97,46 @@
           bomberos, policía, hospitales ni organismos de rescate. Los reportes
           quedan privados y en revisión antes de cualquier acción.
         </p>
+      </section>
+
+      <section id="hospitales" class="public-section hospital-section" data-route-section="hospitales">
+        <div class="public-directory-head">
+          <div class="section-heading">
+            <p class="eyebrow">Personas localizadas en hospitales</p>
+            <h2>Listados hospitalarios revisados</h2>
+            <p>
+              Consulta registros importados desde fuentes hospitalarias o públicas. Solo se muestran campos seguros: nombre, hospital, ciudad, estado público y notas públicas.
+            </p>
+          </div>
+          <div class="public-directory-actions">
+            <a class="primary-btn" href="#reporte" data-action-link="Tengo información">Tengo información</a>
+            <a class="secondary-btn" href="#correcciones">Solicitar corrección/retiro</a>
+          </div>
+        </div>
+        <div class="public-search-panel hospital-search-panel" role="search">
+          <label>
+            Buscar por nombre u hospital
+            <input id="hospitalSearch" type="search" placeholder="Ej: Pérez, Hospital Central, La Guaira" autocomplete="off" />
+          </label>
+          <label>
+            Hospital
+            <select id="hospitalFilter">
+              <option value="all">Todos los hospitales</option>
+            </select>
+          </label>
+          <label>
+            Estado
+            <select id="hospitalStatusFilter">
+              <option value="all">Todos</option>
+              <option value="hospitalizado">Hospitalizado</option>
+              <option value="trasladado">Trasladado</option>
+              <option value="dado_de_alta_reportado">Dado de alta reportado</option>
+              <option value="confirmado_por_familiar">Confirmado por familiar</option>
+            </select>
+          </label>
+          <div id="hospitalStats" class="public-stats" aria-live="polite"></div>
+        </div>
+        <div id="hospitalList" class="hospital-list" aria-live="polite"></div>
       </section>
 
       <section id="personas" class="public-section" data-route-section="personas">
@@ -696,6 +737,66 @@
           </div>
           <p id="csvImportStatus" class="form-status" role="status"></p>
           <div id="csvPreview" class="csv-preview" aria-live="polite"></div>
+        </div>
+        <div id="admin-importar-hospitales" class="csv-importer hospital-admin-panel" data-route-section="admin-importar-hospitales">
+          <div class="section-heading compact-heading">
+            <p class="eyebrow">Importador hospitalario</p>
+            <h3>Importar personas localizadas en hospitales</h3>
+            <p>
+              Sube CSV, pega datos o intenta una URL pública de Drive. Nada se publica hasta aprobar individualmente o aprobar en lote solo campos seguros.
+            </p>
+          </div>
+          <div class="csv-tools">
+            <label>
+              Fuente URL o Drive público
+              <input id="hospitalSourceUrl" type="url" placeholder="https://drive.google.com/..." />
+            </label>
+            <label>
+              Archivo CSV / TSV
+              <input id="hospitalFileInput" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values,.xlsx" />
+            </label>
+            <label class="wide">
+              Datos pegados
+              <textarea id="hospitalCsvText" rows="5" placeholder="nombre_persona,hospital,ciudad_estado,fecha_ingreso,estado_publico,notas_publicas,fuente_url"></textarea>
+            </label>
+            <div class="hospital-map-grid wide">
+              <label>Nombre <select id="mapNombre"></select></label>
+              <label>Hospital <select id="mapHospital"></select></label>
+              <label>Ciudad/estado <select id="mapCiudad"></select></label>
+              <label>Edad <select id="mapEdad"></select></label>
+              <label>Fecha ingreso <select id="mapFechaIngreso"></select></label>
+              <label>Fecha publicación <select id="mapFechaPublicacion"></select></label>
+              <label>Estado público <select id="mapEstadoPublico"></select></label>
+              <label>Notas públicas <select id="mapNotasPublicas"></select></label>
+            </div>
+            <div class="form-actions wide">
+              <button id="hospitalLoadDrive" class="secondary-btn" type="button">Leer URL pública</button>
+              <button id="hospitalPreviewButton" class="secondary-btn" type="button">Previsualizar</button>
+              <button id="hospitalImportButton" class="primary-btn hidden" type="button">Guardar como pendiente</button>
+              <button id="hospitalApproveSafeButton" class="primary-btn hidden" type="button">Aprobar en lote solo campos seguros</button>
+            </div>
+          </div>
+          <p id="hospitalImportStatus" class="form-status" role="status"></p>
+          <div id="hospitalImportPreview" class="csv-preview" aria-live="polite"></div>
+          <div class="admin-filters">
+            <label>
+              Filtrar por hospital
+              <select id="adminHospitalFilter">
+                <option value="all">Todos</option>
+              </select>
+            </label>
+            <label>
+              Filtrar por estado
+              <select id="adminHospitalStatusFilter">
+                <option value="all">Todos</option>
+                <option value="pending_review">Pendiente</option>
+                <option value="approved">Aprobado</option>
+                <option value="possible_duplicate">Posible duplicado</option>
+                <option value="retirado_por_solicitud">Retirado por solicitud</option>
+              </select>
+            </label>
+          </div>
+          <div id="hospitalAdminList" class="cases-list" aria-live="polite"></div>
         </div>
         <p id="adminStatus" class="form-status" role="status"></p>
         <div id="correctionRequestsList" class="cases-list" aria-live="polite"></div>
