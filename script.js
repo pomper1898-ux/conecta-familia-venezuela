@@ -925,17 +925,22 @@ function normalizeHospitalRows(rows, approveSafe = false) {
 }
 
 async function loadHospitalAdmissions(includePrivate = false) {
+  const externalRecords = includePrivate ? [] : await loadExternalHospitalAdmissions();
   if (!supabaseClient) {
     const records = loadLocalHospitals();
-    return includePrivate ? records : records.filter((record) => record.public_approved && !record.retirado_por_solicitud);
+    return includePrivate
+      ? records
+      : [...externalRecords, ...records.filter((record) => record.public_approved && !record.retirado_por_solicitud)];
   }
   const table = includePrivate ? "hospital_admissions" : "public_hospital_admissions";
   const { data, error } = await supabaseClient.from(table).select("*").order("updated_at", { ascending: false });
   if (error) {
     const records = loadLocalHospitals();
-    return includePrivate ? records : records.filter((record) => record.public_approved && !record.retirado_por_solicitud);
+    return includePrivate
+      ? records
+      : [...externalRecords, ...records.filter((record) => record.public_approved && !record.retirado_por_solicitud)];
   }
-  return data || [];
+  return includePrivate ? data || [] : [...externalRecords, ...(data || [])];
 }
 
 function populateHospitalFilters(records) {
@@ -963,6 +968,16 @@ function filterHospitalRecords(records, isAdmin = false) {
     const searchable = normalizeText([record.nombre_persona, record.hospital, record.ciudad_estado, record.notas_publicas].join(" "));
     return hospitalMatches && statusMatches && (!term || searchable.includes(term));
   });
+}
+
+async function loadExternalHospitalAdmissions() {
+  try {
+    const response = await fetch("/data/external/authorized-hospital-admissions.json", { cache: "no-store" });
+    if (!response.ok) return [];
+    return await response.json();
+  } catch {
+    return [];
+  }
 }
 
 async function renderHospitalAdmissions() {
@@ -2011,5 +2026,3 @@ renderHospitalAdmin();
 renderPublicSources();
 loadAidCenters();
 routeFromCurrentUrl();
-
-
